@@ -7,7 +7,7 @@
 %><a href="/HelloWorldWeb/user/login.jsp">Login</a>
 <%
 	} else {
-%><h2> Hola <%=customer.getFullName()%></h2>
+%><h2> Hola <%=customer.getFirstName()%></h2>
 <%
 	}
 %>
