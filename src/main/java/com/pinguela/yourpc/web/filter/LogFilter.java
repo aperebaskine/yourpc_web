@@ -11,7 +11,6 @@ import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -19,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
  * Servlet Filter implementation class AuthenticationFilter
  */
 @SuppressWarnings("serial")
-@WebFilter("/*")
 public class LogFilter extends HttpFilter implements Filter {
 	
 	private static Logger logger = LogManager.getLogger(LogFilter.class);
@@ -50,11 +48,6 @@ public class LogFilter extends HttpFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		StringBuilder url = new StringBuilder();
 		url.append(httpRequest.getRequestURL());
-//		url.append(httpRequest.getScheme())
-//		.append(httpRequest.getLocalAddr())
-//		.append(httpRequest.getLocalPort())
-//		.append(httpRequest.getContextPath())
-//		.append(httpRequest.getRequestURI());
 		
 		logger.info("--> Request " +url +" from " +httpRequest.getRemoteAddr());
 		
