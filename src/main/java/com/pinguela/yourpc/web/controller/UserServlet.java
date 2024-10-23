@@ -9,6 +9,11 @@ import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.service.CustomerService;
 import com.pinguela.yourpc.service.impl.CustomerServiceImpl;
+import com.pinguela.yourpc.web.constants.RouteMethod;
+import com.pinguela.yourpc.web.util.Actions;
+import com.pinguela.yourpc.web.util.Parameters;
+import com.pinguela.yourpc.web.util.RouterUtils;
+import com.pinguela.yourpc.web.util.Views;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -38,10 +43,10 @@ public class UserServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		
-		String action = request.getParameter("action");
+		String action = request.getParameter(Parameters.ACTION);
 		String targetView = null;
 		
-		if ("login".equalsIgnoreCase(action)) {
+		if (Actions.LOGIN.equalsIgnoreCase(action)) {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 			
@@ -49,19 +54,20 @@ public class UserServlet extends HttpServlet {
 				Customer c = service.login(email, password);
 				if (c == null) {
 					logger.warn("Invalid credentials for: " + email);
+					targetView = Views.USER_LOGIN;
 				} else {
 					session.setAttribute("customer", c);
-					targetView = "/index.jsp";
+					targetView = Views.HOME;
 				}
 			} catch (YPCException e) {
 				logger.error(e.getMessage(), e);
 			} 
 		}
-		request.getRequestDispatcher(targetView).forward(request, response);
+		
+		RouterUtils.route(request, response, RouteMethod.FORWARD, targetView);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
