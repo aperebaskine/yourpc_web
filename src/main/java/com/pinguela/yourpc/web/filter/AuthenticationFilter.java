@@ -1,41 +1,69 @@
 package com.pinguela.yourpc.web.filter;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.pinguela.yourpc.model.AbstractPerson;
+import com.pinguela.yourpc.web.constants.RouteMethod;
+import com.pinguela.yourpc.web.util.RouterUtils;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
- * Servlet implementation class AuthenticationFilter
+ * Servlet Filter implementation class AuthenticationFilter
  */
-@WebServlet("/AuthenticationFilter")
-public class AuthenticationFilter extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+@SuppressWarnings("serial")
+public abstract class AuthenticationFilter<T extends AbstractPerson> extends HttpFilter implements Filter {
+	
+	private Class<T> targetClass;
+	private String loginViewPath;
+	
     /**
-     * @see HttpServlet#HttpServlet()
+     * @see HttpFilter#HttpFilter()
      */
-    public AuthenticationFilter() {
+    protected AuthenticationFilter(Class<T> targetClass, String loginViewPath) {
         super();
-        // TODO Auto-generated constructor stub
+        this.targetClass = targetClass;
+        this.loginViewPath = loginViewPath;
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see Filter#destroy()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void destroy() {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		// place your code here
+		
+		@SuppressWarnings("unchecked")
+		T person = (T) request.getAttribute(targetClass.getName());
+		
+		if (person == null) {
+			RouterUtils.route((HttpServletRequest) request, (HttpServletResponse) response, RouteMethod.REDIRECT, loginViewPath);
+		}
+
+		// pass the request along the filter chain
+		chain.doFilter(request, response);
+	}
+
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+		// TODO Auto-generated method stub
 	}
 
 }
