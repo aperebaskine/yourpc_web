@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/common/header.jsp" %>
 <body>
-	<form action="/HelloWorldWeb/UserServlet" method="post">
+	<form action="/UserServlet" method="post">
 		<input type="hidden" name="action" value="login"/>
 		<label for="email">Email:</label>
 		<input name="email" type="email" placeholder="rastley@gmail.com"/>
