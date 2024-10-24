@@ -9,17 +9,44 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+  	<servlet-name>UserServlet</servlet-name>
+  	<servlet-class>com.pinguela.yourpc.web.controller.UserServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>EmployeeServlet</servlet-name>
+  	<servlet-class>com.pinguela.yourpc.web.controller.EmployeeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>UserServlet</servlet-name>
+  	<url-pattern>/UserServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>EmployeeServlet</servlet-name>
+  	<url-pattern>/EmployeeServlet</url-pattern>
+  </servlet-mapping>
+  <filter>
+  	<filter-name>Log</filter-name>
+  	<filter-class>com.pinguela.yourpc.web.filter.LogFilter</filter-class>
+  </filter>
+  <filter>
+  	<filter-name>CustomerAuth</filter-name>
+  	<filter-class>com.pinguela.yourpc.web.filter.CustomerAuthenticationFilter</filter-class>
+  </filter>
+  <filter>
+  	<filter-name>EmployeeAuth</filter-name>
+  	<filter-class>com.pinguela.yourpc.web.filter.EmployeeAuthenticationFilter</filter-class>
+  </filter>
   <filter-mapping>
-	<filter-name>LogFilter</filter-name>
-	<servlet-name>LogFilter</servlet-name>
+	<filter-name>Log</filter-name>
 	<url-pattern>/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
-	<filter-name>CustomerAuthenticationFilter</filter-name>
+	<filter-name>CustomerAuth</filter-name>
 	<url-pattern>/user/*</url-pattern>
   </filter-mapping>
   <filter-mapping>
-	<filter-name>EmployeeAuthenticationFilter</filter-name>
+	<filter-name>EmployeeAuth</filter-name>
 	<url-pattern>/private/*</url-pattern>
   </filter-mapping>
 </web-app>
