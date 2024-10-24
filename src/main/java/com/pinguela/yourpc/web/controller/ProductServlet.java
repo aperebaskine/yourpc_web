@@ -1,6 +1,6 @@
 package com.pinguela.yourpc.web.controller;
 
-import static com.pinguela.yourpc.web.util.Parameters.NAME;
+import static com.pinguela.yourpc.web.constants.Parameters.NAME;
 
 import java.io.IOException;
 

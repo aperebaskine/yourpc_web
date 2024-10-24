@@ -9,11 +9,11 @@ import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.service.CustomerService;
 import com.pinguela.yourpc.service.impl.CustomerServiceImpl;
+import com.pinguela.yourpc.web.constants.Actions;
+import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.RouteMethod;
-import com.pinguela.yourpc.web.util.Actions;
-import com.pinguela.yourpc.web.util.Parameters;
+import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.util.RouterUtils;
-import com.pinguela.yourpc.web.util.Views;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
