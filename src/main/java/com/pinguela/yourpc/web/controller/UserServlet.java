@@ -17,7 +17,6 @@ import com.pinguela.yourpc.web.util.RouterUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,7 +26,7 @@ import jakarta.servlet.http.HttpSession;
  */
 @SuppressWarnings("serial")
 @WebServlet("/UserServlet")
-public class UserServlet extends HttpServlet {
+public class UserServlet extends YPCServlet {
 	
 	private static Logger logger = LogManager.getLogger(UserServlet.class);
 	
@@ -62,9 +61,10 @@ public class UserServlet extends HttpServlet {
 			} catch (YPCException e) {
 				logger.error(e.getMessage(), e);
 			} 
+			
+			RouterUtils.route(request, response, RouteMethod.FORWARD, targetView);
 		}
 		
-		RouterUtils.route(request, response, RouteMethod.FORWARD, targetView);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

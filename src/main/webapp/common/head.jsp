@@ -4,6 +4,7 @@
 <%@ include file="/common/taglib-import.jsp" %>
 
 <fmt:setBundle basename="i18n.messages" />
+<fmt:setLocale value="${sessionScope.locale}" />
 
 <%
 	String key = new StringBuilder(request.getRequestURI())
