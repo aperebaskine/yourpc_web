@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.pinguela.yourpc.model.AbstractPerson;
 import com.pinguela.yourpc.web.constants.RouteMethod;
+import com.pinguela.yourpc.web.model.Route;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
 import jakarta.servlet.Filter;
@@ -22,7 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public abstract class AuthenticationFilter<T extends AbstractPerson> extends HttpFilter implements Filter {
 	
-	private Class<T> targetClass;
+	private String targetEntityName;
 	private String loginViewPath;
 	
     /**
@@ -30,8 +31,14 @@ public abstract class AuthenticationFilter<T extends AbstractPerson> extends Htt
      */
     protected AuthenticationFilter(Class<T> targetClass, String loginViewPath) {
         super();
-        this.targetClass = targetClass;
+        this.targetEntityName = getTargetEntityName(targetClass);
         this.loginViewPath = loginViewPath;
+    }
+    
+    private static <T extends AbstractPerson> String getTargetEntityName(Class<T> target) {
+    	StringBuilder sb = new StringBuilder(target.getSimpleName());
+    	sb.replace(0, 1, String.valueOf(Character.toLowerCase(sb.charAt(0))));
+    	return sb.toString();
     }
 
 	/**
@@ -49,10 +56,10 @@ public abstract class AuthenticationFilter<T extends AbstractPerson> extends Htt
 		// place your code here
 		
 		@SuppressWarnings("unchecked")
-		T person = (T) request.getAttribute(targetClass.getName());
+		T person = (T) request.getAttribute(targetEntityName);
 		
 		if (person == null) {
-			RouterUtils.route((HttpServletRequest) request, (HttpServletResponse) response, RouteMethod.REDIRECT, loginViewPath);
+			RouterUtils.route((HttpServletRequest) request, (HttpServletResponse) response, new Route(loginViewPath, RouteMethod.REDIRECT));
 		}
 
 		// pass the request along the filter chain
