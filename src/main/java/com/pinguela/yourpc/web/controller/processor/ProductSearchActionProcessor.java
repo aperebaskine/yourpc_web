@@ -1,4 +1,4 @@
-package com.pinguela.yourpc.web.listener;
+package com.pinguela.yourpc.web.controller.processor;
 
 import static com.pinguela.yourpc.web.constants.Parameters.NAME;
 
@@ -18,22 +18,23 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ProductSearchActionListener 
-extends AbstractActionListener {
+public class ProductSearchActionProcessor 
+extends AbstractActionProcessor {
 		
-	public ProductSearchActionListener() {
+	public ProductSearchActionProcessor() {
 		super((String) null, ProductServlet.class);
 	}
 
 	@Override
-	public Route doAction(HttpServletRequest request, HttpServletResponse response)
+	public void doAction(HttpServletRequest request, HttpServletResponse response, Route route)
 			throws ServletException, IOException, YPCException {
 		ProductCriteria criteria = new ProductCriteria();
 		criteria.setName(request.getParameter(NAME));
 
 		Results<Product> results = ServiceManager.get(ProductService.class).findBy(criteria, 1, 10);
 		request.setAttribute("results", results);
-		return new Route("/product/product-results-view.jsp", RouteMethod.FORWARD);
+		route.setTargetView("/product/product-results-view.jsp");
+		route.setRouteMethod(RouteMethod.FORWARD);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.pinguela.yourpc.web.listener;
+package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 
@@ -20,16 +20,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class EmployeeLoginActionListener extends AbstractActionListener {
+public class EmployeeLoginActionProcessor extends AbstractActionProcessor {
 
-	private static Logger logger = LogManager.getLogger(EmployeeLoginActionListener.class);
+	private static Logger logger = LogManager.getLogger(EmployeeLoginActionProcessor.class);
 
-	protected EmployeeLoginActionListener() {
+	protected EmployeeLoginActionProcessor() {
 		super(Actions.LOGIN, EmployeeServlet.class);
 	}
 
 	@Override
-	public Route doAction(HttpServletRequest request, HttpServletResponse response)
+	public void doAction(HttpServletRequest request, HttpServletResponse response, Route route)
 			throws ServletException, IOException, YPCException {
 
 		String username = request.getParameter("username");
@@ -39,10 +39,12 @@ public class EmployeeLoginActionListener extends AbstractActionListener {
 		
 		if (e == null) {
 			logger.warn("Invalid credentials for employee: " + username);
-			return new Route(Views.USER_LOGIN, RouteMethod.FORWARD);
+			route.setTargetView(Views.EMPLOYEE_LOGIN);
+			route.setRouteMethod(RouteMethod.FORWARD);
 		} else {
 			SessionManager.setAttribute(request, "employee", e);
-			return new Route(Views.HOME, RouteMethod.FORWARD);
+			route.setTargetView(Views.HOME);
+			route.setRouteMethod(RouteMethod.FORWARD);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package com.pinguela.yourpc.web.listener;
+package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 
@@ -10,14 +10,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public abstract class AbstractActionListener {
+public abstract class AbstractActionProcessor {
 	
 	@SafeVarargs
-	protected AbstractActionListener(String action, Class<? extends YPCServlet>... servlets) {
-		YPCServlet.registerActionListener(this, action, servlets);
+	protected AbstractActionProcessor(String action, Class<? extends YPCServlet>... servlets) {
+		YPCServlet.registerActionProcessor(this, action, servlets);
 	}
 		
-	public abstract Route doAction(HttpServletRequest request, HttpServletResponse response) 
+	public abstract void doAction(HttpServletRequest request, HttpServletResponse response, Route route) 
 			throws ServletException, IOException, YPCException;
 
 }
