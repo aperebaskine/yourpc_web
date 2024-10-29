@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Servlet Filter implementation class AuthenticationFilter
  */
 @SuppressWarnings("serial")
-public abstract class AuthenticationFilter<T extends AbstractPerson> extends HttpFilter implements Filter {
+public abstract class AbstractAuthenticationFilter<T extends AbstractPerson> extends HttpFilter implements Filter {
 	
 	private String targetEntityName;
 	private String loginViewPath;
@@ -29,7 +29,7 @@ public abstract class AuthenticationFilter<T extends AbstractPerson> extends Htt
     /**
      * @see HttpFilter#HttpFilter()
      */
-    protected AuthenticationFilter(Class<T> targetClass, String loginViewPath) {
+    protected AbstractAuthenticationFilter(Class<T> targetClass, String loginViewPath) {
         super();
         this.targetEntityName = getTargetEntityName(targetClass);
         this.loginViewPath = loginViewPath;

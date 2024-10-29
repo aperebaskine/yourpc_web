@@ -5,7 +5,7 @@ import com.pinguela.yourpc.web.constants.Views;
 
 @SuppressWarnings("serial")
 public class EmployeeAuthenticationFilter 
-extends AuthenticationFilter<Employee> {
+extends AbstractAuthenticationFilter<Employee> {
 
 	public EmployeeAuthenticationFilter() {
 		super(Employee.class, Views.EMPLOYEE_LOGIN);
