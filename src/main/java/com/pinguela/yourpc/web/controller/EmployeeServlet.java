@@ -15,7 +15,12 @@ public class EmployeeServlet extends YPCServlet {
 	}
 	
 	@Override
-	protected void process(HttpServletRequest req, HttpServletResponse resp, Route route)
+	protected void preProcess(HttpServletRequest req, HttpServletResponse resp, Route route)
+			throws ServletException, IOException {	
+	}
+	
+	@Override
+	protected void postProcess(HttpServletRequest req, HttpServletResponse resp, Route route)
 			throws ServletException, IOException {
 	}
 

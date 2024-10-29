@@ -14,9 +14,14 @@ public class UserServlet extends YPCServlet {
     public UserServlet() {
         super();
     }
+    
+    @Override
+    protected void preProcess(HttpServletRequest req, HttpServletResponse resp, Route route)
+    		throws ServletException, IOException {
+    }
 
 	@Override
-	protected void process(HttpServletRequest req, HttpServletResponse resp, Route route)
+	protected void postProcess(HttpServletRequest req, HttpServletResponse resp, Route route)
 			throws ServletException, IOException {	
 	}
 	
