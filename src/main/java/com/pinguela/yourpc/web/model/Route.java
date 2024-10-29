@@ -7,6 +7,9 @@ public class Route {
 	private String targetView;
 	private RouteMethod routeMethod;
 	
+	public Route() {
+	}
+	
 	public Route(String targetView, RouteMethod routeMethod) {
 		super();
 		this.targetView = targetView;
