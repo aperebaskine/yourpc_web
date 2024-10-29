@@ -14,13 +14,14 @@
 %>
 
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>YourPC 
-		<c:if test="${not empty titleKey}">
-			<c:out value=" - " />
-			<fmt:message key="${titleKey}"></fmt:message>
-		</c:if>
-	</title>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/styles/styles.css" />
+		<title>YourPC 
+			<c:if test="${not empty titleKey}">
+				<c:out value=" - " />
+				<fmt:message key="${titleKey}"></fmt:message>
+			</c:if>
+		</title>
+	</head>
+	<body>
