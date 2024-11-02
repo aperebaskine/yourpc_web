@@ -8,6 +8,8 @@ public class Route {
 	private RouteMethod routeMethod;
 	
 	public Route() {
+		this.targetView = "#";
+		this.routeMethod = RouteMethod.FORWARD;
 	}
 	
 	public Route(String targetView, RouteMethod routeMethod) {
