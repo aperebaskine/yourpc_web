@@ -14,6 +14,7 @@ import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.controller.processor.AbstractActionProcessor;
 import com.pinguela.yourpc.web.controller.processor.ActionProcessor;
 import com.pinguela.yourpc.web.model.Route;
+import com.pinguela.yourpc.web.util.ReflectionUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,21 +24,22 @@ final class ActionProcessorDispatcher {
 
 	private static Logger logger = LogManager.getLogger(ActionProcessorDispatcher.class);
 
-	private static final ActionProcessorDispatcher INSTANCE = new ActionProcessorDispatcher(); 
-	
+	private static final ActionProcessorDispatcher INSTANCE = new ActionProcessorDispatcher();
+
 	private static final AbstractActionProcessor INVALID_REQUEST_HANDLER = new AbstractActionProcessor() {
 		@Override
 		public void processAction(HttpServletRequest req, HttpServletResponse resp, Route route)
 				throws ServletException, IOException, YPCException {
-			logger.warn("Invalid action %s received in %s", req.getParameter(Parameters.ACTION), req.getRequestURI());
+			logger.warn("Invalid action %s received in %s",
+					req.getParameter(Parameters.ACTION), req.getRequestURI());
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	};
-	
+
 	public static final ActionProcessorDispatcher getInstance() {
 		return INSTANCE;
 	}
-	
+
 	private final Map<MultiKey<?>, AbstractActionProcessor> processors = new ConcurrentHashMap<>();
 
 	private ActionProcessorDispatcher() {
@@ -49,13 +51,7 @@ final class ActionProcessorDispatcher {
 
 		for (Class<? extends AbstractActionProcessor> clazz : 
 			reflections.getSubTypesOf(AbstractActionProcessor.class)) {
-			try {
-				register(clazz.getDeclaredConstructor().newInstance());
-			} catch (Exception e) {
-				logger.error(String.format(
-						"Exception while instantiating {}: {}", clazz.getName(), e.getMessage()), e);
-				throw new IllegalStateException(e);
-			}
+			register(ReflectionUtils.instantiate(clazz));
 		}
 	}
 
