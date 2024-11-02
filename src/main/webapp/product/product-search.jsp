@@ -5,5 +5,8 @@
 		<label for="name">Nombre:</label> <input type="text" name="name"
 			placeholder="Ejemplo: Placa base" /> <input type="submit"
 			value="Buscar" />
+		<select>
+			<c:forEach var=""></c:forEach>
+		</select>
 	</form>
 <%@ include file="/common/footer.jsp" %>
