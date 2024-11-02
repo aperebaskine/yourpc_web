@@ -8,35 +8,38 @@ import org.apache.logging.log4j.Logger;
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.service.CustomerService;
+import com.pinguela.yourpc.service.impl.CustomerServiceImpl;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.RouteMethod;
 import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.model.Route;
-import com.pinguela.yourpc.web.util.ServiceManager;
 import com.pinguela.yourpc.web.util.SessionManager;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@ActionProcessor(action = Actions.LOGIN, servlets = UserServlet.class)
 public class UserLoginActionProcessor 
 extends AbstractActionProcessor {
 
 	private static Logger logger = LogManager.getLogger(UserLoginActionProcessor.class);
+	
+	private CustomerService service;
 
 	public UserLoginActionProcessor() {
-		super(Actions.LOGIN, UserServlet.class);
+		service = new CustomerServiceImpl();
 	}
 
 	@Override
-	public void doAction(HttpServletRequest request, HttpServletResponse response, Route route)
+	public void processAction(HttpServletRequest request, HttpServletResponse response, Route route)
 			throws ServletException, IOException, YPCException {
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-		Customer c = ServiceManager.get(CustomerService.class).login(email, password);
+		Customer c = service.login(email, password);
 
 		if (c == null) {
 			logger.warn("Invalid credentials for: " + email);
