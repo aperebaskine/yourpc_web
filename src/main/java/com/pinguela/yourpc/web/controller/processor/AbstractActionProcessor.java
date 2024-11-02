@@ -9,11 +9,19 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Handles a specific action from an HTTP request within the context of one (or more) servlets. 
+ * <p>
+ * Subclasses <b>must</b> be annotated
+ * with @{@link ActionProcessor} specifying the action name and associated servlets, and <b>must</b> provide a 
+ * no-argument constructor. Registration is handled automatically.
+ * </p>
+ */
 public abstract class AbstractActionProcessor {
-	
+
 	protected AbstractActionProcessor() {	
 	}
-		
+
 	public abstract void processAction(HttpServletRequest request, HttpServletResponse response, Route route) 
 			throws ServletException, IOException, YPCException;
 
