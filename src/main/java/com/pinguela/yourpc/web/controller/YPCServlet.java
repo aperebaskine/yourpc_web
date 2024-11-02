@@ -1,12 +1,9 @@
 package com.pinguela.yourpc.web.controller;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.reflections.Reflections;
 
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.web.constants.Parameters;
@@ -26,52 +23,32 @@ import jakarta.servlet.http.HttpServletResponse;
 public abstract class YPCServlet extends HttpServlet {
 
 	private static Logger logger = LogManager.getLogger(YPCServlet.class);
-
-	private static final Map<Class<? extends YPCServlet>, Map<String, AbstractActionProcessor>> PROCESSORS = new ConcurrentHashMap<>();
-	private Map<String, AbstractActionProcessor> instanceProcessors;
-
-	static {
-		initialize();
-	}
-
-	private static void initialize() {
-		Reflections reflections = new Reflections(AbstractActionProcessor.class.getPackageName());
-
-		for (Class<? extends AbstractActionProcessor> clazz : 
-			reflections.getSubTypesOf(AbstractActionProcessor.class)) {
-			try {
-				clazz.getDeclaredConstructor().newInstance();
-			} catch (Exception e) {
-				logger.error(String.format(
-						"Exception while instantiating {}: {}", clazz.getName(), e.getMessage()), e);
-				throw new IllegalStateException(e);
-			}
-		}
-	}
-
-	@SafeVarargs
-	public static void registerActionProcessor(AbstractActionProcessor listener,
-			String action, Class<? extends YPCServlet>... servletClasses) {
-		
-		for (Class<? extends YPCServlet> servletClass : servletClasses) {
-			PROCESSORS.computeIfAbsent(servletClass, key -> {
-				return new ConcurrentHashMap<>();
-			}).put(action, listener);
-		}
-	}
-
+	
+	private static final ActionProcessorDispatcher ACTION_PROCESSOR_DISPATCHER = ActionProcessorDispatcher.getInstance();
+	
 	public YPCServlet() {
-		instanceProcessors = PROCESSORS.get(this.getClass());
 	}
 
 	@Override
 	protected final void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		Route route = new Route();
-		preProcess(req, resp, route);
-		processAction(req, resp, route);
-		postProcess(req, resp, route);
-		RouterUtils.route(req, resp, route);
+		
+		if (!resp.isCommitted()) {
+			preProcess(req, resp, route);
+		}
+		
+		if (!resp.isCommitted()) {
+			processAction(req, resp, route);
+		}
+		
+		if (!resp.isCommitted()) {
+			postProcess(req, resp, route);
+		}
+		
+		if (resp.getStatus() < 400) {
+			RouterUtils.route(req, resp, route);
+		}
 	}
 
 	@Override
@@ -85,9 +62,9 @@ public abstract class YPCServlet extends HttpServlet {
 
 		String action = (String) req.getParameter(Parameters.ACTION);
 
-		if (action != null && instanceProcessors.containsKey(action)) {
+		if (action != null) {
 			try {
-				instanceProcessors.get(action).doAction(req, resp, route);
+				getActionProcessor(action).processAction(req, resp, route);
 			} catch (YPCException e) {
 				logger.error(e.getMessage(), e);
 				throw new ServletException(e);
@@ -95,6 +72,10 @@ public abstract class YPCServlet extends HttpServlet {
 		}
 
 		return route;
+	}
+	
+	private final AbstractActionProcessor getActionProcessor(String action) {
+		return ACTION_PROCESSOR_DISPATCHER.dispatch(this, action);
 	}
 
 	protected abstract void preProcess(HttpServletRequest req, HttpServletResponse resp, Route route)
