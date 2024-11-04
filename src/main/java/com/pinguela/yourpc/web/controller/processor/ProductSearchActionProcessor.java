@@ -7,7 +7,7 @@ import java.io.IOException;
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.ProductCriteria;
 import com.pinguela.yourpc.model.Results;
-import com.pinguela.yourpc.model.dto.ProductDTO;
+import com.pinguela.yourpc.model.dto.LocalizedProductDTO;
 import com.pinguela.yourpc.service.ProductService;
 import com.pinguela.yourpc.service.impl.ProductServiceImpl;
 import com.pinguela.yourpc.web.constants.Actions;
@@ -34,7 +34,7 @@ extends AbstractActionProcessor {
 		ProductCriteria criteria = new ProductCriteria();
 		criteria.setName(request.getParameter(NAME));
 
-		Results<ProductDTO> results = service.findBy(criteria, 1, 10);
+		Results<LocalizedProductDTO> results = service.findBy(criteria, 1, 10);
 		request.setAttribute("results", results);
 		route.setTargetView("/product/product-results-view.jsp");
 	}

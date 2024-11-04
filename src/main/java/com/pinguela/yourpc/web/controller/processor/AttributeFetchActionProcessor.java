@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.pinguela.YPCException;
-import com.pinguela.yourpc.model.Attribute;
+import com.pinguela.yourpc.model.dto.AttributeDTO;
 import com.pinguela.yourpc.service.AttributeService;
 import com.pinguela.yourpc.service.impl.AttributeServiceImpl;
 import com.pinguela.yourpc.web.constants.Actions;
@@ -33,7 +33,7 @@ public class AttributeFetchActionProcessor extends AbstractActionProcessor {
 		Short categoryId = Short.valueOf(request.getParameter(Parameters.CATEGORY_ID));
 		Boolean returnUnassigned = Boolean.valueOf(request.getParameter(Parameters.RETURN_UNASSIGNED_ATTRIBUTES));
 		
-		Map<String, Attribute<?>> attributes = service.findByCategory(categoryId, null, returnUnassigned);
+		Map<String, AttributeDTO<?>> attributes = service.findByCategory(categoryId, null, returnUnassigned);
 		request.setAttribute(Attributes.ATTRIBUTES, attributes.entrySet());
 		
 		route.setTargetView("/forms/attribute_fieldset.jsp");
