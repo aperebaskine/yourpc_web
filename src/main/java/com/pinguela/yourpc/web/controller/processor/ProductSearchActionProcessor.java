@@ -5,9 +5,9 @@ import static com.pinguela.yourpc.web.constants.Parameters.NAME;
 import java.io.IOException;
 
 import com.pinguela.YPCException;
-import com.pinguela.yourpc.model.Product;
 import com.pinguela.yourpc.model.ProductCriteria;
 import com.pinguela.yourpc.model.Results;
+import com.pinguela.yourpc.model.dto.ProductDTO;
 import com.pinguela.yourpc.service.ProductService;
 import com.pinguela.yourpc.service.impl.ProductServiceImpl;
 import com.pinguela.yourpc.web.constants.Actions;
@@ -24,7 +24,7 @@ extends AbstractActionProcessor {
 	
 	private ProductService service;
 		
-	public ProductSearchActionProcessor() {
+	ProductSearchActionProcessor() {
 		service = new ProductServiceImpl();
 	}
 
@@ -34,7 +34,7 @@ extends AbstractActionProcessor {
 		ProductCriteria criteria = new ProductCriteria();
 		criteria.setName(request.getParameter(NAME));
 
-		Results<Product> results = service.findBy(criteria, 1, 10);
+		Results<ProductDTO> results = service.findBy(criteria, 1, 10);
 		request.setAttribute("results", results);
 		route.setTargetView("/product/product-results-view.jsp");
 	}

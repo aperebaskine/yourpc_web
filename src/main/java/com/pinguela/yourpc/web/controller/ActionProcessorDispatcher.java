@@ -30,8 +30,8 @@ final class ActionProcessorDispatcher {
 		@Override
 		public void processAction(HttpServletRequest req, HttpServletResponse resp, Route route)
 				throws ServletException, IOException, YPCException {
-			logger.warn("Invalid action %s received in %s",
-					req.getParameter(Parameters.ACTION), req.getRequestURI());
+			logger.warn("Request received at %s contains unrecognized action: %s",
+					req.getRequestURI(), req.getParameter(Parameters.ACTION));
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	};
@@ -51,7 +51,17 @@ final class ActionProcessorDispatcher {
 
 		for (Class<? extends AbstractActionProcessor> clazz : 
 			reflections.getSubTypesOf(AbstractActionProcessor.class)) {
+			validate(clazz);
 			register(ReflectionUtils.instantiate(clazz));
+		}
+	}
+	
+	private void validate(Class<? extends AbstractActionProcessor> target) {
+		if (!target.isAnnotationPresent(ActionProcessor.class)) {
+			String errorMessage = String.format("Class %s must be annotated with @%s",
+					target.getSimpleName(), ActionProcessor.class.getSimpleName());
+			logger.fatal(errorMessage);
+			throw new IllegalStateException(errorMessage);
 		}
 	}
 
@@ -60,16 +70,9 @@ final class ActionProcessorDispatcher {
 		Class<? extends AbstractActionProcessor> processorClass = processor.getClass();
 		ActionProcessor annotation = processorClass.getAnnotation(ActionProcessor.class);
 
-		if (annotation == null) {
-			String errorMessage = String.format("Class %s must be annotated with @%s",
-					processor.getClass().getSimpleName(), ActionProcessor.class.getSimpleName());
-			logger.fatal(errorMessage);
-			throw new IllegalStateException(errorMessage);
-		}
-
 		for (Class<? extends YPCServlet> servletClass : annotation.servlets()) {
-			MultiKey<?> multikey = new MultiKey<>(servletClass, annotation.action());
-			processors.put(multikey, processor);
+			MultiKey<?> key = new MultiKey<>(servletClass, annotation.action());
+			processors.put(key, processor);
 		}
 	}
 

@@ -22,7 +22,7 @@ public class AttributeFetchActionProcessor extends AbstractActionProcessor {
 	
 	private AttributeService service;
 	
-	public AttributeFetchActionProcessor() {
+	AttributeFetchActionProcessor() {
 		service = new AttributeServiceImpl();
 	}
 
@@ -33,7 +33,7 @@ public class AttributeFetchActionProcessor extends AbstractActionProcessor {
 		Short categoryId = Short.valueOf(request.getParameter(Parameters.CATEGORY_ID));
 		Boolean returnUnassigned = Boolean.valueOf(request.getParameter(Parameters.RETURN_UNASSIGNED_ATTRIBUTES));
 		
-		Map<String, Attribute<?>> attributes = service.findByCategory(categoryId, returnUnassigned);
+		Map<String, Attribute<?>> attributes = service.findByCategory(categoryId, null, returnUnassigned);
 		request.setAttribute(Attributes.ATTRIBUTES, attributes.entrySet());
 		
 		route.setTargetView("/forms/attribute_fieldset.jsp");

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * <p>
  * Subclasses <b>must</b> be annotated
  * with @{@link ActionProcessor} specifying the action name and associated servlets, and <b>must</b> provide a 
- * no-argument constructor. Registration is handled automatically.
+ * package-private, no-argument constructor. Registration is handled automatically.
  * </p>
  */
 public abstract class AbstractActionProcessor {

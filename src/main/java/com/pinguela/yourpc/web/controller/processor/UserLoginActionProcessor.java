@@ -28,7 +28,7 @@ extends AbstractActionProcessor {
 	
 	private CustomerService service;
 
-	public UserLoginActionProcessor() {
+	UserLoginActionProcessor() {
 		service = new CustomerServiceImpl();
 	}
 

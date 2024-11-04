@@ -46,7 +46,7 @@ public abstract class YPCServlet extends HttpServlet {
 			postProcess(req, resp, route);
 		}
 		
-		if (resp.getStatus() < 400) {
+		if (resp.getStatus() < HttpServletResponse.SC_BAD_REQUEST) {
 			RouterUtils.route(req, resp, route);
 		}
 	}
