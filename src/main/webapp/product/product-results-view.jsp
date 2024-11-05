@@ -13,9 +13,9 @@
 			}
 				%><h1>Resultados: <%=results.getResultCount()%></h1>
 				<ul><%
-				
-				for (LocalizedProductDTO product : results.getPage()) {
-					%><li>Nombre: <%=product.getName()%>, precio: <%=product.getSalePrice()%> €</li><%
+		
+				for (LocalizedProductDTO dto : results.getPage()) {
+					%><li>Nombre: <%=dto.getName()%>, precio: <%=dto.getSalePrice()%> €</li><%
 				}
 		%>
 	</ul>
