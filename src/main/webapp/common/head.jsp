@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.pinguela.yourpc.model.*" %>
 <%@ include file="/common/taglib.jsp" %>
 <fmt:setBundle basename="i18n.messages" />
 <fmt:setLocale value="${sessionScope.locale}" />

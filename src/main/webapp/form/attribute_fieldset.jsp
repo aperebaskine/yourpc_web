@@ -1,4 +1,4 @@
-<%@page import="com.pinguela.yourpc.model.AttributeValueHandlingModes"%>
+<%@page import="com.pinguela.yourpc.model.constants.AttributeValueHandlingModes"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp" %>
