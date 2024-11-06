@@ -1,17 +1,23 @@
 package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.dto.AttributeDTO;
 import com.pinguela.yourpc.service.AttributeService;
 import com.pinguela.yourpc.service.impl.AttributeServiceImpl;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Attributes;
+import com.pinguela.yourpc.web.constants.Cookies;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.controller.AttributeServlet;
 import com.pinguela.yourpc.web.model.Route;
+import com.pinguela.yourpc.web.util.CookieManager;
+import com.pinguela.yourpc.web.util.LocaleUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +39,13 @@ public class AttributeFetchActionProcessor extends AbstractActionProcessor {
 		Short categoryId = Short.valueOf(request.getParameter(Parameters.CATEGORY_ID));
 		Boolean returnUnassigned = Boolean.valueOf(request.getParameter(Parameters.RETURN_UNASSIGNED_ATTRIBUTES));
 		
-		Map<String, AttributeDTO<?>> attributes = service.findByCategory(categoryId, null, returnUnassigned);
+		Locale locale = LocaleUtils.toLocale(CookieManager.getValue(request, Cookies.LOCALE));
+		
+		Map<String, AttributeDTO<?>> attributes = service.findByCategory(
+				categoryId, locale, returnUnassigned);
 		request.setAttribute(Attributes.ATTRIBUTES, attributes.entrySet());
+		
+		Gson gson = new GsonBuilder().create();
 		
 		route.setTargetView("/forms/attribute_fieldset.jsp");
 	}
