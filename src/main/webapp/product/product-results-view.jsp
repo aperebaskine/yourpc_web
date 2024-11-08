@@ -5,17 +5,16 @@
 <%@ include file="/common/header.jsp" %>    
 	<div id="content">
 		<%
-			@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked")
 			Results<LocalizedProductDTO> results = (Results<LocalizedProductDTO>) request.getAttribute("results");
-		
+				
 			if (results == null) {
 				return;
 			}
-				%><h1>Resultados: <%=results.getResultCount()%></h1>
+		%><h1>Resultados: <%=results.getResultCount()%></h1>
 				<ul><%
-		
 				for (LocalizedProductDTO dto : results.getPage()) {
-					%><li>Nombre: <%=dto.getName()%>, precio: <%=dto.getSalePrice()%> €</li><%
+				%><li>Nombre: <%=dto.getName()%>, precio: <%=dto.getSalePrice()%> €</li><%
 				}
 		%>
 	</ul>
