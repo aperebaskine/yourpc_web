@@ -40,7 +40,7 @@ public final class DefaultActionProcessor extends AbstractActionProcessor {
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException {
-		logger.warn("Request received at %s contains unrecognized action: %s",
+		logger.warn("Request received at {} contains unrecognized action: {}",
 				request.getRequestURI(), request.getParameter(Parameters.ACTION));
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 	}

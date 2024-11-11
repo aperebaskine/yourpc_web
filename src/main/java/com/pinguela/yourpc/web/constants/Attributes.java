@@ -8,5 +8,6 @@ public final class Attributes {
 	public static final String CUSTOMER = "customer";
 	
 	public static final String ATTRIBUTES = "attributes";
+	public static final String LOCALE = "locale";
 	
 }

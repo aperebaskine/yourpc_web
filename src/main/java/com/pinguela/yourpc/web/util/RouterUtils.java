@@ -17,8 +17,20 @@ public class RouterUtils {
 
 	private static Logger logger = LogManager.getLogger(RouterUtils.class);
 	
+	public static final boolean hasRoute(ServletRequest request) {
+		return getTargetView(request) != null;
+	}
+	
+	public static final String getTargetView(ServletRequest request) {
+		return (String) request.getAttribute(Attributes.TARGET_VIEW);
+	}
+	
 	public static final void setTargetView(ServletRequest request, String targetView) {
 		request.setAttribute(Attributes.TARGET_VIEW, targetView);
+	}
+	
+	public static final RouteMethod getRouteMethod(ServletRequest request) {
+		return (RouteMethod) request.getAttribute(Attributes.ROUTE_METHOD);
 	}
 	
 	public static final void setRouteMethod(ServletRequest request, RouteMethod routeMethod) {

@@ -4,6 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 public class SessionManager {
+	
+	public static String getId(HttpServletRequest request) {
+		return getSession(request).getId();
+	}
 
 	public static Object getAttribute(HttpServletRequest request, String name) {
 		return getSession(request).getAttribute(name);

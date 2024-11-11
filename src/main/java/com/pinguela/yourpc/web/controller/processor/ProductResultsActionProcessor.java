@@ -14,19 +14,20 @@ import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.model.ErrorReport;
+import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ActionProcessor(action = Actions.PRODUCT_SEARCH)
-public class ProductSearchActionProcessor 
+@ActionProcessor(action = Actions.PRODUCT_RESULTS)
+public class ProductResultsActionProcessor 
 extends AbstractActionProcessor {
 	
 	private ProductService service;
 		
-	public ProductSearchActionProcessor() {
+	public ProductResultsActionProcessor() {
 		service = new ProductServiceImpl();
 	}
 
@@ -36,7 +37,8 @@ extends AbstractActionProcessor {
 		ProductCriteria criteria = new ProductCriteria();
 		criteria.setName(request.getParameter(NAME));
 
-		Results<LocalizedProductDTO> results = service.findBy(criteria, null, 1, 10);
+		Results<LocalizedProductDTO> results = 
+				service.findBy(criteria, LocaleUtils.getLocale(request), 1, 10);
 		request.setAttribute("results", results);
 		
 		RouterUtils.setTargetView(request, Views.PRODUCT_RESULTS_VIEW);

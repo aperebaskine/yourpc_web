@@ -2,6 +2,8 @@ package com.pinguela.yourpc.web.constants;
 
 public final class Parameters {
 	
+	public static final String SWITCH_LOCALE = "switchLocale";
+	
 	public static final String ACTION = "action";
 	
 	public static final String LOGIN = "login";
