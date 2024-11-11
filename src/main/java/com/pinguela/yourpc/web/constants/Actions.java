@@ -2,7 +2,7 @@ package com.pinguela.yourpc.web.constants;
 
 public final class Actions {
 	
-	public static final String SEARCH = "search";
+	public static final String PRODUCT_SEARCH = "product-search";
 	public static final String RESULTS = "results";
 	public static final String LOGIN = "login";
 	
