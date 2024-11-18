@@ -13,9 +13,17 @@
   	<servlet-name>DefaultServlet</servlet-name>
   	<servlet-class>com.pinguela.yourpc.web.controller.DefaultServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>AttributeServlet</servlet-name>
+  	<servlet-class>com.pinguela.yourpc.web.controller.AttributeServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>DefaultServlet</servlet-name>
   	<url-pattern>/DefaultServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AttributeServlet</servlet-name>
+  	<url-pattern>/AttributeServlet</url-pattern>
   </servlet-mapping>
   <filter>
   	<filter-name>Log</filter-name>
