@@ -1,5 +1,7 @@
 package com.pinguela.yourpc.web.util;
 
+import java.util.Optional;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +13,8 @@ public class CookieManager {
 
 	public static Cookie getCookie(HttpServletRequest request, String name) {
 		Cookie[] cookies = request.getCookies();
-		for (Cookie cookie : cookies) {
+		
+		for (Cookie cookie : Optional.ofNullable(cookies).orElse(new Cookie[0])) {
 			if (cookie.getName().equals(name)) {
 				return cookie;
 			}
