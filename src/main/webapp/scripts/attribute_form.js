@@ -55,55 +55,98 @@ function populateFieldset(json) {
 
 function createAttributeInput(attribute) {
 
-	fieldset.appendChild(createLabel(toInputName(attribute), attribute.name));
+	if (attribute.values.length <= 1) {
+		return;
+	}
+
+	fieldset.appendChild(createInputElement('hidden', 'dt' +attribute.id, attribute.dataTypeIdentifier));
+	fieldset.appendChild(createLabel(attribute));
+	br();
 
 	if (attribute.dataTypeIdentifier == boolean) {
 		createBooleanInput(attribute);
 	} else switch (attribute.valueHandlingMode) {
 		case range:
+			createRangeInput(attribute);
 			break;
 		case set:
+			createSetInput(attribute);
 			break;
 	}
 
-	fieldset.appendChild(document.createElement('br'));
+	br();
 
+	function createSimpleLabel(text) {
+		let label = document.createElement('label');
+		label.textContent = text;
+		return label;
+	}
+
+	function createLabel(attribute) {
+		const label = document.createElement('label');
+		label.textContent = attribute.name;
+		return label;
+	}
+
+	function createBooleanInput(attribute) {
+
+		fieldset.appendChild(createSimpleLabel("Yes"));
+		fieldset.appendChild(createRadioInput(attribute, true));
+
+		fieldset.appendChild(createSimpleLabel("No"));
+		fieldset.appendChild(createRadioInput(attribute, false));
+	}
+
+	function createRangeInput(attribute) {
+		let element = document.createElement("input");
+		element.setAttribute('type', 'range');
+		element.setAttribute('name', toParameterName(attribute));
+		element.setAttribute('min', Number.parseFloat(attribute.values[0].value));
+		element.setAttribute('max', Number.parseFloat(attribute.values[attribute.values.length - 1].value));
+		fieldset.appendChild(element);
+	}
+
+	function createSetInput(attribute) {
+		for (let i = 0; i < attribute.values.length; i++) {
+			let valueDTO = attribute.values[i];
+			fieldset.appendChild(createAttributeInputElement('checkbox', attribute, valueDTO.id));
+			fieldset.appendChild(createSimpleLabel(valueDTO.value));
+			br();
+		}
+	}
+
+	function createInputElement(type, name, value) {
+		let element = document.createElement("input");
+		element.setAttribute('type', type);
+		element.setAttribute('name', name);
+		element.setAttribute('value', value);
+
+		return element;
+	}
+
+	function createAttributeInputElement(type, attribute, value) {
+		return createInputElement(type, toParameterName(attribute), value);
+	}
+
+	function createRadioInput(attribute, value) {
+		return createAttributeInputElement('radio', attribute, value);
+	}
+
+	function toParameterName(attribute) {
+		return "attr" + attribute.id;
+	}
+
+	function br() {
+		fieldset.appendChild(document.createElement('br'));
+	}
 }
 
-function createLabel(forInput, text) {
-	const label = document.createElement('label');
-	label.setAttribute('for', forInput);
-	label.textContent = text;
-	return label;
-}
 
 
 
-function createBooleanInput(attribute) {
 
-	fieldset.appendChild(createLabel("", "Yes"));
-	fieldset.appendChild(createRadioInput(attribute, true));
 
-	fieldset.appendChild(createLabel("", "No"));
-	fieldset.appendChild(createRadioInput(attribute, false));
-}
 
-function createInputElement(type, attribute, value) {
-	let element = document.createElement("input");
-	element.setAttribute('type', type);
-	element.setAttribute('name', toInputName(attribute));
-	element.setAttribute('value', value);
-	return element;
-}
 
-function createRadioInput(attribute, value) {
-	return createInputElement('radio', attribute, value);
-}
 
-function toInputName(attribute) {
-	return "attr" + attribute.id;
-}
 
-function br() {
-	fieldset.appendChild(document.createElement('br'));
-}

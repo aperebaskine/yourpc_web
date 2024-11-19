@@ -16,6 +16,7 @@
 		</select> 
 		<br />
 		<fieldset id="attributes">
+			<legend>Attributes</legend>
 			<script type="text/javascript" src="<c:url value='/scripts/attribute_form.js'></c:url>"></script>
 		</fieldset>
 		<input type="submit" value="Buscar" />
