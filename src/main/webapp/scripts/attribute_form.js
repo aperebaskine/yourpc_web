@@ -59,7 +59,6 @@ function createAttributeInput(attribute) {
 		return;
 	}
 
-	fieldset.appendChild(createInputElement('hidden', 'dt' +attribute.id, attribute.dataTypeIdentifier));
 	fieldset.appendChild(createLabel(attribute));
 	br();
 
@@ -133,7 +132,7 @@ function createAttributeInput(attribute) {
 	}
 
 	function toParameterName(attribute) {
-		return "attr" + attribute.id;
+		return ["attr", attribute.dataTypeIdentifier, attribute.id].join(".");
 	}
 
 	function br() {

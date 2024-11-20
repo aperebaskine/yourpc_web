@@ -1,7 +1,10 @@
 package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.ProductCriteria;
 import com.pinguela.yourpc.model.Results;
+import com.pinguela.yourpc.model.constants.AttributeDataTypes;
 import com.pinguela.yourpc.model.constants.AttributeValueHandlingModes;
 import com.pinguela.yourpc.model.dto.AttributeDTO;
 import com.pinguela.yourpc.model.dto.LocalizedProductDTO;
@@ -52,6 +56,20 @@ extends AbstractActionProcessor {
 			criteria.setCategoryId(Short.valueOf(request.getParameter(Parameters.CATEGORY_ID)));
 		}
 
+		criteria.setAttributes(getAttributeCriteria(request, response));
+
+		if (!response.isCommitted()) {
+			Results<LocalizedProductDTO> results = productService.findBy(criteria, LocaleUtils.getLocale(request), 1,
+					10);
+			request.setAttribute("results", results);
+			RouterUtils.setTargetView(request, Views.PRODUCT_RESULTS_VIEW);
+		}
+	}
+
+	private static final List<AttributeDTO<?>> getAttributeCriteria(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException {
+		List<AttributeDTO<?>> list = new ArrayList<AttributeDTO<?>>();
+
 		Map<String, String[]> attributeMap = request.getParameterMap();
 		Iterator<String> attributeKeyIterator = 
 				attributeMap.keySet().stream().filter(t -> t.contains("attr")).iterator();
@@ -61,20 +79,16 @@ extends AbstractActionProcessor {
 			String[] parameters = attributeMap.get(key);
 
 			for (String parameter : parameters) {
-				Integer attributeId = getAttributeId(parameter);
-				String dataTypeIdentifier = getDataTypeIdentifier(request, parameter);
-				
-				AttributeDTO<?> dto;
-				
-				try {
-					dto = AttributeDTO.getInstance(dataTypeIdentifier);
-				} catch (IllegalArgumentException e) {
+				String dataTypeIdentifier = getDataTypeIdentifier(parameter);
+
+				if (!AttributeDataTypes.isValidType(dataTypeIdentifier)) {
 					logger.warn("Incorrect data type provided: {}", dataTypeIdentifier);
 					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					return;
+					return Collections.emptyList();
 				}
-				
-				dto.setId(attributeId);
+
+				AttributeDTO<?> dto = AttributeDTO.getInstance(dataTypeIdentifier);
+				dto.setId(getAttributeId(parameter));
 
 				switch (dto.getValueHandlingMode()) {
 				case AttributeValueHandlingModes.RANGE:
@@ -83,23 +97,16 @@ extends AbstractActionProcessor {
 					break;
 				}
 			}
-
-			logger.info(key + "=" +request.getParameter(key));
 		}
-
-		Results<LocalizedProductDTO> results = 
-				productService.findBy(criteria, LocaleUtils.getLocale(request), 1, 10);
-		request.setAttribute("results", results);
-
-		RouterUtils.setTargetView(request, Views.PRODUCT_RESULTS_VIEW);
+		return list;
 	}
-	
+
 	private static final Integer getAttributeId(String attributeParameter) {
-		return Integer.valueOf(attributeParameter.replace("attr", ""));
+		return Integer.valueOf(attributeParameter.split(".")[2]);
 	}
 
-	private static final String getDataTypeIdentifier(HttpServletRequest request, String attributeParameter) {
-		return request.getParameter(attributeParameter.replace("attr", "dt"));
+	private static final String getDataTypeIdentifier(String attributeParameter) {
+		return attributeParameter.split(".")[1];
 	}
-	
+
 }
