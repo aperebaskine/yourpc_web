@@ -139,13 +139,3 @@ function createAttributeInput(attribute) {
 		fieldset.appendChild(document.createElement('br'));
 	}
 }
-
-
-
-
-
-
-
-
-
-
