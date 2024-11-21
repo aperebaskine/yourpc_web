@@ -17,15 +17,15 @@ import com.pinguela.yourpc.model.constants.AttributeDataTypes;
 import com.pinguela.yourpc.model.constants.AttributeValueHandlingModes;
 import com.pinguela.yourpc.model.dto.AttributeDTO;
 import com.pinguela.yourpc.model.dto.LocalizedProductDTO;
-import com.pinguela.yourpc.service.AttributeService;
 import com.pinguela.yourpc.service.ProductService;
-import com.pinguela.yourpc.service.impl.AttributeServiceImpl;
 import com.pinguela.yourpc.service.impl.ProductServiceImpl;
+import com.pinguela.yourpc.util.validator.AttributeRangeValidator;
 import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.model.ErrorReport;
+import com.pinguela.yourpc.web.util.AttributeValueConverter;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
@@ -38,13 +38,12 @@ public class ProductResultsActionProcessor
 extends AbstractActionProcessor {
 
 	private static Logger logger = LogManager.getLogger(ProductResultsActionProcessor.class);
+	private AttributeRangeValidator rangeValidator = AttributeRangeValidator.getInstance();
 
 	private ProductService productService;
-	private AttributeService attributeService;
 
 	public ProductResultsActionProcessor() {
 		productService = new ProductServiceImpl();
-		attributeService = new AttributeServiceImpl();
 	}
 
 	@Override
@@ -66,8 +65,9 @@ extends AbstractActionProcessor {
 		}
 	}
 
-	private static final List<AttributeDTO<?>> getAttributeCriteria(HttpServletRequest request, HttpServletResponse response) 
-			throws IOException {
+	private final List<AttributeDTO<?>> getAttributeCriteria(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, YPCException {
+
 		List<AttributeDTO<?>> list = new ArrayList<AttributeDTO<?>>();
 
 		Map<String, String[]> attributeMap = request.getParameterMap();
@@ -75,38 +75,37 @@ extends AbstractActionProcessor {
 				attributeMap.keySet().stream().filter(t -> t.contains("attr")).iterator();
 
 		while (attributeKeyIterator.hasNext()) {
-			String key = attributeKeyIterator.next();
+			String key = attributeKeyIterator.next();			
+			String dataTypeIdentifier = getDataTypeIdentifier(key);
+			
+			if (!AttributeDataTypes.isValidType(dataTypeIdentifier)) {
+				logger.warn("Incorrect data type provided: {}", dataTypeIdentifier);
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return Collections.emptyList();
+			}
+			
+			AttributeDTO<?> dto = AttributeDTO.getInstance(dataTypeIdentifier);
+			dto.setId(getAttributeId(key));
+			
 			String[] parameters = attributeMap.get(key);
-
 			for (String parameter : parameters) {
-				String dataTypeIdentifier = getDataTypeIdentifier(parameter);
-
-				if (!AttributeDataTypes.isValidType(dataTypeIdentifier)) {
-					logger.warn("Incorrect data type provided: {}", dataTypeIdentifier);
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					return Collections.emptyList();
-				}
-
-				AttributeDTO<?> dto = AttributeDTO.getInstance(dataTypeIdentifier);
-				dto.setId(getAttributeId(parameter));
-
-				switch (dto.getValueHandlingMode()) {
-				case AttributeValueHandlingModes.RANGE:
-					break;
-				case AttributeValueHandlingModes.SET:
-					break;
-				}
+				dto.addValue(null, AttributeValueConverter.convert(dataTypeIdentifier, parameter));
+			}
+			
+			if (AttributeValueHandlingModes.RANGE != dto.getValueHandlingMode()
+					|| rangeValidator.validate(dto)) {
+				list.add(dto);
 			}
 		}
 		return list;
 	}
 
 	private static final Integer getAttributeId(String attributeParameter) {
-		return Integer.valueOf(attributeParameter.split(".")[2]);
+		return Integer.valueOf(attributeParameter.split("\\.")[2]);
 	}
 
 	private static final String getDataTypeIdentifier(String attributeParameter) {
-		return attributeParameter.split(".")[1];
+		return attributeParameter.split("\\.")[1];
 	}
 
 }

@@ -30,7 +30,7 @@ function requestData(event) {
 
 	if (value) {
 		let request = new XMLHttpRequest();
-		let url = new URL(location.origin + "/YourPCWeb/AttributeServlet");
+		let url = new URL(location.origin + "/YourPCWeb/AttributeServlet"); // TODO Make URL dynamic
 		url.searchParams.set("categoryid", document.getElementById("categorySelector").value);
 		url.searchParams.set("unassigned", false);
 
@@ -97,29 +97,50 @@ function createAttributeInput(attribute) {
 	}
 
 	function createRangeInput(attribute) {
-		let element = document.createElement("input");
-		element.setAttribute('type', 'range');
-		element.setAttribute('name', toParameterName(attribute));
-		element.setAttribute('min', Number.parseFloat(attribute.values[0].value));
-		element.setAttribute('max', Number.parseFloat(attribute.values[attribute.values.length - 1].value));
-		fieldset.appendChild(element);
+		let min = Number.parseFloat(attribute.values[0].value);
+		let max = Number.parseFloat(attribute.values[attribute.values.length - 1].value);
+		
+		let minElement = createInputElementWithAttributes(
+			{"type":"range", 
+				"name":toParameterName(attribute),
+				"min":min,
+				"max":max,
+				"value":min
+			});
+		
+		let maxElement = createInputElementWithAttributes(
+			{"type":"range", 
+				"name":toParameterName(attribute),
+				"min":min,
+				"max":max,
+				"value":max
+			});
+						
+		fieldset.appendChild(minElement);
+		br();
+		fieldset.appendChild(maxElement);
 	}
 
 	function createSetInput(attribute) {
 		for (let i = 0; i < attribute.values.length; i++) {
 			let valueDTO = attribute.values[i];
-			fieldset.appendChild(createAttributeInputElement('checkbox', attribute, valueDTO.id));
+			fieldset.appendChild(createAttributeInputElement('checkbox', attribute, valueDTO.value));
 			fieldset.appendChild(createSimpleLabel(valueDTO.value));
 			br();
 		}
 	}
 
 	function createInputElement(type, name, value) {
+		return createInputElementWithAttributes({"type":type, "name":name, "value":value});
+	}
+	
+	function createInputElementWithAttributes(attributeArray) {
 		let element = document.createElement("input");
-		element.setAttribute('type', type);
-		element.setAttribute('name', name);
-		element.setAttribute('value', value);
-
+		
+		for (let i in attributeArray) {
+			element.setAttribute(i, attributeArray[i]);
+		}
+		
 		return element;
 	}
 
@@ -139,13 +160,3 @@ function createAttributeInput(attribute) {
 		fieldset.appendChild(document.createElement('br'));
 	}
 }
-
-
-
-
-
-
-
-
-
-
