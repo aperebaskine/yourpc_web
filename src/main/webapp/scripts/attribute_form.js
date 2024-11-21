@@ -64,13 +64,15 @@ function createAttributeInput(attribute) {
 
 	if (attribute.dataTypeIdentifier == boolean) {
 		createBooleanInput(attribute);
-	} else switch (attribute.valueHandlingMode) {
-		case range:
-			createRangeInput(attribute);
-			break;
-		case set:
-			createSetInput(attribute);
-			break;
+	} else {
+		switch (attribute.valueHandlingMode) {
+			case range:
+				createRangeInput(attribute);
+				break;
+			case set:
+				createSetInput(attribute);
+				break;
+		}
 	}
 
 	br();
