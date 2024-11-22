@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,8 +38,10 @@ public class ProductResultsActionProcessor
 extends AbstractActionProcessor {
 
 	private static Logger logger = LogManager.getLogger(ProductResultsActionProcessor.class);
-	private AttributeRangeValidator rangeValidator = AttributeRangeValidator.getInstance();
-
+	
+	private static final Pattern ATTRIBUTE_PARAMETER_REGEX = Pattern.compile("attr\\.[A-Z]{3}\\.[0-9]+");
+	private static final AttributeRangeValidator RANGE_VALIDATOR = AttributeRangeValidator.getInstance();
+	
 	private ProductService productService;
 
 	public ProductResultsActionProcessor() {
@@ -71,7 +74,7 @@ extends AbstractActionProcessor {
 
 		Map<String, String[]> attributeMap = request.getParameterMap();
 		Iterator<String> attributeKeyIterator = 
-				attributeMap.keySet().stream().filter(t -> t.contains("attr")).iterator();
+				attributeMap.keySet().stream().filter(t -> ATTRIBUTE_PARAMETER_REGEX.matcher(t).matches()).iterator();
 
 		while (attributeKeyIterator.hasNext()) {
 			String key = attributeKeyIterator.next();			
@@ -98,7 +101,7 @@ extends AbstractActionProcessor {
 			}
 
 			if (AttributeValueHandlingModes.RANGE != dto.getValueHandlingMode()
-					|| rangeValidator.validate(dto, Short.valueOf(request.getParameter(Parameters.CATEGORY_ID)))) {
+					|| RANGE_VALIDATOR.validate(dto, Short.valueOf(request.getParameter(Parameters.CATEGORY_ID)))) {
 				list.add(dto);
 			}
 		}
