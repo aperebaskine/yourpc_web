@@ -25,7 +25,6 @@ import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.model.ErrorReport;
-import com.pinguela.yourpc.web.util.AttributeValueConverter;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
@@ -77,23 +76,29 @@ extends AbstractActionProcessor {
 		while (attributeKeyIterator.hasNext()) {
 			String key = attributeKeyIterator.next();			
 			String dataTypeIdentifier = getDataTypeIdentifier(key);
-			
+
 			if (!AttributeDataTypes.isValidType(dataTypeIdentifier)) {
 				logger.warn("Incorrect data type provided: {}", dataTypeIdentifier);
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 				return Collections.emptyList();
 			}
-			
+
 			AttributeDTO<?> dto = AttributeDTO.getInstance(dataTypeIdentifier);
 			dto.setId(getAttributeId(key));
-			
+
 			String[] parameters = attributeMap.get(key);
 			for (String parameter : parameters) {
-				dto.addValue(null, AttributeValueConverter.convert(dataTypeIdentifier, parameter));
+				try {
+					dto.addValue(null, parameter);
+				} catch (IllegalArgumentException e) {
+					logger.warn("Parameter {} does not match data type {}.", parameter, dataTypeIdentifier);
+					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+					return Collections.emptyList();
+				}
 			}
-			
+
 			if (AttributeValueHandlingModes.RANGE != dto.getValueHandlingMode()
-					|| rangeValidator.validate(dto)) {
+					|| rangeValidator.validate(dto, Short.valueOf(request.getParameter(Parameters.CATEGORY_ID)))) {
 				list.add(dto);
 			}
 		}
