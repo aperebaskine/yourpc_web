@@ -25,12 +25,12 @@ public class AttributeRangeValidator {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public boolean validate(AttributeDTO<?> dto) throws YPCException {
+	public boolean validate(AttributeDTO<?> dto, Short categoryId) throws YPCException {
 		
 		if (dto.getValueHandlingMode() != AttributeValueHandlingModes.RANGE) {
 			throw new IllegalArgumentException("This method can only be called for attributes with values handled as range.");
 		}
-		AttributeDTO<?> dbData = service.findById(dto.getId(), Locale.forLanguageTag("en-GB"), false);
+		AttributeDTO<?> dbData = service.findById(dto.getId(), Locale.forLanguageTag("en-GB"), false, categoryId);
 		
 		Comparable min = (Comparable) dto.getValueAt(0);
 		Comparable max = (Comparable) dto.getValueAt(dto.valueCount() -1);
