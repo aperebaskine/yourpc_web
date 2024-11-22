@@ -102,11 +102,15 @@ function createAttributeInput(attribute) {
 		let min = Number.parseFloat(attribute.values[0].value);
 		let max = Number.parseFloat(attribute.values[attribute.values.length - 1].value);
 		
+		let step = min == Math.trunc(min) && max == Math.trunc(max) ? 1 :
+			Math.min(1, (max - min) * 0.01);
+		
 		let minElement = createInputElementWithAttributes(
 			{"type":"range", 
 				"name":toParameterName(attribute),
 				"min":min,
 				"max":max,
+				"step":step,
 				"value":min
 			});
 		
@@ -115,6 +119,7 @@ function createAttributeInput(attribute) {
 				"name":toParameterName(attribute),
 				"min":min,
 				"max":max,
+				"step":step,
 				"value":max
 			});
 						
