@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.web.annotations.ActionProcessor;
+import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 
 import jakarta.servlet.ServletException;
@@ -24,6 +25,6 @@ public abstract class AbstractActionProcessor {
 	}
 
 	public abstract void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors) 
-			throws ServletException, IOException, YPCException;
+			throws ServletException, IOException, YPCException, InputValidationException;
 
 }

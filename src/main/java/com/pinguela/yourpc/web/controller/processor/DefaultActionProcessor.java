@@ -1,15 +1,9 @@
 package com.pinguela.yourpc.web.controller.processor;
 
-import java.io.IOException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.pinguela.YPCException;
 import com.pinguela.yourpc.web.constants.Parameters;
+import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -21,9 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * </p>
  */
 public final class DefaultActionProcessor extends AbstractActionProcessor {
-	
-	private static Logger logger = LogManager.getLogger(DefaultActionProcessor.class);
-	
+		
 	private static final DefaultActionProcessor INSTANCE = new DefaultActionProcessor();
 	
 	/**
@@ -39,10 +31,9 @@ public final class DefaultActionProcessor extends AbstractActionProcessor {
 
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
-			throws ServletException, IOException, YPCException {
-		logger.warn("Request received at {} contains unrecognized action: {}",
-				request.getRequestURI(), request.getParameter(Parameters.ACTION));
-		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			throws InputValidationException {
+		throw new InputValidationException(String.format("Request received at %s contains unrecognized action: %s",
+				request.getRequestURI(), request.getParameter(Parameters.ACTION)));
 	}
 
 }

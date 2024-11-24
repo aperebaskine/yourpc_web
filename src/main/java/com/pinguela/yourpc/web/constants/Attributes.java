@@ -11,4 +11,8 @@ public final class Attributes {
 	public static final String LOCALE = "locale";
 	public static final String CATEGORIES = "categories";
 	
+	public static final String PARAMETER_STRING = "parameterStr";
+	
+	public static final String RESULTS = "results";
+	
 }

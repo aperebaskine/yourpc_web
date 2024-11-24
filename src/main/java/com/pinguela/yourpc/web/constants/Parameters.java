@@ -18,4 +18,6 @@ public final class Parameters {
 	public static final String CATEGORY_ID = "categoryId";
 	public static final String RETURN_UNASSIGNED_ATTRIBUTES = "unassigned";
 	
+	public static final String PAGE = "page";
+	
 }

@@ -15,6 +15,7 @@ import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.ErrorCodes;
 import com.pinguela.yourpc.web.constants.RouteMethod;
 import com.pinguela.yourpc.web.constants.Views;
+import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
@@ -37,7 +38,7 @@ extends AbstractActionProcessor {
 
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
-			throws ServletException, IOException, YPCException {
+			throws ServletException, IOException, YPCException, InputValidationException {
 
 		String email = request.getParameter("email").trim();
 		String password = request.getParameter("password").trim();

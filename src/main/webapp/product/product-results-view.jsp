@@ -1,22 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.pinguela.yourpc.model.Results" %>
-<%@ page import="com.pinguela.yourpc.model.dto.LocalizedProductDTO" %>
 <%@ include file="/common/header.jsp" %>    
 	<div id="content">
-		<%
-		@SuppressWarnings("unchecked")
-			Results<LocalizedProductDTO> results = (Results<LocalizedProductDTO>) request.getAttribute("results");
-				
-			if (results == null) {
-				return;
-			}
-		%><h1>Resultados: <%=results.getResultCount()%></h1>
-				<ul><%
-				for (LocalizedProductDTO dto : results.getPage()) {
-				%><li>Nombre: <%=dto.getName()%>, precio: <%=dto.getSalePrice()%> €</li><%
-				}
-		%>
-	</ul>
+		<c:if test="${not empty results}">
+			<h1><c:out value="${results.resultCount}"></c:out> resultados</h1>
+			<ul>
+				<c:forEach var="p" items="${results.page}">
+					<li><c:out value="${p.name}"></c:out>, precio: <c:out value="${p.salePrice}"></c:out></li>
+				</c:forEach>
+			</ul>
+		</c:if>
 	</div>
+<%@ include file="/common/pagination.jsp" %>
 <%@ include file="/common/footer.jsp" %>

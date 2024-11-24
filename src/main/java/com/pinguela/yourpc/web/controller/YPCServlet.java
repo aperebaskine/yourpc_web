@@ -6,8 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pinguela.YPCException;
+import com.pinguela.yourpc.web.constants.HttpErrorCodes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.controller.processor.AbstractActionProcessor;
+import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
@@ -35,21 +37,30 @@ public abstract class YPCServlet extends HttpServlet {
 		
 		ErrorReport errors = new ErrorReport();
 
-		if (!resp.isCommitted()) {
-			preProcess(req, resp, errors);
-		}
+		try {
+			if (!resp.isCommitted()) {
+				preProcess(req, resp, errors);
+			}
 
-		if (!resp.isCommitted()) {
-			processAction(req, resp, errors);
-		}
+			if (!resp.isCommitted()) {
+				processAction(req, resp, errors);
+			}
 
-		if (!resp.isCommitted()) {
-			postProcess(req, resp, errors);
-		}
+			if (!resp.isCommitted()) {
+				postProcess(req, resp, errors);
+			}
 
-		if (resp.getStatus() < HttpServletResponse.SC_BAD_REQUEST
-				&& RouterUtils.hasRoute(req)) {
-			RouterUtils.route(req, resp);
+			if (resp.getStatus() < HttpServletResponse.SC_BAD_REQUEST
+					&& RouterUtils.hasRoute(req)) {
+				RouterUtils.route(req, resp);
+			}
+		} catch (InputValidationException e) {
+			logger.warn(e.getMessage());
+			logger.debug(e);
+			resp.sendError(HttpErrorCodes.SC_UNPROCESSABLE_ENTITY);
+		} catch (YPCException e) {
+			logger.error(e.getMessage(), e);
+			resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -60,16 +71,14 @@ public abstract class YPCServlet extends HttpServlet {
 	}
 
 	private void processAction(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors) 
-			throws ServletException, IOException {
-
-		String action = (String) req.getParameter(Parameters.ACTION);
+			throws ServletException, IOException, YPCException, InputValidationException {
 
 		try {
+			String action = (String) req.getParameter(Parameters.ACTION);
 			getActionProcessor(action).processAction(req, resp, errors);
-		} catch (YPCException e) {
-			logger.error(e.getMessage(), e);
-			throw new ServletException(e);
-		}
+		} catch (IllegalArgumentException e) {
+			throw new InputValidationException(e);
+		} 
 	}
 
 	private final AbstractActionProcessor getActionProcessor(String action) {
@@ -77,9 +86,9 @@ public abstract class YPCServlet extends HttpServlet {
 	}
 
 	protected abstract void preProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
-			throws ServletException, IOException;
+			throws ServletException, IOException, InputValidationException;
 
 	protected abstract void postProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
-			throws ServletException, IOException;
+			throws ServletException, IOException, InputValidationException;
 
 }

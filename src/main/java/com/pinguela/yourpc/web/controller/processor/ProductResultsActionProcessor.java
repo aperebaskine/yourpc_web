@@ -2,14 +2,10 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.ProductCriteria;
@@ -25,8 +21,10 @@ import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.Views;
+import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
+import com.pinguela.yourpc.web.util.PaginationUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
 import jakarta.servlet.ServletException;
@@ -37,11 +35,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ProductResultsActionProcessor 
 extends AbstractActionProcessor {
 
-	private static Logger logger = LogManager.getLogger(ProductResultsActionProcessor.class);
-	
 	private static final Pattern ATTRIBUTE_PARAMETER_REGEX = Pattern.compile("attr\\.[A-Z]{3}\\.[0-9]+");
 	private static final AttributeRangeValidator RANGE_VALIDATOR = AttributeRangeValidator.getInstance();
-	
+
 	private ProductService productService;
 
 	public ProductResultsActionProcessor() {
@@ -50,7 +46,7 @@ extends AbstractActionProcessor {
 
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
-			throws ServletException, IOException, YPCException {
+			throws ServletException, IOException, YPCException, InputValidationException {
 		ProductCriteria criteria = new ProductCriteria();
 		criteria.setName(request.getParameter(Parameters.NAME));
 		if (!request.getParameter(Parameters.CATEGORY_ID).isEmpty()) {
@@ -59,16 +55,19 @@ extends AbstractActionProcessor {
 
 		criteria.setAttributes(getAttributeCriteria(request, response));
 
-		if (!response.isCommitted()) {
-			Results<LocalizedProductDTO> results = productService.findBy(criteria, LocaleUtils.getLocale(request), 1,
-					10);
-			request.setAttribute("results", results);
-			RouterUtils.setTargetView(request, Views.PRODUCT_RESULTS_VIEW);
-		}
+		String pageStr = request.getParameter(Parameters.PAGE);
+		int pageSize = PaginationUtils.DEFAULT_PAGE_SIZE;
+		int pos = ((pageStr == null ? PaginationUtils.DEFAULT_PAGE : Integer.valueOf(pageStr)) * pageSize) - pageSize + 1;
+
+		Results<LocalizedProductDTO> results = productService.findBy(criteria,
+				LocaleUtils.getLocale(request), pos, pageSize);
+		request.setAttribute("results", results);
+		PaginationUtils.buildPaginationUrls(request);
+		RouterUtils.setTargetView(request, Views.PRODUCT_RESULTS_VIEW);
 	}
 
 	private final List<AttributeDTO<?>> getAttributeCriteria(HttpServletRequest request, HttpServletResponse response) 
-			throws IOException, YPCException {
+			throws IOException, YPCException, InputValidationException {
 
 		List<AttributeDTO<?>> list = new ArrayList<AttributeDTO<?>>();
 
@@ -81,9 +80,8 @@ extends AbstractActionProcessor {
 			String dataTypeIdentifier = getDataTypeIdentifier(key);
 
 			if (!AttributeDataTypes.isValidType(dataTypeIdentifier)) {
-				logger.warn("Incorrect data type provided: {}", dataTypeIdentifier);
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return Collections.emptyList();
+				throw new InputValidationException(
+						String.format("Attribute parameter %s contains unrecognized data type.", key));
 			}
 
 			AttributeDTO<?> dto = AttributeDTO.getInstance(dataTypeIdentifier);
@@ -94,9 +92,8 @@ extends AbstractActionProcessor {
 				try {
 					dto.addValue(null, parameter);
 				} catch (IllegalArgumentException e) {
-					logger.warn("Parameter {} does not match data type {}.", parameter, dataTypeIdentifier);
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					return Collections.emptyList();
+					throw new InputValidationException(String.format(
+							"Parameter %s does not match data type %s.", parameter, dataTypeIdentifier), e);
 				}
 			}
 
