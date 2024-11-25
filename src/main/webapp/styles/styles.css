@@ -35,3 +35,17 @@ nav {
 	vertical-align: middle;
 	background-color: #EAD8F5;
 }
+
+/* Form components */
+
+#product-search-form {
+	width: 24%;
+}
+
+#product-search-form input[type="number"] {
+	width: 30%;
+}
+
+#product-search-form #attributes {
+	border: 0px solid black;
+}
