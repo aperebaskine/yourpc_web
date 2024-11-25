@@ -56,7 +56,7 @@ public abstract class YPCServlet extends HttpServlet {
 			}
 		} catch (InputValidationException e) {
 			logger.warn(e.getMessage());
-			logger.debug(e);
+			logger.debug(e.getMessage(), e);
 			resp.sendError(HttpErrorCodes.SC_UNPROCESSABLE_ENTITY);
 		} catch (YPCException e) {
 			logger.error(e.getMessage(), e);
@@ -77,7 +77,7 @@ public abstract class YPCServlet extends HttpServlet {
 			String action = (String) req.getParameter(Parameters.ACTION);
 			getActionProcessor(action).processAction(req, resp, errors);
 		} catch (IllegalArgumentException e) {
-			throw new InputValidationException(e);
+			throw new InputValidationException(e.getMessage(), e);
 		} 
 	}
 
