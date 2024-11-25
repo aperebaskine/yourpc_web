@@ -1,14 +1,32 @@
 package com.pinguela.yourpc.web.util;
 
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import org.apache.commons.lang3.function.FailableConsumer;
+import org.apache.commons.validator.GenericValidator;
 
 import com.pinguela.yourpc.web.exception.InputValidationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ParameterUtils {
+
+	public static <T> void processIfPresent(HttpServletRequest request, 
+			String parameter, BiFunction<String, HttpServletRequest, T> validator, Consumer<T> consumer) {
+
+		String parameterValue = request.getParameter(parameter);
+		if (GenericValidator.isBlankOrNull(parameterValue)) {
+			return;
+		}
+
+		T validatedValue = validator.apply(parameterValue, request);
+
+		if (validatedValue != null) {
+			consumer.accept(validatedValue);
+		}
+	}
 
 	/**
 	 * Validates the presence of a parameter in a request. If found, executes the provided function

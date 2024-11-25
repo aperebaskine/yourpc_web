@@ -49,3 +49,21 @@ nav {
 #product-search-form #attributes {
 	border: 0px solid black;
 }
+
+.baseForm {
+	width: 240px;
+}
+
+.baseForm input[type="text"],
+.baseForm input[type="number"],
+.baseForm input[type="tel"],
+.baseForm input[type="email"],
+.baseForm textArea,
+.baseForm select {
+	width: 94%;
+}
+
+.baseForm input[type="submit"],
+.baseForm input[type="reset"] {
+	width: 80px;
+}

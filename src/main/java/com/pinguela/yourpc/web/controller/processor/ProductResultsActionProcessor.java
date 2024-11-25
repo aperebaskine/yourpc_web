@@ -6,10 +6,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.function.FailableConsumer;
 
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.ProductCriteria;
@@ -32,6 +35,7 @@ import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.PaginationUtils;
 import com.pinguela.yourpc.web.util.ParameterUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
+import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,11 +67,16 @@ extends AbstractActionProcessor {
 
 	private ProductCriteria buildCriteria(HttpServletRequest request) 
 			throws InputValidationException, YPCException, IOException {
-		
+
 		ProductCriteria criteria = new ProductCriteria();
+		Map<String, FailableConsumer<String, InputValidationException>> map = new HashMap<>();
+		map.put(Parameters.NAME, value -> criteria.setName(value));
+		
+		ParameterUtils.processIfPresent(request, Parameters.CATEGORY_ID, 
+				ValidatorUtils::validateShort, criteria::setCategoryId);
 
 		ParameterUtils.runIfPresent(request, Map.of(
-				Parameters.NAME, value -> criteria.setName(value),
+				Parameters.NAME, criteria::setName,
 				Parameters.CATEGORY_ID, value -> criteria.setCategoryId(Short.valueOf(value)),
 				Parameters.PRICE_FROM, value -> criteria.setPriceMin(Double.valueOf(value)),
 				Parameters.PRICE_TO, value -> criteria.setPriceMax(Double.valueOf(value)),
