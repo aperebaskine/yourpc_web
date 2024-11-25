@@ -15,6 +15,12 @@ public final class Parameters {
 	public static final String PRICE_FROM = "price-from";
 	public static final String PRICE_TO = "price-to";
 	
+	public static final String STOCK_FROM = "stock-from";
+	public static final String STOCK_TO = "stock-to";
+	
+	public static final String LAUNCH_DATE_FROM = "launch-date-from";
+	public static final String LAUNCH_DATE_TO = "launch-date-to";
+	
 	public static final String CATEGORY_ID = "categoryId";
 	public static final String RETURN_UNASSIGNED_ATTRIBUTES = "unassigned";
 	
