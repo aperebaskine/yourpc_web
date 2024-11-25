@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class PaginationUtils {
 	
-	public static final int DEFAULT_PAGE = 1;
+	public static final int FIRST_PAGE_INDEX = 1;
 	public static final int DISPLAYED_PAGE_RANGE = 2;
 	public static final int DEFAULT_PAGE_SIZE = 5;
 	
@@ -27,22 +27,22 @@ public class PaginationUtils {
 	public static void buildPaginationUrls(HttpServletRequest request) {
 		
 		String pageStr = request.getParameter(Parameters.PAGE);
-		Integer currentPage = Strings.isBlank(pageStr) ? DEFAULT_PAGE : Integer.valueOf(pageStr);
+		Integer currentPage = Strings.isBlank(pageStr) ? FIRST_PAGE_INDEX : Integer.valueOf(pageStr);
 		
 		String baseUrl = URLBuilder.getParameterizedUrl(request, Parameters.PAGE);
 		int resultCount = ((Results<?>) request.getAttribute(Attributes.RESULTS)).getResultCount();
 		
 		int pageSize = DEFAULT_PAGE_SIZE;
-		int lastPage = resultCount / pageSize + 1;
+		int lastPage = resultCount / pageSize + Math.min(1, resultCount % pageSize);
 		
-		request.setAttribute(FIRST_PAGE, getPageUrl(baseUrl, currentPage, DEFAULT_PAGE));
-		request.setAttribute(PREVIOUS_PAGE, getPageUrl(baseUrl, currentPage, Math.max(DEFAULT_PAGE, currentPage -1)));
+		request.setAttribute(FIRST_PAGE, getPageUrl(baseUrl, currentPage, FIRST_PAGE_INDEX));
+		request.setAttribute(PREVIOUS_PAGE, getPageUrl(baseUrl, currentPage, Math.max(FIRST_PAGE_INDEX, currentPage -1)));
 		request.setAttribute(NEXT_PAGE, getPageUrl(baseUrl, currentPage, Math.min(lastPage, currentPage +1)));
 		request.setAttribute(LAST_PAGE, getPageUrl(baseUrl, currentPage, lastPage));
 		
 		Map<Integer, String> displayedPageLinks = new TreeMap<>();
 		
-		for (int i = Math.max(DEFAULT_PAGE, currentPage - DISPLAYED_PAGE_RANGE);
+		for (int i = Math.max(FIRST_PAGE_INDEX, currentPage - DISPLAYED_PAGE_RANGE);
 				i <= Math.min(lastPage, currentPage + DISPLAYED_PAGE_RANGE); i++) {
 			displayedPageLinks.put(i, getPageUrl(baseUrl, currentPage, i));
 		}
