@@ -1,7 +1,11 @@
 package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,12 +23,14 @@ import com.pinguela.yourpc.service.impl.ProductServiceImpl;
 import com.pinguela.yourpc.util.validator.AttributeRangeValidator;
 import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
+import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.PaginationUtils;
+import com.pinguela.yourpc.web.util.ParameterUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 
 import jakarta.servlet.ServletException;
@@ -47,37 +53,48 @@ extends AbstractActionProcessor {
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
-		ProductCriteria criteria = new ProductCriteria();
-		criteria.setName(request.getParameter(Parameters.NAME));
-		if (!request.getParameter(Parameters.CATEGORY_ID).isEmpty()) {
-			criteria.setCategoryId(Short.valueOf(request.getParameter(Parameters.CATEGORY_ID)));
-		}
 
-		criteria.setAttributes(getAttributeCriteria(request, response));
-
-		String pageStr = request.getParameter(Parameters.PAGE);
-		int pageSize = PaginationUtils.DEFAULT_PAGE_SIZE;
-		int pos = ((pageStr == null ? PaginationUtils.DEFAULT_PAGE : Integer.valueOf(pageStr)) * pageSize) - pageSize + 1;
-
-		Results<LocalizedProductDTO> results = productService.findBy(criteria,
-				LocaleUtils.getLocale(request), pos, pageSize);
-		request.setAttribute("results", results);
+		ProductCriteria criteria = buildCriteria(request);
+		Results<LocalizedProductDTO> results = fetchResults(request, criteria);
+		request.setAttribute(Attributes.RESULTS, results);
 		PaginationUtils.buildPaginationUrls(request);
 		RouterUtils.setTargetView(request, Views.PRODUCT_RESULTS_VIEW);
 	}
 
-	private final List<AttributeDTO<?>> getAttributeCriteria(HttpServletRequest request, HttpServletResponse response) 
-			throws IOException, YPCException, InputValidationException {
+	private ProductCriteria buildCriteria(HttpServletRequest request) 
+			throws InputValidationException, YPCException, IOException {
+		
+		ProductCriteria criteria = new ProductCriteria();
+
+		ParameterUtils.runIfPresent(request, Map.of(
+				Parameters.NAME, value -> criteria.setName(value),
+				Parameters.CATEGORY_ID, value -> criteria.setCategoryId(Short.valueOf(value)),
+				Parameters.PRICE_FROM, value -> criteria.setPriceMin(Double.valueOf(value)),
+				Parameters.PRICE_TO, value -> criteria.setPriceMax(Double.valueOf(value)),
+				Parameters.STOCK_FROM, value -> criteria.setStockMin(Integer.valueOf(value)),
+				Parameters.STOCK_TO, value -> criteria.setStockMax(Integer.valueOf(value)),
+				Parameters.LAUNCH_DATE_FROM, value -> criteria.setLaunchDateMin(parseDate(request, value)),
+				Parameters.LAUNCH_DATE_TO, value -> criteria.setLaunchDateMax(parseDate(request, value))
+				));
+
+		criteria.setAttributes(buildAttributeCriteria(request));
+
+		return criteria;
+	}
+
+	private final List<AttributeDTO<?>> buildAttributeCriteria(HttpServletRequest request) 
+			throws InputValidationException, YPCException, IOException {
 
 		List<AttributeDTO<?>> list = new ArrayList<AttributeDTO<?>>();
 
-		Map<String, String[]> attributeMap = request.getParameterMap();
+		Map<String, String[]> parameterMap = request.getParameterMap();
 		Iterator<String> attributeKeyIterator = 
-				attributeMap.keySet().stream().filter(t -> ATTRIBUTE_PARAMETER_REGEX.matcher(t).matches()).iterator();
+				parameterMap.keySet().stream().filter(t -> ATTRIBUTE_PARAMETER_REGEX.matcher(t).matches()).iterator();
 
 		while (attributeKeyIterator.hasNext()) {
-			String key = attributeKeyIterator.next();			
-			String dataTypeIdentifier = getDataTypeIdentifier(key);
+			String key = attributeKeyIterator.next();
+			String[] keyComponents = key.split("\\.");
+			String dataTypeIdentifier = keyComponents[1];
 
 			if (!AttributeDataTypes.isValidType(dataTypeIdentifier)) {
 				throw new InputValidationException(
@@ -85,9 +102,9 @@ extends AbstractActionProcessor {
 			}
 
 			AttributeDTO<?> dto = AttributeDTO.getInstance(dataTypeIdentifier);
-			dto.setId(getAttributeId(key));
+			dto.setId(Integer.valueOf(keyComponents[2]));
 
-			String[] parameters = attributeMap.get(key);
+			String[] parameters = parameterMap.get(key);
 			for (String parameter : parameters) {
 				try {
 					dto.addValue(null, parameter);
@@ -102,15 +119,33 @@ extends AbstractActionProcessor {
 				list.add(dto);
 			}
 		}
+
 		return list;
 	}
 
-	private static final Integer getAttributeId(String attributeParameter) {
-		return Integer.valueOf(attributeParameter.split("\\.")[2]);
+	private Results<LocalizedProductDTO> fetchResults(HttpServletRequest request, ProductCriteria criteria) 
+			throws YPCException {
+
+		String pageStr = request.getParameter(Parameters.PAGE);
+		int pageSize = PaginationUtils.DEFAULT_PAGE_SIZE;
+		int pos = ((pageStr == null ? 
+				PaginationUtils.FIRST_PAGE_INDEX : 
+					Integer.valueOf(pageStr))
+				* pageSize) - pageSize + 1;
+
+		return productService.findBy(criteria,
+				LocaleUtils.getLocale(request), pos, pageSize);
 	}
 
-	private static final String getDataTypeIdentifier(String attributeParameter) {
-		return attributeParameter.split("\\.")[1];
+	private static Date parseDate(HttpServletRequest request, String dateStr) 
+			throws InputValidationException {
+		try {
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", LocaleUtils.getLocale(request));
+			return format.parse(dateStr);
+		} catch (ParseException e) {
+			throw new InputValidationException(
+					String.format("Cannot convert string %s to date.", dateStr), e);
+		}
 	}
 
 }
