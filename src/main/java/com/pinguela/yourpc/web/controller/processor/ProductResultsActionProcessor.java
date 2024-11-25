@@ -67,14 +67,14 @@ extends AbstractActionProcessor {
 		ProductCriteria criteria = new ProductCriteria();
 
 		ParameterUtils.runIfPresent(request, Map.of(
-				Parameters.NAME, value -> criteria.setName(value),
-				Parameters.CATEGORY_ID, value -> criteria.setCategoryId(Short.valueOf(value)),
-				Parameters.PRICE_FROM, value -> criteria.setPriceMin(Double.valueOf(value)),
-				Parameters.PRICE_TO, value -> criteria.setPriceMax(Double.valueOf(value)),
-				Parameters.STOCK_FROM, value -> criteria.setStockMin(Integer.valueOf(value)),
-				Parameters.STOCK_TO, value -> criteria.setStockMax(Integer.valueOf(value)),
-				Parameters.LAUNCH_DATE_FROM, value -> criteria.setLaunchDateMin(parseDate(request, value)),
-				Parameters.LAUNCH_DATE_TO, value -> criteria.setLaunchDateMax(parseDate(request, value))
+				Parameters.NAME, name -> criteria.setName(name),
+				Parameters.CATEGORY_ID, categoryId -> criteria.setCategoryId(Short.valueOf(categoryId)),
+				Parameters.PRICE_FROM, priceMin -> criteria.setPriceMin(Double.valueOf(priceMin)),
+				Parameters.PRICE_TO, priceMax -> criteria.setPriceMax(Double.valueOf(priceMax)),
+				Parameters.STOCK_FROM, stockMin -> criteria.setStockMin(Integer.valueOf(stockMin)),
+				Parameters.STOCK_TO, stockMax -> criteria.setStockMax(Integer.valueOf(stockMax)),
+				Parameters.LAUNCH_DATE_FROM, launchDateMin -> criteria.setLaunchDateMin(parseDate(request, launchDateMin)),
+				Parameters.LAUNCH_DATE_TO, launchDateMax -> criteria.setLaunchDateMax(parseDate(request, launchDateMax))
 				));
 
 		criteria.setAttributes(buildAttributeCriteria(request));
