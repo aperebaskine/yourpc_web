@@ -28,7 +28,7 @@ public class AttributeRangeValidator {
 	public boolean validate(AttributeDTO<?> dto, Short categoryId) throws YPCException {
 		
 		if (dto.getValueHandlingMode() != AttributeValueHandlingModes.RANGE) {
-			throw new IllegalArgumentException("This method can only be called for attributes with values handled as range.");
+			throw new IllegalArgumentException("Attribute value handling mode is not RANGE, cannot validate.");
 		}
 		AttributeDTO<?> dbData = service.findById(dto.getId(), Locale.forLanguageTag("en-GB"), false, categoryId);
 		
