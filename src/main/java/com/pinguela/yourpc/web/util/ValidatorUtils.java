@@ -16,7 +16,7 @@ public class ValidatorUtils {
 	
 	public static String getParameter(HttpServletRequest request, String parameterName, boolean isRequired) {
 		String parameterValue = request.getParameter(parameterName);
-		if (GenericValidator.isBlankOrNull(parameterValue)) {
+		if (!hasContent(request, parameterValue)) {
 			if (isRequired) {
 				logFieldError(request, parameterName, parameterValue);
 			}
