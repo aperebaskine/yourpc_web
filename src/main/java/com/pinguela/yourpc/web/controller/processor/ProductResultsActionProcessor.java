@@ -1,11 +1,7 @@
 package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +29,6 @@ import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.PaginationUtils;
-import com.pinguela.yourpc.web.util.ParameterUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
 
@@ -71,27 +66,25 @@ extends AbstractActionProcessor {
 		ProductCriteria criteria = new ProductCriteria();
 		Map<String, FailableConsumer<String, InputValidationException>> map = new HashMap<>();
 		map.put(Parameters.NAME, value -> criteria.setName(value));
+
+		new ParameterProcessor(request)
+		.optional(Parameters.NAME, criteria::setName)
+		.optional(Parameters.CATEGORY_ID, ValidatorUtils::parseShort, ValidatorUtils::isValidCategory, criteria::setCategoryId)
+		.optional(Parameters.PRICE_FROM, ValidatorUtils::parseDouble, criteria::setPriceMin)
+		.optional(Parameters.PRICE_TO, ValidatorUtils::parseDouble, criteria::setPriceMax)
+		.optional(Parameters.STOCK_FROM, ValidatorUtils::parseInt, criteria::setStockMin)
+		.optional(Parameters.STOCK_TO, ValidatorUtils::parseInt, criteria::setStockMax)
+		.optional(Parameters.LAUNCH_DATE_FROM, ValidatorUtils::parseDate, criteria::setLaunchDateMin)
+		.optional(Parameters.LAUNCH_DATE_TO, ValidatorUtils::parseDate, criteria::setLaunchDateMax);
+
+		if (criteria.getCategoryId() != null) {
+			criteria.setAttributes(buildAttributeCriteria(request, criteria.getCategoryId()));
+		}
 		
-		ParameterUtils.processIfPresent(request, Parameters.CATEGORY_ID, 
-				ValidatorUtils::validateShort, criteria::setCategoryId);
-
-		ParameterUtils.runIfPresent(request, Map.of(
-				Parameters.NAME, criteria::setName,
-				Parameters.CATEGORY_ID, value -> criteria.setCategoryId(Short.valueOf(value)),
-				Parameters.PRICE_FROM, value -> criteria.setPriceMin(Double.valueOf(value)),
-				Parameters.PRICE_TO, value -> criteria.setPriceMax(Double.valueOf(value)),
-				Parameters.STOCK_FROM, value -> criteria.setStockMin(Integer.valueOf(value)),
-				Parameters.STOCK_TO, value -> criteria.setStockMax(Integer.valueOf(value)),
-				Parameters.LAUNCH_DATE_FROM, value -> criteria.setLaunchDateMin(parseDate(request, value)),
-				Parameters.LAUNCH_DATE_TO, value -> criteria.setLaunchDateMax(parseDate(request, value))
-				));
-
-		criteria.setAttributes(buildAttributeCriteria(request));
-
 		return criteria;
 	}
 
-	private final List<AttributeDTO<?>> buildAttributeCriteria(HttpServletRequest request) 
+	private final List<AttributeDTO<?>> buildAttributeCriteria(HttpServletRequest request, Short categoryId) 
 			throws InputValidationException, YPCException, IOException {
 
 		List<AttributeDTO<?>> list = new ArrayList<AttributeDTO<?>>();
@@ -124,7 +117,7 @@ extends AbstractActionProcessor {
 			}
 
 			if (AttributeValueHandlingModes.RANGE != dto.getValueHandlingMode()
-					|| RANGE_VALIDATOR.validate(dto, Short.valueOf(request.getParameter(Parameters.CATEGORY_ID)))) {
+					|| RANGE_VALIDATOR.validate(dto, categoryId)) {
 				list.add(dto);
 			}
 		}
@@ -144,17 +137,6 @@ extends AbstractActionProcessor {
 
 		return productService.findBy(criteria,
 				LocaleUtils.getLocale(request), pos, pageSize);
-	}
-
-	private static Date parseDate(HttpServletRequest request, String dateStr) 
-			throws InputValidationException {
-		try {
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", LocaleUtils.getLocale(request));
-			return format.parse(dateStr);
-		} catch (ParseException e) {
-			throw new InputValidationException(
-					String.format("Cannot convert string %s to date.", dateStr), e);
-		}
 	}
 
 }
