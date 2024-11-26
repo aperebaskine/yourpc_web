@@ -68,7 +68,7 @@ extends AbstractActionProcessor {
 		map.put(Parameters.NAME, value -> criteria.setName(value));
 
 		new ParameterProcessor(request)
-		.optional(Parameters.NAME, criteria::setName)
+		.optional(Parameters.NAME, ValidatorUtils::hasContent, criteria::setName)
 		.optional(Parameters.CATEGORY_ID, ValidatorUtils::parseShort, ValidatorUtils::isValidCategory, criteria::setCategoryId)
 		.optional(Parameters.PRICE_FROM, ValidatorUtils::parseDouble, criteria::setPriceMin)
 		.optional(Parameters.PRICE_TO, ValidatorUtils::parseDouble, criteria::setPriceMax)
