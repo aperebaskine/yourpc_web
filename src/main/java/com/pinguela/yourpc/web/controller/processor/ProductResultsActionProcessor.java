@@ -2,13 +2,10 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.function.FailableConsumer;
 
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.ProductCriteria;
@@ -64,8 +61,6 @@ extends AbstractActionProcessor {
 			throws InputValidationException, YPCException, IOException {
 
 		ProductCriteria criteria = new ProductCriteria();
-		Map<String, FailableConsumer<String, InputValidationException>> map = new HashMap<>();
-		map.put(Parameters.NAME, value -> criteria.setName(value));
 
 		new ParameterProcessor(request)
 		.optional(Parameters.NAME, ValidatorUtils::hasContent, criteria::setName)
