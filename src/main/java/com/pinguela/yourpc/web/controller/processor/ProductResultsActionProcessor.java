@@ -63,14 +63,14 @@ extends AbstractActionProcessor {
 		ProductCriteria criteria = new ProductCriteria();
 
 		new ParameterProcessor(request)
-		.optional(Parameters.NAME, ValidatorUtils::hasContent, criteria::setName)
+		.optional(Parameters.NAME, null, criteria::setName)
 		.optional(Parameters.CATEGORY_ID, ValidatorUtils::parseShort, ValidatorUtils::isValidCategory, criteria::setCategoryId)
-		.optional(Parameters.PRICE_FROM, ValidatorUtils::parseDouble, criteria::setPriceMin)
-		.optional(Parameters.PRICE_TO, ValidatorUtils::parseDouble, criteria::setPriceMax)
-		.optional(Parameters.STOCK_FROM, ValidatorUtils::parseInt, criteria::setStockMin)
-		.optional(Parameters.STOCK_TO, ValidatorUtils::parseInt, criteria::setStockMax)
-		.optional(Parameters.LAUNCH_DATE_FROM, ValidatorUtils::parseDate, criteria::setLaunchDateMin)
-		.optional(Parameters.LAUNCH_DATE_TO, ValidatorUtils::parseDate, criteria::setLaunchDateMax);
+		.optional(Parameters.PRICE_FROM, ValidatorUtils::parseDouble, null, criteria::setPriceMin)
+		.optional(Parameters.PRICE_TO, ValidatorUtils::parseDouble, null, criteria::setPriceMax)
+		.optional(Parameters.STOCK_FROM, ValidatorUtils::parseInt, null, criteria::setStockMin)
+		.optional(Parameters.STOCK_TO, ValidatorUtils::parseInt, null, criteria::setStockMax)
+		.optional(Parameters.LAUNCH_DATE_FROM, ValidatorUtils::parseDate, null, criteria::setLaunchDateMin)
+		.optional(Parameters.LAUNCH_DATE_TO, ValidatorUtils::parseDate, null,criteria::setLaunchDateMax);
 
 		if (criteria.getCategoryId() != null) {
 			criteria.setAttributes(buildAttributeCriteria(request, criteria.getCategoryId()));

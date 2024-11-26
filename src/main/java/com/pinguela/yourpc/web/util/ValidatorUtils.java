@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.function.BiFunction;
 
 import org.apache.commons.validator.GenericValidator;
 
@@ -13,6 +14,8 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ValidatorUtils {
+	
+	public static final String[] EMPTY_ARRAY = {};
 	
 	public static String getParameter(HttpServletRequest request, String parameterName, boolean isRequired) {
 		String parameterValue = request.getParameter(parameterName);
@@ -29,7 +32,7 @@ public class ValidatorUtils {
 		String[] parameterValues = request.getParameterValues(parameterName);
 		if (!isInRange(maxCount, minCount, maxCount)) {
 			logFieldError(request, parameterName, parameterName);
-			return null;
+			return EMPTY_ARRAY;
 		}
 		return parameterValues;
 	}
@@ -104,6 +107,10 @@ public class ValidatorUtils {
 	private static void logGlobalError(HttpServletRequest request, String errorCode) {
 		ErrorReport errors = (ErrorReport) request.getAttribute("errors");
 		errors.addGlobalError(errorCode);
+	}
+	
+	public static BiFunction<HttpServletRequest, String, String> nopParser() {
+		return (r, s) -> s;
 	}
 
 }

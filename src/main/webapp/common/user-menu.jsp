@@ -1,8 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/taglib.jsp" %>
-<%@ page import="com.pinguela.yourpc.model.Customer" %>
+<%@ page import="com.pinguela.yourpc.model.Customer, com.pinguela.yourpc.web.constants.Parameters" %>
+<%
+	
+%>
 <ul class="user-menu">
+	<li>
+		<form id="localeForm" action='${currentUrl}' method="post" onchange="submit();">
+			<select name="<%=Parameters.SWITCH_LOCALE%>">
+				<option>en-GB</option>
+				<option>es-ES</option>
+			</select>
+		</form>
+	</li>
 	<c:choose>
 		<c:when test="${not empty customer}">
 			<c:out value="Hola ${customer.firstName}"></c:out>

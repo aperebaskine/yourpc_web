@@ -51,7 +51,7 @@ public class PaginationUtils {
 	}
 	
 	private static String getPageUrl(String baseUrl, int currentPage, int page) {
-		return currentPage == page ? "#" : URLBuilder.appendParameter(baseUrl, Parameters.PAGE, page);
+		return currentPage == page ? "#" : URLBuilder.appendParameter(baseUrl, Parameters.PAGE, String.valueOf(page));
 	}
 
 }

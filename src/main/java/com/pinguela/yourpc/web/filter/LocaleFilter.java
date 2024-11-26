@@ -12,6 +12,7 @@ import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.util.CookieManager;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
+import com.pinguela.yourpc.web.util.URLBuilder;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -29,7 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @SuppressWarnings("serial")
 public class LocaleFilter extends HttpFilter implements Filter {
-	
+
 	private static Logger logger = LogManager.getLogger(LocaleFilter.class);
 
 	public LocaleFilter() {
@@ -43,7 +44,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		Locale locale = null;
-		
+
 		// Check whether the user switched locales
 		String newLocaleTag = request.getParameter(Parameters.SWITCH_LOCALE);
 		if (newLocaleTag != null) {
@@ -57,7 +58,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 				locale = Locale.forLanguageTag(cookie.getValue());
 			} 
 		}
-		
+
 		// Find supported locales matching HTTP header
 		if (locale == null) {
 			String header = httpReq.getHeader(Headers.ACCEPT_LANGUAGE);
@@ -75,14 +76,17 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		if (locale == null) {
 			locale = LocaleUtils.getDefault();
 		}
-		
+
 		// If the locale changed, store it in session and cookie
 		if (!locale.equals(SessionManager.getAttribute(httpReq, Attributes.LOCALE))) {
 			SessionManager.setAttribute(httpReq, Attributes.LOCALE, locale);
 			CookieManager.addCookie((HttpServletResponse) response, Attributes.LOCALE, locale.toLanguageTag());
 			logger.info("Setting locale {} for session ID {}", locale.toLanguageTag(), SessionManager.getId(httpReq));
 		}
-		
+
+		// Save the parameters so they are kept when switching locale
+		request.setAttribute(Attributes.CURRENT_URL, URLBuilder.getParameterizedUrl(httpReq));
+
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

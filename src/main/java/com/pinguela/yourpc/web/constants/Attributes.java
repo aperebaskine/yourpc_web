@@ -15,4 +15,6 @@ public final class Attributes {
 	
 	public static final String RESULTS = "results";
 	
+	public static final String CURRENT_URL = "currentUrl";
+	
 }

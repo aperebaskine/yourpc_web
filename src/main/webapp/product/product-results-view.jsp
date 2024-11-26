@@ -6,7 +6,7 @@
 			<h1><c:out value="${results.resultCount}"></c:out> resultados</h1>
 			<ul>
 				<c:forEach var="p" items="${results.page}">
-					<li><c:out value="${p.name}"></c:out>, precio: <c:out value="${p.salePrice}"></c:out></li>
+					<li><c:out value="${p.name}"></c:out>, descripción: ${p.description}, precio: <c:out value="${p.salePrice}"></c:out></li>
 				</c:forEach>
 			</ul>
 		</c:if>

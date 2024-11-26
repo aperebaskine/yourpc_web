@@ -13,15 +13,16 @@ public class URLBuilder {
 		return appendParameters(request.getRequestURL(), request.getParameterMap(), ignoredParameters).toString();
 	}
 
-	public static <T> String appendParameters(String url, Map<String, T[]> parameters) {
+	public static String appendParameters(String url, Map<String, String[]> parameters) {
 		return appendParameters(new StringBuffer(url), parameters).toString();
 	}
 
-	public static String appendParameter(String url, String name, Object value) {
-		return appendParameters(url, Map.of(name, new Object[]{value}));
+	public static String appendParameter(String url, String name, String value) {
+		return appendParameters(url, Map.of(name, new String[]{value}));
 	}
 
-	private static <T> StringBuffer appendParameters(StringBuffer sb, Map<String, T[]> parameterMap, String... ignoredParameters) {
+	private static StringBuffer appendParameters(StringBuffer sb, 
+			Map<String, String[]> parameterMap, String... ignoredParameters) {
 
 		List<String> ignoredParameterList = List.of(ignoredParameters);
 		String[] filteredKeys = parameterMap.keySet().stream()
@@ -39,10 +40,10 @@ public class URLBuilder {
 		}
 
 		for (String key : filteredKeys) {
-			for (Object parameter : parameterMap.get(key)) {
+			for (String parameter : parameterMap.get(key)) {
 				sb.append(key)
 				.append('=')
-				.append(URLEncoder.encode(parameter.toString(), StandardCharsets.UTF_8))
+				.append(URLEncoder.encode(parameter, StandardCharsets.UTF_8))
 				.append("&");
 			}
 		}
