@@ -34,6 +34,10 @@ public class ValidatorUtils {
 		return parameterValues;
 	}
 	
+	public static boolean hasContent(HttpServletRequest request, String string) {
+		return !GenericValidator.isBlankOrNull(string);
+	}
+	
 	public static boolean isValidCategory(HttpServletRequest request, Short categoryId) {
 		return CategoryUtils.CATEGORIES.keySet().contains(categoryId);
 	}
