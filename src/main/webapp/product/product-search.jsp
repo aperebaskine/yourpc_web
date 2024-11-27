@@ -38,6 +38,9 @@
 		<div id="attributes">
 			<script type="text/javascript" src="<c:url value='/scripts/attribute_form.js'></c:url>"></script>
 		</div>
-		<input type="submit" value="Buscar" />
+		<div class="formSubmitElement">
+			<input style="background-color: #EAD8F5; color: black;" type="reset" value="Limpiar" />
+			<input type="submit" value="Buscar" />
+		</div>
 	</form>
 <%@ include file="/common/footer.jsp" %>

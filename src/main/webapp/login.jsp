@@ -20,7 +20,7 @@
 			</div>
 			<div class="formSubmitElement">
 				<input type="submit" value="Login" style="width: 92px;">
-				<input type="submit" formAction="#" value="Register" style="width: 92px;">
+				<input style="background-color: #EAD8F5; color: black; width: 92px;" type="submit" formAction="#" value="Register">
 			</div>
 		</form>
 	</div>

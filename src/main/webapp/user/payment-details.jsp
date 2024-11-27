@@ -1,6 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/common/header.jsp"%>
+<div class="wizardProgress">
+	<h3>Completa su perfil</h3>
+	<progress value="67" max="100"></progress>
+	<div class="wizardSteps">
+		<p>Datos personales</p>
+		<p>Dirección</p>
+		<p>Métodos de pago</p>
+	</div>
+</div>
 <h2 class="wizardFormTitle">Introducir métodos de pago</h2>
 <div class="wizardForm">
 	<form class="baseForm" action="<%=request.getContextPath()%>/user/index.jsp" method="post">
@@ -42,8 +51,10 @@
 			</div>
 		</div>
 	</fieldset>
-	<input type="submit" value="Confirmar">
-	<input type="reset" value="Limpiar">
+	<div class="formSubmitElement">
+		<input type="reset" value="Limpiar">
+		<input type="submit" value="Confirmar">
+	</div>
 </form>
 </div>
 <%@ include file="/common/footer.jsp"%>

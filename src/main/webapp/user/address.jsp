@@ -8,7 +8,15 @@
 <%@ page import="com.pinguela.yourpc.service.impl.CountryServiceImpl" %>
 <%@ page import="com.pinguela.yourpc.web.util.LocaleUtils" %>
 <%@ include file="/common/header.jsp"%>
-
+<div class="wizardProgress">
+	<h3>Completa su perfil</h3>
+	<progress value="33" max="100"></progress>
+	<div class="wizardSteps">
+		<p>Datos personales</p>
+		<p>Dirección</p>
+		<p>Métodos de pago</p>
+	</div>
+</div>
 <h2 class="wizardFormTitle">Introducir dirección</h2>
 <div class="wizardForm">
 	<form action="<%=request.getContextPath()%>/user/next-address.jsp" method="post">
@@ -50,8 +58,10 @@
 				</c:forEach>
 			</select>
 		</div>
-		<input type="submit" value="Añadir">
-		<input type="reset" value="Limpiar">
+		<div class="formSubmitElement">
+			<input type="reset" value="Limpiar">
+			<input type="submit" value="Añadir">
+		</div>
 	</form>
 </div>
 <%@ include file="/common/footer.jsp"%>
