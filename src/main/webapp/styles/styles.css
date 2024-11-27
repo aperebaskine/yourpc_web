@@ -39,31 +39,74 @@ nav {
 /* Form components */
 
 #product-search-form {
-	width: 24%;
-}
-
-#product-search-form input[type="number"] {
-	width: 30%;
-}
-
-#product-search-form #attributes {
-	border: 0px solid black;
-}
-
-.baseForm {
 	width: 240px;
 }
 
-.baseForm input[type="text"],
-.baseForm input[type="number"],
-.baseForm input[type="tel"],
-.baseForm input[type="email"],
-.baseForm textArea,
-.baseForm select {
-	width: 94%;
+.loginForm,
+.wizardForm,
+.wizardFormTitle,
+.wizardFormProgress {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.baseForm input[type="submit"],
-.baseForm input[type="reset"] {
-	width: 80px;
+.loginForm .formElement input {
+	width: 180px;
+}
+
+.loginLogo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.formElement input[type="text"],
+.formElement input[type="number"],
+.formElement input[type="tel"],
+.formElement input[type="email"] {
+	width: 97%;
+}
+
+.formElement select {
+	width: 100%;
+}
+
+.formRangeElement input[type="date"] {
+	width: 108px;
+}
+
+.formRangeElement input[type="number"] {
+	width: 105px;
+}
+
+.formElementLabel:after,
+.attributeSetSelector label:after {
+	content:"\a";
+    white-space: pre;
+}
+
+.formElement,
+.formRangeElement,
+.smallFormElement,
+.mediumFormElement,
+.formSubmitElement {
+	padding: 4px 0px;
+}
+
+.smallFormElement input {
+	width: 69px;
+}
+
+.mediumFormElement input {
+	width: 108px;
+}
+
+.longFormElement input {
+	width: 240px;
+}
+
+.inlineFormElements {
+	display: flex;
+	gap: 8px;
 }

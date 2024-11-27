@@ -31,7 +31,7 @@
   </filter>
   <filter>
   	<filter-name>CallbackFilter</filter-name>
-  	<filter-class>com.pinguela.yourpc.web.filter.URLBuilderFilter</filter-class>
+  	<filter-class>com.pinguela.yourpc.web.filter.CallbackFilter</filter-class>
   </filter>
   <filter>
   	<filter-name>CustomerAuth</filter-name>

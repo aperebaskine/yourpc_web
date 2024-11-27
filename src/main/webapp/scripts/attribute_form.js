@@ -54,28 +54,32 @@ function populateFieldset(json) {
 }
 
 function createAttributeInput(attribute) {
+	
+	let div = document.createElement("div");
+	div.setAttribute("class", "formElement");
 
 	if (attribute.values.length <= 1) {
 		return;
 	}
 
-	fieldset.appendChild(createLabel(attribute));
-	br();
+	let attributeLabel = createLabel(attribute);
+	attributeLabel.setAttribute("class", "formElementLabel");
+	div.appendChild(attributeLabel);
 
 	if (attribute.dataTypeIdentifier == boolean) {
-		createBooleanInput(attribute);
+		createBooleanInput(div, attribute);
 	} else {
 		switch (attribute.valueHandlingMode) {
 			case range:
-				createRangeInput(attribute);
+				createRangeInput(div, attribute);
 				break;
 			case set:
-				createSetInput(attribute);
+				createSetInput(div, attribute);
 				break;
 		}
 	}
 
-	br();
+	fieldset.appendChild(div);
 
 	function createSimpleLabel(text) {
 		let label = document.createElement('label');
@@ -89,16 +93,16 @@ function createAttributeInput(attribute) {
 		return label;
 	}
 
-	function createBooleanInput(attribute) {
+	function createBooleanInput(div, attribute) {
 
-		fieldset.appendChild(createSimpleLabel("Yes"));
-		fieldset.appendChild(createRadioInput(attribute, true));
+		div.appendChild(createSimpleLabel("Yes"));
+		div.appendChild(createRadioInput(attribute, true));
 
-		fieldset.appendChild(createSimpleLabel("No"));
-		fieldset.appendChild(createRadioInput(attribute, false));
+		div.appendChild(createSimpleLabel("No"));
+		div.appendChild(createRadioInput(attribute, false));
 	}
 
-	function createRangeInput(attribute) {
+	function createRangeInput(div, attribute) {
 		let min = Number.parseFloat(attribute.values[0].value);
 		let max = Number.parseFloat(attribute.values[attribute.values.length - 1].value);
 		
@@ -111,7 +115,8 @@ function createAttributeInput(attribute) {
 				"min":min,
 				"max":max,
 				"step":step,
-				"value":min
+				"value":min,
+				"style":"width: 98%"
 			});
 		
 		let maxElement = createInputElementWithAttributes(
@@ -120,21 +125,25 @@ function createAttributeInput(attribute) {
 				"min":min,
 				"max":max,
 				"step":step,
-				"value":max
+				"value":max,
+				"style":"width: 98%"
 			});
 						
-		fieldset.appendChild(minElement);
-		br();
-		fieldset.appendChild(maxElement);
+		div.appendChild(minElement);
+		div.appendChild(maxElement);
 	}
 
-	function createSetInput(attribute) {
+	function createSetInput(div, attribute) {
+		let attributeDiv = document.createElement("div");
+		attributeDiv.setAttribute("class", "attributeSetSelector");
+		
 		for (let i = 0; i < attribute.values.length; i++) {
 			let valueDTO = attribute.values[i];
-			fieldset.appendChild(createAttributeInputElement('checkbox', attribute, valueDTO.value));
-			fieldset.appendChild(createSimpleLabel(valueDTO.value));
-			br();
+			attributeDiv.appendChild(createAttributeInputElement('checkbox', attribute, valueDTO.value));
+			attributeDiv.appendChild(createSimpleLabel(valueDTO.value));
 		}
+		
+		div.appendChild(attributeDiv);
 	}
 
 	function createInputElement(type, name, value) {
@@ -161,9 +170,5 @@ function createAttributeInput(attribute) {
 
 	function toParameterName(attribute) {
 		return ["attr", attribute.dataTypeIdentifier, attribute.id].join(".");
-	}
-
-	function br() {
-		fieldset.appendChild(document.createElement('br'));
 	}
 }
