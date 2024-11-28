@@ -85,7 +85,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		}
 
 		// Save the parameters so they are kept when switching locale
-		request.setAttribute(Attributes.CURRENT_URL, URLBuilder.getParameterizedUrl(httpReq));
+		request.setAttribute(Attributes.CALLBACK_URL, URLBuilder.getParameterizedUrl(httpReq));
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

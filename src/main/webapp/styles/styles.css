@@ -141,6 +141,13 @@ nav {
 .inlineFormElements {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+}
+
+.bunchedInlineFormElements {
+	display: flex;
+	justify-content: flex-start;
+	gap: 8px;
 }
 
 .wizardForm fieldset {

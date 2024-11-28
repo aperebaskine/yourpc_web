@@ -21,37 +21,37 @@
 <div class="wizardForm">
 	<form action="<%=request.getContextPath()%>/user/next-address.jsp" method="post">
 		<div class="formElement">
-			<label class="formElementLabel" for="streetName">Calle:</label>
+			<label class="formElementLabel" for="streetName">Calle</label>
 			<input type="text" id="streetName" name="streetName" required>
 		</div>
 		<div class="inlineFormElements">
 			<div class="smallFormElement">
-				<label class="formElementLabel" for="streetNumber">Número:</label>
+				<label class="formElementLabel" for="streetNumber">Número</label>
 				<input type="number" id="streetNumber" name="streetNumber">
 			</div>
 			<div class="smallFormElement">
-				<label class="formElementLabel" for="floor">Piso:</label>
+				<label class="formElementLabel" for="floor">Piso</label>
 				<input type="number" id="floor" name="floor">
 			</div>
 			<div class="smallFormElement">
-				<label class="formElementLabel" for="door">Puerta:</label>
+				<label class="formElementLabel" for="door">Puerta</label>
 				<input type="text" id="door" name="door">
 			</div>
 		</div>
 		<div class="mediumFormElement">
-			<label class="formElementLabel" for="zipCode">Código postal:</label>
+			<label class="formElementLabel" for="zipCode">Código postal</label>
 			<input type="number" id="zipCode" name="zipCode">
 		</div>
 		<div class="formElement">
-			<label for="city">Ciudad:</label>
+			<label for="city">Ciudad</label>
 			<input type="text" id="city" name="city">
 		</div>
 		<div class="formElement">
-			<label for="province">Provincia:</label>
+			<label for="province">Provincia</label>
 			<input type="text" id="province" name="province">
 		</div>
 		<div class="formElement">
-			<label for="country">País:</label>
+			<label for="country">País</label>
 			<select name="country" id="country">
 				<c:forEach var="country" items="${countries}">
 					<option value="${country.id}">${country.name}</option>

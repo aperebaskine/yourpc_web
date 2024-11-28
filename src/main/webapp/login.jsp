@@ -8,19 +8,19 @@
 		<form action="<c:url value='/DefaultServlet'></c:url>" method="post">
 			<input type="hidden" name="action" value="login"/>
 			<div class="formElement">
-				<label class="formElementLabel" for="email">Email:</label>
+				<label class="formElementLabel" for="email">Email</label>
 				<input name="email" type="email" placeholder="rastley@gmail.com"/>
 			</div>
 			<div class="formElement">
-				<label class="formElementLabel" for="password">Password:</label>
+				<label class="formElementLabel" for="password">Password</label>
 				<input name="password" type="password"/>
-			</div>
-			<div class="formElement" style="font-size: smaller;">
-				<span>Forgot password?</span>
 			</div>
 			<div class="formSubmitElement">
 				<input type="submit" value="Login" style="width: 92px;">
 				<input style="background-color: #EAD8F5; color: black; width: 92px;" type="submit" formAction="#" value="Register">
+			</div>
+			<div class="formElement" style="font-size: x-small;">
+				<span>Forgot password?</span>
 			</div>
 		</form>
 	</div>
