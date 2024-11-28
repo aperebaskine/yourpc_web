@@ -15,7 +15,7 @@
 				<label class="formElementLabel" for="password">Password:</label>
 				<input name="password" type="password"/>
 			</div>
-			<div class="formElement">
+			<div class="formElement" style="font-size: smaller;">
 				<span>Forgot password?</span>
 			</div>
 			<div class="formSubmitElement">

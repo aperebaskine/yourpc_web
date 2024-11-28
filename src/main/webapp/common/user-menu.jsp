@@ -16,7 +16,7 @@
 	</li>
 	<c:choose>
 		<c:when test="${not empty customer}">
-			<c:out value="Hola ${customer.firstName}"></c:out>
+			<span><c:out value="Hola ${customer.firstName}"></c:out></span>
 			<li><a href='<c:url value="/user/index.jsp"></c:url>'>Mi cuenta</a></li>
 		</c:when>
 		<c:otherwise>

@@ -39,7 +39,7 @@ nav {
 /* Form components */
 
 #product-search-form {
-	width: 240px;
+	width: 262px;
 }
 
 .wizardProgress progress {
@@ -85,12 +85,9 @@ nav {
 	width: 100%;
 }
 
-.formRangeElement input[type="date"] {
-	width: 105px;
-}
-
+.formRangeElement input[type="date"],
 .formRangeElement input[type="number"] {
-	width: 105px;
+	width: 115px;
 }
 
 .formElementLabel:after,
@@ -109,8 +106,9 @@ nav {
 
 .formSubmitElement {
 	margin: 8px 0px;
-	display: inline;
-	float: right;
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
 }
 
 .formSubmitElement input {
@@ -119,11 +117,13 @@ nav {
 	border: 1px solid grey;
 	border-radius: 5px;
 	padding: 6px 12px;
+	cursor: pointer;
 }
 
 .formSubmitElement input[type="reset"] {
 	color: black;
 	background-color: #EAD8F5;
+	cursor: pointer;
 }
 
 .smallFormElement input {
@@ -140,7 +140,7 @@ nav {
 
 .inlineFormElements {
 	display: flex;
-	gap: 8px;
+	justify-content: space-between;
 }
 
 .wizardForm fieldset {
@@ -160,4 +160,27 @@ nav {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+li,
+label,
+button,
+span,
+p,
+input,
+select,
+option,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+legend {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: none;
+}
+
+label {
+	font-size: small;
 }
