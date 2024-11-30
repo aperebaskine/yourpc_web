@@ -20,7 +20,7 @@ public class ParameterProcessor {
 		super();
 		this.request = request;
 	}
-	
+
 	public ParameterProcessor optional(String parameter,  
 			BiPredicate<HttpServletRequest, String> validator, Consumer<String> consumer) {
 		return processSingleValue(parameter, false, ValidatorUtils.nopParser(), validator, consumer);
@@ -30,32 +30,32 @@ public class ParameterProcessor {
 			BiPredicate<HttpServletRequest, T> validator, Consumer<T> consumer) {
 		return processSingleValue(parameter, false, parser, validator, consumer);
 	}
-	
+
 	public ParameterProcessor required(String parameter, 
 			BiPredicate<HttpServletRequest, String> validator, Consumer<String> consumer) {
 		return processSingleValue(parameter, true, ValidatorUtils.nopParser(), validator, consumer);
 	}
-	
+
 	public <T> ParameterProcessor required(String parameter, BiFunction<HttpServletRequest, String, T> parser, 
 			BiPredicate<HttpServletRequest, T> validator, Consumer<T> consumer) {
 		return processSingleValue(parameter, true, parser, validator, consumer);
 	}
-	
+
 	public ParameterProcessor multiOptional(String parameter,
 			BiPredicate<HttpServletRequest, String> validator, Consumer<String> consumer, DiscardStrategy discardStrategy) {
 		return processMultipleValues(parameter, null, null, ValidatorUtils.nopParser(), validator, consumer, discardStrategy);
 	}
-	
+
 	public <T> ParameterProcessor multiOptional(String parameter, BiFunction<HttpServletRequest, String, T> parser, 
 			BiPredicate<HttpServletRequest, T> validator, Consumer<T> consumer, DiscardStrategy discardStrategy) {
 		return processMultipleValues(parameter, null, null, parser, validator, consumer, discardStrategy);
 	}
-	
+
 	public ParameterProcessor multiRequired(String parameter, int minValueCount, int maxValueCount, 
 			BiPredicate<HttpServletRequest, String> validator, Consumer<String> consumer, DiscardStrategy discardStrategy) {
 		return processMultipleValues(parameter, minValueCount, maxValueCount, ValidatorUtils.nopParser(), validator, consumer, discardStrategy);
 	}
-	
+
 	public <T> ParameterProcessor multiRequired(String parameter, int minValueCount, int maxValueCount, 
 			BiFunction<HttpServletRequest, String, T> parser, BiPredicate<HttpServletRequest, T> validator,
 			Consumer<T> consumer, DiscardStrategy discardStrategy) {
@@ -141,7 +141,7 @@ public class ParameterProcessor {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
