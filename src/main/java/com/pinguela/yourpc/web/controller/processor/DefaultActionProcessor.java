@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Fallback implementation for action processor.
  * 
  * <p>
- * This processor is dispatched for any unrecognized action and sends a 400 Bad Request error.
+ * This processor is dispatched for any unrecognized action and throws an {@link InputValidationException}.
  * </p>
  */
 public final class DefaultActionProcessor extends AbstractActionProcessor {
