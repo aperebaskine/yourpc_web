@@ -1,4 +1,4 @@
-package com.pinguela.yourpc.util.validator;
+package com.pinguela.yourpc.web.util.validator;
 
 import java.util.Locale;
 

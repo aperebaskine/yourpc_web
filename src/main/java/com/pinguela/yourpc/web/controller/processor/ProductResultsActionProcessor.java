@@ -16,7 +16,6 @@ import com.pinguela.yourpc.model.dto.AttributeDTO;
 import com.pinguela.yourpc.model.dto.LocalizedProductDTO;
 import com.pinguela.yourpc.service.ProductService;
 import com.pinguela.yourpc.service.impl.ProductServiceImpl;
-import com.pinguela.yourpc.util.validator.AttributeRangeValidator;
 import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Attributes;
@@ -28,6 +27,7 @@ import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.PaginationUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
+import com.pinguela.yourpc.web.util.validator.AttributeRangeValidator;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
