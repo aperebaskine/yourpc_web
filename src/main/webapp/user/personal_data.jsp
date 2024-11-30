@@ -16,27 +16,27 @@
 	<fieldset>
 		<legend>Datos personales</legend>
 		<div class="formElement">
-			<label class="formElementLabel" for="firstName">Nombre:</label>
+			<label class="formElementLabel" for="firstName">Nombre</label>
 			<input type="text" id="firstName" name="firstName" required>
 		</div>
 		<div class="formElement">
-			<label class="formElementLabel" for="lastName1">Primer apellido:</label>
+			<label class="formElementLabel" for="lastName1">Primer apellido</label>
 			<input type="text" id="lastName1" name="lastName1" required>
 		</div>
 		<div class="formElement">
-			<label class="formElementLabel" for="lastName2">Segundo apellido:</label>
+			<label class="formElementLabel" for="lastName2">Segundo apellido</label>
 			<input type="text" id="lastName2" name="lastName2">
 		</div>
 		<div class="formElement">
-			<label class="formElementLabel" for="tel">Teléfono:</label>
+			<label class="formElementLabel" for="tel">Teléfono</label>
 			<input type="tel" id="tel" name="tel" required>
 		</div>
 		<div class="formElement">
-			<label class="formElementLabel" for="email">Email:</label>
+			<label class="formElementLabel" for="email">Email</label>
 			<input type="email" id="email" name="email" value="${sessionScope.customer.email}" disabled required>
 		</div>
 		<div class="formElement">
-			<label class="formElementLabel" for="aboutMe">Sobre mi:</label>
+			<label class="formElementLabel" for="aboutMe">Sobre mi</label>
 			<textarea style="width: 240px; height: 80px;" id="aboutMe" name="aboutMe" form="detailsForm"></textarea>
 		</div>
 	</fieldset>
@@ -51,7 +51,7 @@
 			</select>
 		</div>
 		<div class="formElement">
-			<label class="formElementLabel" for="docNumber">Número de documento:</label>
+			<label class="formElementLabel" for="docNumber">Número de documento</label>
 			<input type="text" id="docNumber" name="docNumber" required>
 		</div>
 	</fieldset>

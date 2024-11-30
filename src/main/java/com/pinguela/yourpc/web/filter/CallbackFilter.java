@@ -3,6 +3,7 @@ package com.pinguela.yourpc.web.filter;
 import java.io.IOException;
 
 import com.pinguela.yourpc.web.constants.Attributes;
+import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.util.URLBuilder;
 
 import jakarta.servlet.Filter;
@@ -29,11 +30,11 @@ public class CallbackFilter extends HttpFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
+
 		if (request instanceof HttpServletRequest) {
-			request.setAttribute(Attributes.CURRENT_URL, URLBuilder.getParameterizedUrl((HttpServletRequest) request));
+			HttpServletRequest httpRequest = (HttpServletRequest) request;
 		}
-		
+
 		chain.doFilter(request, response);
 	}
 

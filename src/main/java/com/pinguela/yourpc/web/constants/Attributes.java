@@ -15,6 +15,7 @@ public final class Attributes {
 	
 	public static final String RESULTS = "results";
 	
-	public static final String CURRENT_URL = "currentUrl";
+	public static final String CALLBACK_URL = "callbackUrl";
+	public static final String LOGOUT_URL = "logoutUrl";
 	
 }
