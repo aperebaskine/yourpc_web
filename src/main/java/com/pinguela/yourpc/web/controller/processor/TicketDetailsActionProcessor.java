@@ -21,7 +21,7 @@ public class TicketDetailsActionProcessor extends AbstractActionProcessor {
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
-		// Ticket fetching and validation handled in TicketServlet.preProcess
+		// Ticket already pre-processed
 		RouterUtils.setTargetView(request, Views.TICKET_DETAILS_VIEW);
 	}
 
