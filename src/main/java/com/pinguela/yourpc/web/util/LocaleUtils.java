@@ -33,6 +33,10 @@ public class LocaleUtils {
 		return SUPPORTED_LOCALES.containsKey(languageTag);
 	}
 	
+	public static final boolean isSupported(Locale locale) {
+		return isSupported(locale.toLanguageTag());
+	}
+	
 	public static final Locale getDefault() {
 		return DEFAULT_LOCALE;
 	}

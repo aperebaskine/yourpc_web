@@ -6,7 +6,6 @@ import com.pinguela.YPCException;
 import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
-import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
@@ -23,7 +22,7 @@ public class LogoutActionProcessor extends AbstractActionProcessor {
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
 		SessionManager.setAttribute(request, Attributes.CUSTOMER, null);
-		RouterUtils.setTargetView(request, Views.HOME);
+		RouterUtils.callback(request, response);
 	}
 
 }

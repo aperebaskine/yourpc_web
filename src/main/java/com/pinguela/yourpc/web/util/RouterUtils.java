@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pinguela.yourpc.web.constants.Attributes;
+import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.RouteMethod;
 
 import jakarta.servlet.ServletException;
@@ -23,6 +24,10 @@ public class RouterUtils {
 	
 	public static final String getTargetView(ServletRequest request) {
 		return (String) request.getAttribute(Attributes.TARGET_VIEW);
+	}
+	
+	public static final boolean isTargetViewSet(ServletRequest request) {
+		return request.getAttribute(Attributes.TARGET_VIEW) != null;
 	}
 	
 	public static final void setTargetView(ServletRequest request, String targetView) {
@@ -79,6 +84,17 @@ public class RouterUtils {
 			throws IOException, ServletException {
 		setRouteMethod(request, routeMethod);
 		route(request, response, targetView);
+	}
+	
+	public static final void callback(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
+		
+		String callbackUrl = request.getParameter(Parameters.CALLBACK_URL);
+		if (callbackUrl == null) {
+			callbackUrl = (String) request.getAttribute(Attributes.CURRENT_URL);
+		}
+		
+		response.sendRedirect(callbackUrl);
 	}
 	
 }

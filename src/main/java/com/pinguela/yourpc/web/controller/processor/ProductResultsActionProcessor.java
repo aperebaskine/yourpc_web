@@ -70,7 +70,7 @@ extends AbstractActionProcessor {
 		.optional(Parameters.STOCK_FROM, ValidatorUtils::parseInt, null, criteria::setStockMin)
 		.optional(Parameters.STOCK_TO, ValidatorUtils::parseInt, null, criteria::setStockMax)
 		.optional(Parameters.LAUNCH_DATE_FROM, ValidatorUtils::parseDate, null, criteria::setLaunchDateMin)
-		.optional(Parameters.LAUNCH_DATE_TO, ValidatorUtils::parseDate, null,criteria::setLaunchDateMax);
+		.optional(Parameters.LAUNCH_DATE_TO, ValidatorUtils::parseDate, null, criteria::setLaunchDateMax);
 
 		if (criteria.getCategoryId() != null) {
 			criteria.setAttributes(buildAttributeCriteria(request, criteria.getCategoryId()));

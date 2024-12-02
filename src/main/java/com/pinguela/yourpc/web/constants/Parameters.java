@@ -8,8 +8,11 @@ public final class Parameters {
 	
 	public static final String LOGIN = "login";
 	public static final String PASSWORD = "password";
+	public static final String REPEAT_PASSWORD = "repeatPassword";
 	
 	public static final String LOGOUT = "logout";
+	
+	public static final String PRODUCT_ID = "productId";
 	
 	public static final String TITLE = "title";
 	public static final String NAME = "name";
@@ -28,5 +31,8 @@ public final class Parameters {
 	
 	public static final String PAGE = "page";
 	
-	public static final String CALLBACK_URL = Attributes.CALLBACK_URL;
+	public static final String CALLBACK = "callback";
+	public static final String CALLBACK_URL = "callbackUrl";
+	
+	public static final String TICKET_ID = "ticketId";
 }

@@ -6,7 +6,13 @@
 			<h1><c:out value="${results.resultCount}"></c:out> resultados</h1>
 			<ul>
 				<c:forEach var="p" items="${results.page}">
-					<li><c:out value="${p.name}"></c:out>, descripción: ${p.description}, precio: <c:out value="${p.salePrice}"></c:out></li>
+					<li>
+						<form action="<c:url value='/ProductServlet'></c:url>" method="get">
+							<label>${p.name}</label>
+							<input type="hidden" name="productId" value="${p.id}">
+							<input type="submit" value='<fmt:message key="view"></fmt:message>'>
+						</form>
+					</li>
 				</c:forEach>
 			</ul>
 		</c:if>

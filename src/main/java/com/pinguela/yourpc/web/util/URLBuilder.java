@@ -5,11 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.util.Strings;
-
-import com.pinguela.yourpc.web.constants.Attributes;
-import com.pinguela.yourpc.web.constants.Parameters;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 public class URLBuilder {
@@ -17,13 +12,7 @@ public class URLBuilder {
 	private static final String[] EMPTY_ARRAY = {};
 
 	public static String getParameterizedUrl(HttpServletRequest request, String... ignoredParameters) {
-		StringBuffer parameterizedUrl = 
-				appendParameters(request.getRequestURL(), request.getParameterMap(), ignoredParameters);
-//		String callbackUrl = (String) request.getAttribute(Attributes.CALLBACK_URL);
-//		return request.getParameter(Parameters.CALLBACK_URL) != null && callbackUrl != null ? 
-//				parameterizedUrl.toString() : 
-//					appendParameter(parameterizedUrl, Parameters.CALLBACK_URL, callbackUrl).toString();
-		return parameterizedUrl.toString();
+		return appendParameters(request.getRequestURL(), request.getParameterMap(), ignoredParameters).toString();
 	}
 
 	public static String appendParameters(String url, Map<String, String[]> parameters) {

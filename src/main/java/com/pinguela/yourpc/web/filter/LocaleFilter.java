@@ -11,8 +11,8 @@ import com.pinguela.yourpc.web.constants.Headers;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.util.CookieManager;
 import com.pinguela.yourpc.web.util.LocaleUtils;
+import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
-import com.pinguela.yourpc.web.util.URLBuilder;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -46,9 +46,9 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		Locale locale = null;
 
 		// Check whether the user switched locales
-		String newLocaleTag = request.getParameter(Parameters.SWITCH_LOCALE);
-		if (newLocaleTag != null) {
-			locale = Locale.forLanguageTag(newLocaleTag);
+		String switchLocale = request.getParameter(Parameters.SWITCH_LOCALE);
+		if (switchLocale != null) {
+			locale = Locale.forLanguageTag(switchLocale);
 		}
 
 		// Check for the presence of a locale cookie
@@ -73,7 +73,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		} 
 
 		// Fall back to default locale
-		if (locale == null) {
+		if (locale == null || !LocaleUtils.isSupported(locale)) {
 			locale = LocaleUtils.getDefault();
 		}
 
@@ -82,10 +82,11 @@ public class LocaleFilter extends HttpFilter implements Filter {
 			SessionManager.setAttribute(httpReq, Attributes.LOCALE, locale);
 			CookieManager.addCookie((HttpServletResponse) response, Attributes.LOCALE, locale.toLanguageTag());
 			logger.info("Setting locale {} for session ID {}", locale.toLanguageTag(), SessionManager.getId(httpReq));
-		}
 
-		// Save the parameters so they are kept when switching locale
-		request.setAttribute(Attributes.CALLBACK_URL, URLBuilder.getParameterizedUrl(httpReq));
+			if (switchLocale != null) {
+				RouterUtils.callback(httpReq, (HttpServletResponse) response);
+			}
+		}
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

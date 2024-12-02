@@ -48,7 +48,7 @@ extends AbstractActionProcessor {
 		try {
 			c = service.login(email, password);
 			SessionManager.setAttribute(request, "customer", c);
-			RouterUtils.setRoute(request, Views.HOME, RouteMethod.FORWARD);		
+			RouterUtils.callback(request, response);	
 			
 		} catch (InvalidLoginCredentialsException e) {
 			logger.warn("Invalid credentials for: " + email);

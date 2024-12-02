@@ -51,7 +51,7 @@ public abstract class YPCServlet extends HttpServlet {
 			}
 
 			if (resp.getStatus() < HttpServletResponse.SC_BAD_REQUEST
-					&& RouterUtils.hasRoute(req)) {
+					&& RouterUtils.hasRoute(req) && !resp.isCommitted()) {
 				RouterUtils.route(req, resp);
 			}
 		} catch (InputValidationException e) {

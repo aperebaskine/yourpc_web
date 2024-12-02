@@ -24,6 +24,8 @@ nav li:hover {
 /* Header components */
 
 .user-menu {
+	display: flex;
+	gap: 8px;
 	margin-right: 16px;
 	float: right;
 }
@@ -190,4 +192,21 @@ legend {
 
 label {
 	font-size: small;
+}
+
+.user-details,
+.user-orders,
+.user-tickets,
+.user-rmas {
+	border: 1px solid black;
+	border-radius: 8px;
+	margin-bottom: 8px;
+}
+
+.user-orders,
+.user-tickets,
+.user-rmas {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }

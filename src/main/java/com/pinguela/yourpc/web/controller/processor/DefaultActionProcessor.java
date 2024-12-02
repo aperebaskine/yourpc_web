@@ -3,6 +3,7 @@ package com.pinguela.yourpc.web.controller.processor;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
+import com.pinguela.yourpc.web.util.RouterUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,8 +33,10 @@ public final class DefaultActionProcessor extends AbstractActionProcessor {
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws InputValidationException {
-		throw new InputValidationException(String.format("Request received at %s contains unrecognized action: %s",
-				request.getRequestURI(), request.getParameter(Parameters.ACTION)));
+		if (!RouterUtils.isTargetViewSet(request)) {
+			throw new InputValidationException(String.format("Request received at %s contains unrecognized action: %s",
+					request.getRequestURI(), request.getParameter(Parameters.ACTION)));
+		}
 	}
 
 }
