@@ -35,4 +35,5 @@ public final class Parameters {
 	public static final String CALLBACK_URL = "callbackUrl";
 	
 	public static final String TICKET_ID = "ticketId";
+	public static final String TICKET_MESSAGE_TEXT = "message-text";
 }

@@ -27,4 +27,6 @@ public final class Attributes {
 	
 	public static final String TICKET = "ticket";
 	
+	public static final String UPDATED = "updated";
+	
 }

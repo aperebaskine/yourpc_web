@@ -47,8 +47,13 @@ public class TicketServlet extends YPCServlet {
 
 	@Override
 	protected void postProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
-			throws ServletException, IOException, InputValidationException {
+			throws ServletException, IOException, YPCException, InputValidationException {
 		
+		if (Boolean.TRUE.equals(req.getAttribute(Attributes.UPDATED))) {
+			Long ticketId = ((Ticket) req.getAttribute(Attributes.TICKET)).getId();
+			Ticket updated = ticketService.findById(ticketId, LocaleUtils.getLocale(req));
+			req.setAttribute(Attributes.TICKET, updated);
+		}
 	}
 
 }
