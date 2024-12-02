@@ -22,6 +22,7 @@ import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Views;
+import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
@@ -32,7 +33,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ActionProcessor(action = Actions.USER_DETAILS)
+@ActionProcessor(action = Actions.USER_DETAILS, servlets = UserServlet.class)
 public class UserDetailsActionProcessor extends AbstractActionProcessor {
 	
 	private CustomerOrderService customerOrderService;	

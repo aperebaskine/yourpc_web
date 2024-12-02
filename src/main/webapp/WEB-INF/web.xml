@@ -14,6 +14,10 @@
   	<servlet-class>com.pinguela.yourpc.web.controller.DefaultServlet</servlet-class>
   </servlet>
   <servlet>
+  	<servlet-name>UserServlet</servlet-name>
+  	<servlet-class>com.pinguela.yourpc.web.controller.UserServlet</servlet-class>
+  </servlet>
+  <servlet>
   	<servlet-name>ProductServlet</servlet-name>
   	<servlet-class>com.pinguela.yourpc.web.controller.ProductServlet</servlet-class>
   </servlet>
@@ -21,10 +25,17 @@
   	<servlet-name>AttributeServlet</servlet-name>
   	<servlet-class>com.pinguela.yourpc.web.controller.AttributeServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>TicketServlet</servlet-name>
+  	<servlet-class>com.pinguela.yourpc.web.controller.TicketServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>DefaultServlet</servlet-name>
   	<url-pattern>/DefaultServlet</url-pattern>
-  	<url-pattern>/user/DefaultServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UserServlet</servlet-name>
+  	<url-pattern>/user/UserServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>ProductServlet</servlet-name>
@@ -33,6 +44,10 @@
   <servlet-mapping>
   	<servlet-name>AttributeServlet</servlet-name>
   	<url-pattern>/AttributeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>TicketServlet</servlet-name>
+  	<url-pattern>/user/TicketServlet</url-pattern>
   </servlet-mapping>
   <filter>
   	<filter-name>Log</filter-name>

@@ -38,7 +38,7 @@
 				<p><fmt:message key="ticket.date" />: ${ticket.creationDate}</p>
 				<p><fmt:message key="ticket.state" />: ${ticket.state}</p>
 				<p><fmt:message key="ticket.title" />: ${ticket.title}</p>
-				<form action='<c:url value="/DefaultServlet"></c:url>' method="get">
+				<form action='<c:url value="/user/TicketServlet"></c:url>' method="get">
 					<input type="hidden" name="action" value="ticket-details">
 					<input type="hidden" name="ticketId" value="${ticket.id}">
 					<input type="submit" value="<fmt:message key="view.details" />">

@@ -86,9 +86,9 @@ public abstract class YPCServlet extends HttpServlet {
 	}
 
 	protected abstract void preProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
-			throws ServletException, IOException, InputValidationException;
+			throws ServletException, IOException, YPCException, InputValidationException;
 
 	protected abstract void postProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
-			throws ServletException, IOException, InputValidationException;
+			throws ServletException, IOException, YPCException, InputValidationException;
 
 }
