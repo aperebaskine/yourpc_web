@@ -7,8 +7,9 @@
 			<ul>
 				<c:forEach var="p" items="${results.page}">
 					<li>
-						<form action="<c:url value='/ProductServlet'></c:url>" method="get">
+						<form action="<c:url value='/DefaultServlet'></c:url>" method="get">
 							<label>${p.name}</label>
+							<input type="hidden" name="action" value="product-details">
 							<input type="hidden" name="productId" value="${p.id}">
 							<input type="submit" value='<fmt:message key="view"></fmt:message>'>
 						</form>

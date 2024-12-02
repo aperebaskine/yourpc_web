@@ -2,22 +2,22 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/common/empty_header.jsp" %>
 	<div class="loginLogo">
-		<p><img src='<c:url value="/img/logo.png"></c:url>'></img></p>
+		<a href="<c:url value='/index.jsp'></c:url>">
+			<img class="logo" alt="Logo" src="<c:url value='/img/logo.png'></c:url>" />
+		</a>
 	</div>
 	<div class="loginForm">
 		<form action="<c:url value='/DefaultServlet'></c:url>" method="post">
 			<input type="hidden" name="action" value="login"/>
 			<input type="hidden" name="<%=Parameters.CALLBACK_URL%>" 
-			value="
-				<c:choose>
-					<c:when test="${not empty param.callbackUrl}">
-						${param.callbackUrl}
-					</c:when>
-					<c:otherwise>
-						<c:url value="<%=Views.HOME%>"></c:url>
-					</c:otherwise>
-				</c:choose>
-			">
+			value="	<c:choose>
+						<c:when test="${not empty param.callbackUrl}">
+							${param.callbackUrl}
+						</c:when>
+						<c:otherwise>
+							<c:url value="<%=Views.HOME%>"></c:url>
+						</c:otherwise>
+					</c:choose>">
 				<div class="formElement">
 				<label class="formElementLabel" for="email"><fmt:message key="email"></fmt:message></label>
 				<input name="email" type="email" placeholder="rastley@gmail.com"/>
