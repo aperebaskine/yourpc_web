@@ -9,13 +9,13 @@
 	<div class="loginForm">
 		<form action="<c:url value='/DefaultServlet'></c:url>" method="post">
 			<input type="hidden" name="action" value="login"/>
-			<input type="hidden" name="<%=Parameters.CALLBACK_URL%>" 
+			<input type="hidden" name="${Parameters.CALLBACK_URL}" 
 			value="<c:choose>
 						<c:when test="${not empty param.callbackUrl}">
 							${param.callbackUrl}
 						</c:when>
 						<c:otherwise>
-							<c:url value="<%=Views.HOME%>"></c:url>
+							<c:url value="${Views.HOME}"></c:url>
 						</c:otherwise>
 				   </c:choose>">
 				<div class="formElement">
