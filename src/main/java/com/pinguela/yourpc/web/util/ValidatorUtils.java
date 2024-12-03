@@ -174,10 +174,22 @@ public class ValidatorUtils {
 	}
 
 	public static Long parseLong(HttpServletRequest request, String parameterName, String parameterValue) {
+		return parseLong(request, parameterName, parameterValue, true);
+	}
+
+	public static Long parseLong(HttpServletRequest request, String parameterName, boolean isRequired) {
+		
+		String parameterValue = request.getParameter(parameterName);
+		return parseLong(request, parameterName, parameterValue, isRequired);
+	}
+	
+	public static Long parseLong(HttpServletRequest request, String parameterName, String parameterValue, boolean isRequired) {
 		try {
 			return Long.valueOf(parameterValue);
 		} catch (NumberFormatException e) {
-			logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
+			if (isRequired) {
+				logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
+			}
 			return null;
 		}
 	}

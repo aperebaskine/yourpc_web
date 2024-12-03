@@ -36,7 +36,9 @@
 			<div class="user-ticket">
 				<p><fmt:message key="ticket" /> # ${ticket.id}</p>
 				<p><fmt:message key="ticket.date" />: ${ticket.creationDate}</p>
-				<p><fmt:message key="ticket.update.timestamp" />: ${ticket.messageList.get(ticket.messageList.size() -1).timestamp}</p>
+				<c:if test="${not empty ticket.messageList}">
+					<p><fmt:message key="ticket.update.timestamp" />: ${ticket.messageList.get(ticket.messageList.size() -1).timestamp}</p>
+				</c:if>
 				<p><fmt:message key="ticket.state" />: ${ticket.state}</p>
 				<p><fmt:message key="ticket.title" />: ${ticket.title}</p>
 				<form action='<c:url value="/user/TicketServlet"></c:url>' method="get">
@@ -46,6 +48,9 @@
 				</form>
 			</div>
 		</c:forEach>
+		<form action="<c:url value="${Views.NEW_TICKET_VIEW}"></c:url>">
+			<input type="submit" value="<fmt:message key="ticket.new" />">
+		</form>
 	</div>
 	<div class="user-rmas">
 		<h3><fmt:message key="user.details.rmas"></fmt:message></h3>

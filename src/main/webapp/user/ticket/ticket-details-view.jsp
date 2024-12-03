@@ -3,7 +3,9 @@
 <%@ include file="/common/header.jsp" %>
 <h2><fmt:message key="ticket" /> # ${ticket.id}</h2>
 <p><fmt:message key="ticket.date" />: ${ticket.creationDate}</p>
-<p><fmt:message key="ticket.update.timestamp" />: ${ticket.messageList.get(ticket.messageList.size() -1).timestamp}</p>
+<c:if test="${not empty ticket.messageList}">
+	<p><fmt:message key="ticket.update.timestamp" />: ${ticket.messageList.get(ticket.messageList.size() -1).timestamp}</p>
+</c:if>
 <p><fmt:message key="ticket.state" />: ${ticket.state}</p>
 <p><fmt:message key="ticket.title" />: ${ticket.title}</p>
 <span><fmt:message key="ticket.description" />:</span>
