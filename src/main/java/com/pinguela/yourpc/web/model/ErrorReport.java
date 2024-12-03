@@ -20,6 +20,10 @@ public class ErrorReport {
 		return !(globalErrors.isEmpty() && fieldErrors.isEmpty());
 	}
 	
+	public boolean hasGlobalErrors() {
+		return !globalErrors.isEmpty();
+	}
+	
 	public List<String> getGlobalErrors() {
 		return globalErrors;
 	}

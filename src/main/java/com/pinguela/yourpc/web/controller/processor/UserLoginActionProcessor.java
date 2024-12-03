@@ -42,7 +42,7 @@ extends AbstractActionProcessor {
 
 		String email = request.getParameter("email").trim();
 		String password = request.getParameter("password").trim();
-
+		
 		Customer c = null;
 
 		try {
@@ -53,7 +53,7 @@ extends AbstractActionProcessor {
 		} catch (InvalidLoginCredentialsException e) {
 			logger.warn("Invalid credentials for: " + email);
 			errors.addGlobalError(ErrorCodes.INVALID_LOGIN);
-			RouterUtils.setRoute(request, Views.USER_LOGIN, RouteMethod.REDIRECT);
+			RouterUtils.setRoute(request, Views.USER_LOGIN, RouteMethod.FORWARD);
 		} 
 	}
 

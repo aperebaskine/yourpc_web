@@ -7,6 +7,7 @@
 		</a>
 	</div>
 	<div class="loginForm">
+		<%@ include file="/common/global_errors.jsp" %>
 		<form action="<c:url value='/DefaultServlet'></c:url>" method="post">
 			<input type="hidden" name="action" value="login"/>
 			<input type="hidden" name="${Parameters.CALLBACK_URL}" 
@@ -20,7 +21,7 @@
 				   </c:choose>">
 				<div class="formElement">
 				<label class="formElementLabel" for="email"><fmt:message key="email"></fmt:message></label>
-				<input name="email" type="email" placeholder="rastley@gmail.com"/>
+				<input name="email" type="email" value="${param.email}" placeholder="rastley@gmail.com"/>
 			</div>
 			<div class="formElement">
 				<label class="formElementLabel" for="password"><fmt:message key="password"></fmt:message></label>

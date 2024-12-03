@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pinguela.YPCException;
+import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.HttpErrorCodes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.controller.processor.AbstractActionProcessor;
@@ -36,6 +37,7 @@ public abstract class YPCServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		ErrorReport errors = new ErrorReport();
+		req.setAttribute(Attributes.ERRORS, errors);
 
 		try {
 			if (!resp.isCommitted()) {
