@@ -57,6 +57,10 @@ nav {
 	align-items: center;
 }
 
+.loginForm {
+	flex-direction: column;
+}
+
 .wizardProgress {
 	display: flex;
 	justify-content: center;
@@ -209,4 +213,31 @@ label {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+}
+
+.globalErrors {
+	color: red;
+	font-size: small;
+}
+
+.globalErrors span {
+	margin-left: 24px;
+}
+
+.invalid {
+	border: 2px solid red;
+	border-radius: 4px;
+	background-color: #f8d7da;
+}
+
+#add-message-form {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+}
+
+#add-message-form textarea {
+	width: 35%;
+	height: 160px;
 }
