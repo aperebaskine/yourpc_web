@@ -154,7 +154,16 @@ public class ParameterProcessor {
 		return true;
 	}
 
-	public ParameterProcessor doAfter(ParameterProcessorRunnable runnable) 
+	public ParameterProcessor onValidationFailed(ParameterProcessorRunnable runnable) 
+			throws ServletException, IOException, YPCException, InputValidationException {
+		if (hasErrors()) {
+			runnable.run();
+		}
+		
+		return this;
+	}
+
+	public ParameterProcessor onValidationSuccessful(ParameterProcessorRunnable runnable) 
 			throws ServletException, IOException, YPCException, InputValidationException{
 		if (!hasErrors()) {
 			runnable.run();
@@ -163,8 +172,8 @@ public class ParameterProcessor {
 		return this;
 	}
 
-	public <T> T doAfter(ParameterProcessorSupplier<T> supplier) 
-		throws ServletException, IOException, YPCException, InputValidationException {
+	public <T> T onValidationSuccessful(ParameterProcessorSupplier<T> supplier) 
+			throws ServletException, IOException, YPCException, InputValidationException {
 		return hasErrors() ? null : supplier.get();
 	}
 

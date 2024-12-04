@@ -46,7 +46,7 @@ public class InsertTicketActionProcessor extends AbstractActionProcessor {
 		.required(Parameters.TITLE, null, t::setTitle)
 		.required(Parameters.DESCRIPTION, null, t::setDescription)
 		.optional(Parameters.TICKET_MESSAGE_TEXT, null, (v) -> setMessage(c, t, v))
-		.doAfter(() -> {
+		.onValidationSuccessful(() -> {
 			Long ticketId = service.create(t);
 
 			if (ticketId == null) {
