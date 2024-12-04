@@ -4,11 +4,18 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.function.TriFunction;
 import org.apache.commons.validator.GenericValidator;
 
+import com.pinguela.DataException;
+import com.pinguela.ServiceException;
+import com.pinguela.yourpc.model.Customer;
+import com.pinguela.yourpc.model.CustomerCriteria;
+import com.pinguela.yourpc.service.CustomerService;
+import com.pinguela.yourpc.service.impl.CustomerServiceImpl;
 import com.pinguela.yourpc.util.CategoryUtils;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.ErrorCodes;
@@ -18,6 +25,8 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ValidatorUtils {
+	
+	private static CustomerService customerService = new CustomerServiceImpl();
 
 	private static final String[] EMPTY_ARRAY = {};
 
@@ -125,7 +134,33 @@ public class ValidatorUtils {
 		}
 		return true;
 	}
-
+	
+	public static boolean isValidRegistrationEmail(HttpServletRequest request, String parameterName, String email) {
+		if (!GenericValidator.isEmail(email)) {
+			logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
+			return false;
+		}
+		
+		CustomerCriteria criteria = new CustomerCriteria();
+		criteria.setEmail(email);
+		
+		List<Customer> customers;
+		
+		try {
+			customers = customerService.findBy(criteria);
+		} catch (ServiceException | DataException e) {
+			logGlobalError(request, ErrorCodes.UNKNOWN_ERROR);
+			return false;
+		}
+		
+		if (!customers.isEmpty()) {
+			logFieldError(request, parameterName, ErrorCodes.USER_ALREADY_EXISTS);
+			return false;
+		}
+		
+		
+		return true;
+	}
 	public static boolean isInRange(Integer num, Integer min, Integer max) {
 		return (min == null || num >= min) && (max == null || num <= max);
 	}

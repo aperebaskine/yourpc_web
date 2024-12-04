@@ -241,3 +241,8 @@ label {
 	width: 35%;
 	height: 160px;
 }
+
+.errorCode {
+	font-size: small;
+	color: red;
+}

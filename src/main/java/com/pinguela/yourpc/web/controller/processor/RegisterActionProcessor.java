@@ -6,9 +6,12 @@ import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.service.CustomerService;
 import com.pinguela.yourpc.service.impl.CustomerServiceImpl;
+import com.pinguela.yourpc.web.annotations.ActionProcessor;
+import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.constants.Views;
+import com.pinguela.yourpc.web.controller.DefaultServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
@@ -19,6 +22,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@ActionProcessor(action = Actions.REGISTER, servlets = DefaultServlet.class)
 public class RegisterActionProcessor extends AbstractActionProcessor {
 	
 	private CustomerService service;
@@ -39,7 +43,7 @@ public class RegisterActionProcessor extends AbstractActionProcessor {
 		.optional(Parameters.LAST_NAME2, null, c::setLastName2)
 		.required(Parameters.DOCUMENT_TYPE_ID, null, c::setDocumentTypeId)
 		.required(Parameters.DOCUMENT_NUMBER, null, c::setDocumentNumber)
-		.required(Parameters.EMAIL, ValidatorUtils::isValidEmail, c::setEmail)
+		.required(Parameters.EMAIL, ValidatorUtils::isValidRegistrationEmail, c::setEmail)
 		.required(Parameters.PASSWORD, ValidatorUtils::isValidPassword, c::setUnencryptedPassword)
 		.onValidationFailed(() -> RouterUtils.setTargetView(request, Views.REGISTER_VIEW))
 		.onValidationSuccessful(() -> {
