@@ -7,6 +7,7 @@ public final class Parameters {
 	public static final String ACTION = "action";
 	
 	public static final String LOGIN = "login";
+	public static final String EMAIL = "email";
 	public static final String PASSWORD = "password";
 	public static final String REPEAT_PASSWORD = "repeatPassword";
 	
@@ -36,4 +37,15 @@ public final class Parameters {
 	
 	public static final String TICKET_ID = "ticketId";
 	public static final String TICKET_MESSAGE_TEXT = "message-text";
+	
+	public static final String FIRST_NAME = "firstName";
+	public static final String LAST_NAME1 = "lastName1";
+	public static final String LAST_NAME2 = "lastName2";
+	
+	public static final String DOCUMENT_TYPE_ID = "docType";
+	public static final String DOCUMENT_NUMBER = "docNum";
+	
+	public static final String PHONE_NUMBER = "phoneNumber";
+	public static final String PHONE_NUMBER_PREFIX = "phoneNumberPrefix";
+	
 }
