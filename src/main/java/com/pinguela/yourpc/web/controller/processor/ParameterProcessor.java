@@ -1,5 +1,6 @@
 package com.pinguela.yourpc.web.controller.processor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,10 +8,17 @@ import java.util.function.Consumer;
 
 import org.apache.commons.lang3.function.TriFunction;
 
+import com.pinguela.YPCException;
+import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.DiscardStrategy;
+import com.pinguela.yourpc.web.exception.InputValidationException;
+import com.pinguela.yourpc.web.functions.ParameterProcessorRunnable;
+import com.pinguela.yourpc.web.functions.ParameterProcessorSupplier;
 import com.pinguela.yourpc.web.functions.TriPredicate;
+import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ParameterProcessor {
@@ -144,6 +152,24 @@ public class ParameterProcessor {
 		}
 
 		return true;
+	}
+
+	public ParameterProcessor doAfter(ParameterProcessorRunnable runnable) 
+			throws ServletException, IOException, YPCException, InputValidationException{
+		if (!hasErrors()) {
+			runnable.run();
+		}
+
+		return this;
+	}
+
+	public <T> T doAfter(ParameterProcessorSupplier<T> supplier) 
+		throws ServletException, IOException, YPCException, InputValidationException {
+		return hasErrors() ? null : supplier.get();
+	}
+
+	private boolean hasErrors() {
+		return ((ErrorReport) request.getAttribute(Attributes.ERRORS)).hasErrors();
 	}
 
 }

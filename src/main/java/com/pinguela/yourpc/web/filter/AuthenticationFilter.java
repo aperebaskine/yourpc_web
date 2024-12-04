@@ -39,7 +39,7 @@ public class AuthenticationFilter extends HttpFilter implements Filter {
 
 		if (c == null) {
 			RouterUtils.route((HttpServletRequest) request, 
-					(HttpServletResponse) response, Views.USER_LOGIN, RouteMethod.REDIRECT);
+					(HttpServletResponse) response, Views.USER_LOGIN_VIEW, RouteMethod.REDIRECT);
 		}
 		
 		chain.doFilter(request, response);

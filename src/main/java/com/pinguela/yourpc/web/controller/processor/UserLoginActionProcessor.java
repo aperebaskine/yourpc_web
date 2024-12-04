@@ -53,7 +53,7 @@ extends AbstractActionProcessor {
 		} catch (InvalidLoginCredentialsException e) {
 			logger.warn("Invalid credentials for: " + email);
 			errors.addGlobalError(ErrorCodes.INVALID_LOGIN);
-			RouterUtils.setRoute(request, Views.USER_LOGIN, RouteMethod.FORWARD);
+			RouterUtils.setRoute(request, Views.USER_LOGIN_VIEW, RouteMethod.FORWARD);
 		} 
 	}
 
