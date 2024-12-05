@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/empty_header.jsp" %>
+<%@ page import="com.pinguela.yourpc.web.constants.ErrorCodes" %>
 <div class="registerForm">
     <a href="<c:url value='/index.jsp'></c:url>">
         <img class="logo" alt="Logo" src="<c:url value='/img/logo.png'></c:url>" />
@@ -25,6 +26,16 @@
                 <c:forEach var="errorCode" items="${errors.getFieldErrors(Parameters.PASSWORD)}">
                     <span class="errorCode"><fmt:message key="error.${errorCode}" /></span>
                 </c:forEach>
+                <c:if test="${errors.getFieldErrors(Parameters.PASSWORD).contains(ErrorCodes.INVALID_LENGTH)
+                	|| errors.getFieldErrors(Parameters.PASSWORD).contains(ErrorCodes.INVALID_FORMAT)}">
+                    	<span class="errorCode"><fmt:message key="password.error" /></span>
+                    	<ul class="passwordRequirements">
+                    		<li><fmt:message key="password.error.length" /></li>
+                    		<li><fmt:message key="password.error.uppercase" /></li>
+                    		<li><fmt:message key="password.error.lowercase" /></li>
+                    		<li><fmt:message key="password.error.special" /></li>
+                    	</ul>
+                    </c:if>
             </div>
             <div class="formElement">
                 <label class="formElementLabel" for="repeatPassword"><fmt:message key="repeat.password" /></label>

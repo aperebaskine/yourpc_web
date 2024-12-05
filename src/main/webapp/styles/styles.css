@@ -242,7 +242,8 @@ label {
 	height: 160px;
 }
 
-.errorCode {
+.errorCode,
+.passwordRequirements li {
 	font-size: small;
 	color: red;
 }
