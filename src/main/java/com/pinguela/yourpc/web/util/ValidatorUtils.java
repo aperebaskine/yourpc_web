@@ -155,7 +155,7 @@ public class ValidatorUtils {
 		}
 		
 		if (!customers.isEmpty()) {
-			logFieldError(request, parameterName, ErrorCodes.PHONE_NUMBER_ALREADY_EXISTS);
+			logFieldError(request, parameterName, ErrorCodes.PHONE_NUMBER_IN_USE);
 			return false;
 		}
 		
@@ -182,7 +182,7 @@ public class ValidatorUtils {
 		}
 		
 		if (!customers.isEmpty()) {
-			logFieldError(request, parameterName, ErrorCodes.EMAIL_ALREADY_EXISTS);
+			logFieldError(request, parameterName, ErrorCodes.EMAIL_IN_USE);
 			return false;
 		}
 		
