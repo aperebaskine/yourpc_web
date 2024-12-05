@@ -27,7 +27,7 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * TODO: Separate validation and error logging (?)
+ * TODO: Separate validation and error logging (?), parse without catching exceptions
  */
 public class ValidatorUtils {
 	
