@@ -35,7 +35,7 @@ public abstract class YPCServlet extends HttpServlet {
 	@Override
 	protected final void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
-		
+
 		ErrorReport errors = new ErrorReport();
 		req.setAttribute(Attributes.ERRORS, errors);
 
@@ -72,11 +72,15 @@ public abstract class YPCServlet extends HttpServlet {
 		doGet(req, resp);
 	}
 
+	protected String getAction(HttpServletRequest req) throws ServletException, IOException {
+		return req.getParameter(Parameters.ACTION);
+	}
+
 	private void processAction(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors) 
 			throws ServletException, IOException, YPCException, InputValidationException {
 
 		try {
-			String action = (String) req.getParameter(Parameters.ACTION);
+			String action = getAction(req);
 			getActionProcessor(action).processAction(req, resp, errors);
 		} catch (IllegalArgumentException e) {
 			throw new InputValidationException(e.getMessage(), e);

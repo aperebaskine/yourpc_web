@@ -50,6 +50,7 @@ nav {
 
 .loginForm,
 .wizardForm,
+.registerForm,
 .wizardFormTitle,
 .wizardFormProgress {
 	display: flex;
@@ -246,4 +247,11 @@ label {
 .passwordRequirements li {
 	font-size: small;
 	color: red;
+}
+
+.avatar {
+	width: 160px;
+	height: 160px;
+	background-image: url("../img/default-avatar.jpg");
+	object-fit: fill;
 }

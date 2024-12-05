@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/empty_header.jsp" %>
 <%@ page import="com.pinguela.yourpc.web.constants.ErrorCodes" %>
+<div class="loginLogo">
+	<a href="<c:url value='/index.jsp'></c:url>">
+		<img class="logo" alt="Logo" src="<c:url value='/img/logo.png'></c:url>" />
+	</a>
+</div>
 <div class="registerForm">
-    <a href="<c:url value='/index.jsp'></c:url>">
-        <img class="logo" alt="Logo" src="<c:url value='/img/logo.png'></c:url>" />
-    </a>
     <%@ include file="/common/global_errors.jsp" %>
     <form action="<c:url value='/DefaultServlet'></c:url>" method="post">
         <input type="hidden" name="action" value="${Actions.REGISTER}" />

@@ -3,6 +3,9 @@
 <%@ include file="/common/header.jsp" %>
 <main>
 	<div class="user-details">
+		<div class="avatar">
+			
+		</div>
 		<h3><fmt:message key="user.details.title"></fmt:message></h3>
 		<p>
 			${customer.firstName} ${customer.lastName1} 
