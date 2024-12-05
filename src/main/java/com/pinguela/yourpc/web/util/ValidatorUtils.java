@@ -26,6 +26,9 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ * TODO: Separate validation and error logging (?)
+ */
 public class ValidatorUtils {
 	
 	private static Logger logger = LogManager.getLogger(ValidatorUtils.class);
@@ -124,7 +127,7 @@ public class ValidatorUtils {
 
 		String repeatPassword = request.getParameter(Parameters.REPEAT_PASSWORD);
 		if (!password.equals(repeatPassword)) {
-			logGlobalError(request, ErrorCodes.PASSWORDS_DO_NOT_MATCH);
+			logFieldError(request, Parameters.REPEAT_PASSWORD, ErrorCodes.PASSWORDS_DO_NOT_MATCH);
 		}
 
 		return true;
