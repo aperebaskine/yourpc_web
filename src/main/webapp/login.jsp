@@ -28,7 +28,7 @@
 		</div>
 		<div class="formSubmitElement">
 			<input type="submit" value="Login" style="width: 92px;">
-			<input style="background-color: #EAD8F5; color: black; width: 92px;" type="submit" formAction="#" value="Register">
+			<input style="background-color: #EAD8F5; color: black; width: 92px;" type="submit" formAction="<c:url value="/register.jsp"/>" value="Register">
 		</div>
 		<div class="formElement" style="font-size: x-small;">
 			<span><fmt:message key="forgotPassword"></fmt:message></span>

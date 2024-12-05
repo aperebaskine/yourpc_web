@@ -35,7 +35,7 @@
 					<input type="submit" value="<fmt:message key="login"/>">
 				</form>
 			</li>
-			<li><fmt:message key="register"/></li>
+			<li><a href="<c:url value="/register.jsp" />"><fmt:message key="register"/></a></li>
 		</c:otherwise>
 	</c:choose>
 	<li><fmt:message key="cart"/></li>

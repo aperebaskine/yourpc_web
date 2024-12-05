@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.function.TriFunction;
 import org.apache.commons.validator.GenericValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.pinguela.DataException;
 import com.pinguela.ServiceException;
@@ -26,6 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class ValidatorUtils {
 	
+	private static Logger logger = LogManager.getLogger(ValidatorUtils.class);
 	private static CustomerService customerService = new CustomerServiceImpl();
 
 	private static final String[] EMPTY_ARRAY = {};
@@ -33,7 +36,7 @@ public class ValidatorUtils {
 	private static final int PASSWORD_MIN_LENGTH = 8;
 	private static final int PASSWORD_MAX_LENGTH = 20;
 
-	private static final Pattern SPECIAL_CHARACTER_REGEX = Pattern.compile("[^\\w\\d]");
+	private static final Pattern SPECIAL_CHARACTER_REGEX = Pattern.compile("[^\\w]");
 
 	public static String getParameter(HttpServletRequest request, String parameterName, boolean isRequired) {
 		String parameterValue = request.getParameter(parameterName);
@@ -100,7 +103,7 @@ public class ValidatorUtils {
 		boolean containsUppercase = false;
 		boolean containsSpecial = false;
 
-		for (int i = 0; i < password.length() && !containsLowercase && !containsUppercase; i++) {
+		for (int i = 0; i < password.length() && !(containsLowercase && containsUppercase); i++) {
 			char c = password.charAt(i);
 
 			if (!containsLowercase) {
@@ -112,7 +115,7 @@ public class ValidatorUtils {
 			}
 		}
 
-		containsSpecial = SPECIAL_CHARACTER_REGEX.matcher(password).matches();
+		containsSpecial = SPECIAL_CHARACTER_REGEX.matcher(password).find(0);
 
 		if (!(isInRange && containsLowercase && containsUppercase && containsSpecial)) {
 			logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
@@ -135,6 +138,27 @@ public class ValidatorUtils {
 		return true;
 	}
 	
+	public static boolean isValidRegistrationPhoneNumber(HttpServletRequest request, String parameterName, String phoneNumber) {
+		CustomerCriteria criteria = new CustomerCriteria();
+		criteria.setPhoneNumber(phoneNumber);
+		
+		List<Customer> customers;
+		try {
+			customers = customerService.findBy(criteria);
+		} catch (ServiceException | DataException e) {
+			logger.error(e);
+			logGlobalError(request, ErrorCodes.UNKNOWN_ERROR);
+			return false;
+		}
+		
+		if (!customers.isEmpty()) {
+			logFieldError(request, parameterName, ErrorCodes.PHONE_NUMBER_ALREADY_EXISTS);
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public static boolean isValidRegistrationEmail(HttpServletRequest request, String parameterName, String email) {
 		if (!GenericValidator.isEmail(email)) {
 			logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
@@ -149,18 +173,20 @@ public class ValidatorUtils {
 		try {
 			customers = customerService.findBy(criteria);
 		} catch (ServiceException | DataException e) {
+			logger.error(e);
 			logGlobalError(request, ErrorCodes.UNKNOWN_ERROR);
 			return false;
 		}
 		
 		if (!customers.isEmpty()) {
-			logFieldError(request, parameterName, ErrorCodes.USER_ALREADY_EXISTS);
+			logFieldError(request, parameterName, ErrorCodes.EMAIL_ALREADY_EXISTS);
 			return false;
 		}
 		
 		
 		return true;
 	}
+	
 	public static boolean isInRange(Integer num, Integer min, Integer max) {
 		return (min == null || num >= min) && (max == null || num <= max);
 	}

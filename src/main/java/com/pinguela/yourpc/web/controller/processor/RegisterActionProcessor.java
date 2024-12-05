@@ -43,6 +43,7 @@ public class RegisterActionProcessor extends AbstractActionProcessor {
 		.optional(Parameters.LAST_NAME2, null, c::setLastName2)
 		.required(Parameters.DOCUMENT_TYPE_ID, null, c::setDocumentTypeId)
 		.required(Parameters.DOCUMENT_NUMBER, null, c::setDocumentNumber)
+		.required(Parameters.PHONE_NUMBER, ValidatorUtils::isValidRegistrationPhoneNumber, c::setPhoneNumber)
 		.required(Parameters.EMAIL, ValidatorUtils::isValidRegistrationEmail, c::setEmail)
 		.required(Parameters.PASSWORD, ValidatorUtils::isValidPassword, c::setUnencryptedPassword)
 		.onValidationFailed(() -> RouterUtils.setTargetView(request, Views.REGISTER_VIEW))

@@ -49,18 +49,22 @@
             <div class="formElement">
                 <label class="formElementLabel" for="lastName1"><fmt:message key="last.name1" /></label>
                 <input name="lastName1" type="text" id="lastName1" value="${param.lastName1}" required
-                       <c:if test="${not empty errors.getFieldErrors('lastName1')}">class="invalid"</c:if> />
-                <c:forEach var="errorCode" items="${errors.getFieldErrors('lastName1')}">
+                       <c:if test="${not empty errors.getFieldErrors(Parameters.LAST_NAME1)}">class="invalid"</c:if> />
+                <c:forEach var="errorCode" items="${errors.getFieldErrors(Parameters.LAST_NAME1)}">
                     <span class="errorCode"><fmt:message key="error.${errorCode}" /></span>
                 </c:forEach>
             </div>
             <div class="formElement">
                 <label class="formElementLabel" for="lastName2"><fmt:message key="last.name2" /></label>
-                <input name="lastName2" type="text" id="lastName2" value="${param.lastName2}" />
+                <input name="lastName2" type="text" id="lastName2" value="${param.lastName2}"
+                       <c:if test="${not empty errors.getFieldErrors(Parameters.LAST_NAME2)}">class="invalid"</c:if> />
+                <c:forEach var="errorCode" items="${errors.getFieldErrors(Parameters.LAST_NAME2)}">
+                    <span class="errorCode"><fmt:message key="error.${errorCode}" /></span>
+                </c:forEach>
             </div>
             <div class="formElement">
-                <label class="formElementLabel" for="tel"><fmt:message key="telephone" /></label>
-                <input name="tel" type="tel" id="tel" value="${param.phoneNumber}" required
+                <label class="formElementLabel" for="phoneNumber"><fmt:message key="phone.number" /></label>
+                <input name="phoneNumber" type="tel" id="phoneNumber" value="${param.phoneNumber}" required
                        <c:if test="${not empty errors.getFieldErrors(Parameters.PHONE_NUMBER)}">class="invalid"</c:if> />
                 <c:forEach var="errorCode" items="${errors.getFieldErrors(Parameters.PHONE_NUMBER)}">
                     <span class="errorCode"><fmt:message key="error.${errorCode}" /></span>
@@ -70,18 +74,18 @@
         <fieldset>
             <legend><fmt:message key="identity.document" /></legend>
             <div class="formElement">
-                <label class="formElementLabel" for="doctype"><fmt:message key="document.type" /></label>
-                <select id="doctype" name="doctype">
-                    <option value="NIF" <c:if test="${param.doctype == 'NIF'}">selected</c:if>>NIF</option>
-                    <option value="NIE" <c:if test="${param.doctype == 'NIE'}">selected</c:if>>NIE</option>
-                    <option value="PPT" <c:if test="${param.doctype == 'PPT'}">selected</c:if>>Pasaporte</option>
+                <label class="formElementLabel" for="${Parameters.DOCUMENT_TYPE_ID}"><fmt:message key="document.type" /></label>
+                <select id="${Parameters.DOCUMENT_TYPE_ID}" name="${Parameters.DOCUMENT_TYPE_ID}">
+                    <option value="NIF" <c:if test="${param.doctype == 'NIF'}">selected</c:if>><fmt:message key="document.type.nif" /></option>
+                    <option value="NIE" <c:if test="${param.doctype == 'NIE'}">selected</c:if>><fmt:message key="document.type.nie" /></option>
+                    <option value="PPT" <c:if test="${param.doctype == 'PPT'}">selected</c:if>><fmt:message key="document.type.passport" /></option>
                 </select>
             </div>
             <div class="formElement">
-                <label class="formElementLabel" for="docNumber"><fmt:message key="document.number" /></label>
-                <input name="docNumber" type="text" id="docNumber" value="${param.docNumber}" required
-                       <c:if test="${not empty errors.getFieldErrors('docNumber')}">class="invalid"</c:if> />
-                <c:forEach var="errorCode" items="${errors.getFieldErrors('docNumber')}">
+                <label class="formElementLabel" for="${Parameters.DOCUMENT_NUMBER}"><fmt:message key="document.number" /></label>
+                <input name="${Parameters.DOCUMENT_NUMBER}" type="text" id="${Parameters.DOCUMENT_NUMBER}" value="${param.docNum}" required
+                       <c:if test="${not empty errors.getFieldErrors(Parameters.DOCUMENT_NUMBER)}">class="invalid"</c:if> />
+                <c:forEach var="errorCode" items="${errors.getFieldErrors(Parameters.DOCUMENT_NUMBER)}">
                     <span class="errorCode"><fmt:message key="error.${errorCode}" /></span>
                 </c:forEach>
             </div>

@@ -20,6 +20,7 @@ public final class ErrorCodes {
 	public static final String NON_EXISTENT_CATEGORY = "NON_EXISTENT_CATEGORY";
 	public static final String MISSING_PARAMETER_VALUE = "MISSING_PARAMETER_VALUE";
 	
-	public static final String USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS";
+	public static final String EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS";
+	public static final String PHONE_NUMBER_ALREADY_EXISTS = "PHONE_NUMBER_ALREADY_EXISTS";
 	
 }
