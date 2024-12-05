@@ -27,8 +27,9 @@
 			<input name="password" type="password" <c:if test="${errors.hasGlobalErrors()}">class="invalid"</c:if>/>
 		</div>
 		<div class="formSubmitElement">
-			<input type="submit" value="Login" style="width: 92px;">
-			<input style="background-color: #EAD8F5; color: black; width: 92px;" type="submit" formAction="<c:url value="/register.jsp"/>" value="Register">
+			<input type="submit" value="<fmt:message key="login"/>">
+			<input style="background-color: #EAD8F5; color: black;" 
+			type="submit" formAction="<c:url value="/register.jsp"/>" value="<fmt:message key="register"/>">
 		</div>
 		<div class="formElement" style="font-size: x-small;">
 			<span><fmt:message key="forgotPassword"></fmt:message></span>

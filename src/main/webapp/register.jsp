@@ -102,7 +102,7 @@
             </div>
         </fieldset>
         <div class="formSubmitElement">
-            <input type="submit" value="Register" style="width: 92px;">
+            <input type="submit" value="<fmt:message key="register.complete"/>">
         </div>
     </form>
 </div>
