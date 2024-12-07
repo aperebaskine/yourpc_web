@@ -30,7 +30,7 @@ function requestData(event) {
 
 	if (value) {
 		let request = new XMLHttpRequest();
-		let url = new URL(location.origin + "/YourPCWeb/AttributeServlet"); // TODO Make URL dynamic
+		let url = new URL(location.origin + contextPath + "/AttributeServlet");
 		url.searchParams.set("categoryid", document.getElementById("categorySelector").value);
 		url.searchParams.set("unassigned", false);
 

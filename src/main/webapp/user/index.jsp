@@ -4,7 +4,9 @@
 <main>
 	<div class="user-details">
 		<div class="avatar">
-			
+			<c:if test="${not empty avatar}">
+				<img src="${avatar}" alt="Avatar"/>
+			</c:if>
 		</div>
 		<h3><fmt:message key="user.details.title"></fmt:message></h3>
 		<p>
@@ -12,6 +14,35 @@
 			<c:if test="${not empty customer.lastName2}">${customer.lastName2}</c:if>
 		</p>
 		<p><fmt:message key="user.details.since"></fmt:message> ${customer.creationDate}</p>
+		
+		<div class="user-actions">
+			<ul>
+				<li>
+					<form class="upload-image-form" action="<c:url value="/user/UserServlet?action=upload-image"/>" method="post" enctype="multipart/form-data">
+						<div class="formElement">
+							<label for="imageFile" class="button-light"><fmt:message key="avatar.upload"/></label>
+							<input id="imageFile" name="imageFile" type="file" style="visibility: hidden; width: 0px;" onchange="submit();"/> 
+						</div>
+					</form>
+				</li>
+				<li>
+					<form action="<c:url value="/user/update-details.jsp"/>">
+						<input class="button-light" type="submit" value="<fmt:message key="update.details"/>">
+					</form>
+				</li>
+				<li>
+					<form action="<c:url value="/user/address-view.jsp"/>">
+						<input class="button-light" type="submit" value="<fmt:message key="view.address"/>">
+					</form>
+				</li>
+				<li>
+					<form action="<c:url value="${Views.NEW_TICKET_VIEW}"></c:url>">
+						<input class="button-light" type="submit" value="<fmt:message key="ticket.new" />">
+					</form>
+				</li>
+			</ul>
+			
+		</div>
 	</div>
 	<div class="user-orders">
 		<h3><fmt:message key="user.details.orders"></fmt:message></h3>
@@ -51,9 +82,6 @@
 				</form>
 			</div>
 		</c:forEach>
-		<form action="<c:url value="${Views.NEW_TICKET_VIEW}"></c:url>">
-			<input type="submit" value="<fmt:message key="ticket.new" />">
-		</form>
 	</div>
 	<div class="user-rmas">
 		<h3><fmt:message key="user.details.rmas"></fmt:message></h3>

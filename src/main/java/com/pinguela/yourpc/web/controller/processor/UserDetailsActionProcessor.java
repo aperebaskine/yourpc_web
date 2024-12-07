@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.fileupload2.jakarta.servlet5.JakartaServletDiskFileUpload;
+
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.model.CustomerOrder;
@@ -13,9 +15,11 @@ import com.pinguela.yourpc.model.Results;
 import com.pinguela.yourpc.model.Ticket;
 import com.pinguela.yourpc.model.TicketCriteria;
 import com.pinguela.yourpc.service.CustomerOrderService;
+import com.pinguela.yourpc.service.ImageFileService;
 import com.pinguela.yourpc.service.RMAService;
 import com.pinguela.yourpc.service.TicketService;
 import com.pinguela.yourpc.service.impl.CustomerOrderServiceImpl;
+import com.pinguela.yourpc.service.impl.ImageFileServiceImpl;
 import com.pinguela.yourpc.service.impl.RMAServiceImpl;
 import com.pinguela.yourpc.service.impl.TicketServiceImpl;
 import com.pinguela.yourpc.web.annotations.ActionProcessor;
@@ -36,11 +40,15 @@ import jakarta.servlet.http.HttpServletResponse;
 @ActionProcessor(action = Actions.USER_DETAILS, servlets = UserServlet.class)
 public class UserDetailsActionProcessor extends AbstractActionProcessor {
 	
+	private JakartaServletDiskFileUpload fileUpload = new JakartaServletDiskFileUpload();
+	
+	private ImageFileService imageFileService;
 	private CustomerOrderService customerOrderService;	
 	private TicketService ticketService;
 	private RMAService rmaService;
 		
 	public UserDetailsActionProcessor() {
+		imageFileService = new ImageFileServiceImpl();
 		customerOrderService = new CustomerOrderServiceImpl();
 		ticketService = new TicketServiceImpl();
 		rmaService = new RMAServiceImpl();
@@ -52,6 +60,11 @@ public class UserDetailsActionProcessor extends AbstractActionProcessor {
 
 		Locale locale = LocaleUtils.getLocale(request);
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+		
+		List<String> avatarList = imageFileService.getFilePaths(Attributes.AVATAR, c.getId());
+		if (!avatarList.isEmpty()) {
+			
+		}
 		
 		List<CustomerOrder> orders = customerOrderService.findByCustomer(c.getId(), locale);
 		

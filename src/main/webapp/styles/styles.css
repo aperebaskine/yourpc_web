@@ -118,9 +118,18 @@ nav {
 	justify-content: flex-end;
 }
 
-.formSubmitElement input {
+.formSubmitElement input,
+.button {
 	color: white;
 	background-color: #8531B7;
+	border: 1px solid grey;
+	border-radius: 5px;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
+.button-light {
+	background-color: #EAD8F5;
 	border: 1px solid grey;
 	border-radius: 5px;
 	padding: 6px 12px;
@@ -254,4 +263,10 @@ label {
 	height: 160px;
 	background-image: url("../img/default-avatar.jpg");
 	object-fit: fill;
+}
+
+.user-actions ul {
+	list-style-type: none;
+	display: flex;
+	gap: 8px;
 }

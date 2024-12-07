@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * TODO: Separate validation and error logging (?), parse without catching exceptions
  */
 public class ValidatorUtils {
-	
+
 	private static Logger logger = LogManager.getLogger(ValidatorUtils.class);
 	private static CustomerService customerService = new CustomerServiceImpl();
 
@@ -43,7 +43,7 @@ public class ValidatorUtils {
 
 	public static String getParameter(HttpServletRequest request, String parameterName, boolean isRequired) {
 		String parameterValue = request.getParameter(parameterName);
-		
+
 		if (parameterValue != null) {
 			parameterValue = parameterValue.trim();
 		}
@@ -77,7 +77,7 @@ public class ValidatorUtils {
 			return true;
 		}
 	}
-	
+
 	public static boolean isValidUsername(HttpServletRequest request, String parameterName, String username) {
 		boolean isInRange = isInRange(username.length(), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
 
@@ -85,7 +85,7 @@ public class ValidatorUtils {
 			logFieldError(request, parameterName, ErrorCodes.INVALID_LENGTH);
 			return false;
 		}
-		
+
 		if (SPECIAL_CHARACTER_REGEX.matcher(username).matches()) {
 			logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
 			return false;
@@ -132,47 +132,43 @@ public class ValidatorUtils {
 
 		return true;
 	}
-	
+
+	public static boolean isValidPhoneNumber(HttpServletRequest request, String parameterName, String phoneNumber) {
+		CustomerCriteria criteria = new CustomerCriteria();
+		criteria.setPhoneNumber(phoneNumber);
+
+		List<Customer> customers;
+		try {
+			customers = customerService.findBy(criteria);
+		} catch (ServiceException | DataException e) {
+			logger.error(e);
+			logGlobalError(request, ErrorCodes.UNKNOWN_ERROR);
+			return false;
+		}
+
+		if (!customers.isEmpty()) {
+			Customer inSession = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+
+			if (inSession == null || !inSession.getId().equals(customers.get(0).getId())) {
+				logFieldError(request, parameterName, ErrorCodes.PHONE_NUMBER_IN_USE);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public static boolean isValidEmail(HttpServletRequest request, String parameterName, String email) {
 		if (!GenericValidator.isEmail(email)) {
 			logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
 			return false;
 		}
-		return true;
-	}
-	
-	public static boolean isValidRegistrationPhoneNumber(HttpServletRequest request, String parameterName, String phoneNumber) {
-		CustomerCriteria criteria = new CustomerCriteria();
-		criteria.setPhoneNumber(phoneNumber);
-		
-		List<Customer> customers;
-		try {
-			customers = customerService.findBy(criteria);
-		} catch (ServiceException | DataException e) {
-			logger.error(e);
-			logGlobalError(request, ErrorCodes.UNKNOWN_ERROR);
-			return false;
-		}
-		
-		if (!customers.isEmpty()) {
-			logFieldError(request, parameterName, ErrorCodes.PHONE_NUMBER_IN_USE);
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public static boolean isValidRegistrationEmail(HttpServletRequest request, String parameterName, String email) {
-		if (!GenericValidator.isEmail(email)) {
-			logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
-			return false;
-		}
-		
+
 		CustomerCriteria criteria = new CustomerCriteria();
 		criteria.setEmail(email);
-		
+
 		List<Customer> customers;
-		
+
 		try {
 			customers = customerService.findBy(criteria);
 		} catch (ServiceException | DataException e) {
@@ -180,16 +176,20 @@ public class ValidatorUtils {
 			logGlobalError(request, ErrorCodes.UNKNOWN_ERROR);
 			return false;
 		}
-		
+
 		if (!customers.isEmpty()) {
-			logFieldError(request, parameterName, ErrorCodes.EMAIL_IN_USE);
-			return false;
+			Customer inSession = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+
+			if (inSession == null || !inSession.getId().equals(customers.get(0).getId())) {
+				logFieldError(request, parameterName, ErrorCodes.EMAIL_IN_USE);
+				return false;
+			}
 		}
-		
-		
+
+
 		return true;
 	}
-	
+
 	public static boolean isInRange(Integer num, Integer min, Integer max) {
 		return (min == null || num >= min) && (max == null || num <= max);
 	}
@@ -217,7 +217,7 @@ public class ValidatorUtils {
 
 	public static Integer parseInt(HttpServletRequest request, String parameterName, String parameterValue) {
 		try {
-			return Integer.valueOf(parameterName);
+			return Integer.valueOf(parameterValue);
 		} catch (NumberFormatException e) {
 			logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
 			return null;
@@ -238,11 +238,11 @@ public class ValidatorUtils {
 	}
 
 	public static Long parseLong(HttpServletRequest request, String parameterName, boolean isRequired) {
-		
+
 		String parameterValue = request.getParameter(parameterName);
 		return parseLong(request, parameterName, parameterValue, isRequired);
 	}
-	
+
 	public static Long parseLong(HttpServletRequest request, String parameterName, String parameterValue, boolean isRequired) {
 		try {
 			return Long.valueOf(parameterValue);

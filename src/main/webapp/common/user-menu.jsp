@@ -23,19 +23,28 @@
 				<form id="logoutForm" action="<c:url value="/DefaultServlet"></c:url>">
 					<input type="hidden" name="action" value="logout">
 					<input type="hidden" name="${Parameters.CALLBACK_URL}" value="${currentUrl}">
-					<input type="submit" value="<fmt:message key="logout"/>">
+					<input class="button-light" type="submit" value="<fmt:message key="logout"/>">
 				</form>
 			</li>
-			<li><a href='<c:url value="/user/UserServlet?action=user-details"></c:url>'><fmt:message key="myaccount"/></a></li>
+			<li>
+				<form id="myaccountform" action="<c:url value="/user/UserServlet"></c:url>">
+					<input type="hidden" name="action" value="user-details">
+					<input class="button" type="submit" value="<fmt:message key="myaccount"/>">
+				</form>
+			</li>
 		</c:when>
 		<c:otherwise>
 			<li>
 				<form id="loginForm" action="<c:url value="/login.jsp"></c:url>">
 					<input type="hidden" name="${Parameters.CALLBACK_URL}" value="${currentUrl}">
-					<input type="submit" value="<fmt:message key="login"/>">
+					<input class="button" type="submit" value="<fmt:message key="login"/>">
 				</form>
 			</li>
-			<li><a href="<c:url value="/register.jsp" />"><fmt:message key="register"/></a></li>
+			<li>
+				<form id="registerForm" action="<c:url value="/register.jsp"></c:url>">
+					<input class="button-light" type="submit" value="<fmt:message key="register"/>">
+				</form>
+			</li>
 		</c:otherwise>
 	</c:choose>
 	<li><fmt:message key="cart"/></li>

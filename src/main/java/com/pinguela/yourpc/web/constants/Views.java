@@ -15,4 +15,8 @@ public final class Views {
 	public static final String TICKET_DETAILS_VIEW = "/user/ticket/ticket-details-view.jsp";
 	public static final String NEW_TICKET_VIEW = "/user/ticket/new-ticket-view.jsp";
 	
+	public static final String UPDATE_DETAILS_VIEW = "/user/update-details.jsp";
+	
+	public static final String EDIT_ADDRESS_VIEW = "/user/update-address.jsp";
+	
 }

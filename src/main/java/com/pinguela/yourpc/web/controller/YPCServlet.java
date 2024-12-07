@@ -52,10 +52,10 @@ public abstract class YPCServlet extends HttpServlet {
 				postProcess(req, resp, errors);
 			}
 
-			if (resp.getStatus() < HttpServletResponse.SC_BAD_REQUEST
-					&& RouterUtils.hasRoute(req) && !resp.isCommitted()) {
-				RouterUtils.route(req, resp);
+			if (resp.getStatus() < HttpServletResponse.SC_BAD_REQUEST  && !resp.isCommitted()) {
+				route(req, resp);
 			}
+
 		} catch (InputValidationException e) {
 			logger.warn(e.getMessage());
 			logger.debug(e.getMessage(), e);
@@ -70,6 +70,15 @@ public abstract class YPCServlet extends HttpServlet {
 	protected final void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		doGet(req, resp);
+	}
+
+	protected void route(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+		if (Boolean.TRUE.equals(request.getAttribute(Attributes.CALLBACK))) {
+			RouterUtils.callback(request, response);
+		} else if (RouterUtils.hasRoute(request)) {
+			RouterUtils.route(request, response);
+		}
 	}
 
 	protected String getAction(HttpServletRequest req) throws ServletException, IOException {

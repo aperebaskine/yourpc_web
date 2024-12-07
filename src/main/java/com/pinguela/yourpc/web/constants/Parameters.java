@@ -50,4 +50,19 @@ public final class Parameters {
 	public static final String PHONE_NUMBER = "phoneNumber";
 	public static final String PHONE_NUMBER_PREFIX = "phoneNumberPrefix";
 	
+	public static final String ADDRESS_ID = "addressId";
+	
+	public static final String STREET_NAME = "streetName";
+	public static final String STREET_NUMBER = "streetNumber";
+	public static final String FLOOR = "floor";
+	public static final String DOOR = "door";
+	public static final String ZIP_CODE = "zipCode";
+	
+	public static final String IS_DEFAULT = "isDefault";
+	public static final String IS_BILLING = "isBilling";
+	
+	public static final String COUNTRY = "country";
+	public static final String PROVINCE = "province";
+	public static final String CITY = "city";
+	
 }

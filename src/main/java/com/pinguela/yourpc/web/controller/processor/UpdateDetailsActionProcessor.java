@@ -10,8 +10,9 @@ import com.pinguela.yourpc.web.annotations.ActionProcessor;
 import com.pinguela.yourpc.web.constants.Actions;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
+import com.pinguela.yourpc.web.constants.Paths;
 import com.pinguela.yourpc.web.constants.Views;
-import com.pinguela.yourpc.web.controller.DefaultServlet;
+import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
@@ -22,21 +23,21 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ActionProcessor(action = Actions.REGISTER, servlets = DefaultServlet.class)
-public class RegisterActionProcessor extends AbstractActionProcessor {
-	
+@ActionProcessor(action = Actions.UPDATE_DETAILS, servlets = UserServlet.class)
+public class UpdateDetailsActionProcessor extends AbstractActionProcessor {
+
 	private CustomerService service;
-	
-	public RegisterActionProcessor() {
-		this.service = new CustomerServiceImpl();
-	}
+
+	public UpdateDetailsActionProcessor() {
+		service = new CustomerServiceImpl();
+	}	
 
 	@Override
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
-		
-		Customer c = new Customer();
-		
+
+		Customer c = ((Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER)).clone();
+
 		new ParameterProcessor(request)
 		.required(Parameters.FIRST_NAME, null, c::setFirstName)
 		.required(Parameters.LAST_NAME1, null, c::setLastName1)
@@ -45,16 +46,17 @@ public class RegisterActionProcessor extends AbstractActionProcessor {
 		.required(Parameters.DOCUMENT_NUMBER, null, c::setDocumentNumber)
 		.required(Parameters.PHONE_NUMBER, ValidatorUtils::isValidPhoneNumber, c::setPhoneNumber)
 		.required(Parameters.EMAIL, ValidatorUtils::isValidEmail, c::setEmail)
-		.required(Parameters.PASSWORD, ValidatorUtils::isValidPassword, c::setUnencryptedPassword)
-		.onValidationFailed(() -> RouterUtils.setTargetView(request, Views.REGISTER_VIEW))
+		.optional(Parameters.PASSWORD, ValidatorUtils::isValidPassword, c::setUnencryptedPassword)
+		.onValidationFailed(() -> RouterUtils.setTargetView(request, Views.UPDATE_DETAILS_VIEW))
 		.onValidationSuccessful(() -> {
-			Integer id = service.register(c);
 			
-			if (id == null) {
+			boolean updated = service.update(c);
+
+			if (updated == false) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			} else {
-				SessionManager.setAttribute(request, Attributes.CUSTOMER, c);
-				RouterUtils.setTargetView(request, Views.USER_DETAILS_VIEW);
+				request.setAttribute(Attributes.UPDATED, true);
+				RouterUtils.setTargetView(request, Paths.USER_DETAILS);
 			}
 		});
 	}

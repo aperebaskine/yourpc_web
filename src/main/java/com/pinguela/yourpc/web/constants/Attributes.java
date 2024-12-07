@@ -2,6 +2,8 @@ package com.pinguela.yourpc.web.constants;
 
 public final class Attributes {
 	
+	public static final String CALLBACK = "callback";
+	
 	public static final String TARGET_VIEW = "targetView";
 	public static final String ROUTE_METHOD = "routeMethod";
 	
@@ -28,5 +30,11 @@ public final class Attributes {
 	public static final String TICKET = "ticket";
 	
 	public static final String UPDATED = "updated";
+	public static final String AVATAR = "avatar";
+	
+	public static final String ADDRESS = "address";
+	public static final String CITIES = "cities";
+	public static final String PROVINCES = "provinces";
+	public static final String COUNTRIES = "countries";
 	
 }
