@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/common/header.jsp" %>
 <main>
+	<form action="<c:url value='/user/new-address.jsp'/>">
+		<input type="hidden" name="${Parameters.CALLBACK_URL}" value="${currentUrl}">
+		<input type="submit" value="New address">
+	</form>
 	<div class="addresses">
 		<c:forEach var="address" items="${sessionScope.customer.addresses}">
 			<div class="address">
@@ -46,8 +50,5 @@
 			</form>
 		</c:forEach>
 	</div>
-	<form action="<c:url value='/user/new-address.jsp'/>">
-		<input type="submit" value="New address">
-	</form>
 </main>
 <%@ include file="/common/footer.jsp" %>

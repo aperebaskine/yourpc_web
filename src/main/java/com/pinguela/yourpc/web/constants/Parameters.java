@@ -34,7 +34,6 @@ public final class Parameters {
 	
 	public static final String PAGE = "page";
 	
-	public static final String CALLBACK = "callback";
 	public static final String CALLBACK_URL = "callbackUrl";
 	
 	public static final String TICKET_ID = "ticketId";
@@ -64,5 +63,8 @@ public final class Parameters {
 	public static final String COUNTRY = "country";
 	public static final String PROVINCE = "province";
 	public static final String CITY = "city";
+	
+	public static final String IMAGE_TYPE = "image-type";
+	public static final String IMAGE_KEY = "image-key";
 	
 }

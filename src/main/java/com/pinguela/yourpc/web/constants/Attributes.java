@@ -37,4 +37,6 @@ public final class Attributes {
 	public static final String PROVINCES = "provinces";
 	public static final String COUNTRIES = "countries";
 	
+	public static final String IMAGES = "images";
+	
 }

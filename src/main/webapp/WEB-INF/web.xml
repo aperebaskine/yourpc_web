@@ -36,6 +36,10 @@
 		<servlet-name>TicketServlet</servlet-name>
 		<servlet-class>com.pinguela.yourpc.web.controller.TicketServlet</servlet-class>
 	</servlet>
+		<servlet>
+		<servlet-name>ImageServlet</servlet-name>
+		<servlet-class>com.pinguela.yourpc.web.controller.ImageServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>DefaultServlet</servlet-name>
 		<url-pattern>/DefaultServlet</url-pattern>
@@ -55,6 +59,10 @@
 	<servlet-mapping>
 		<servlet-name>TicketServlet</servlet-name>
 		<url-pattern>/user/TicketServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ImageServlet</servlet-name>
+		<url-pattern>/ImageServlet</url-pattern>
 	</servlet-mapping>
 	<filter>
 		<filter-name>Log</filter-name>

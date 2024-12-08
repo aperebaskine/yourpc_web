@@ -4,8 +4,8 @@
 <main>
 	<div class="user-details">
 		<div class="avatar">
-			<c:if test="${not empty avatar}">
-				<img src="${avatar}" alt="Avatar"/>
+			<c:if test="${not empty images}">
+				<img src="data:image/png;base64, ${images.get(0)}" alt="Avatar"/>
 			</c:if>
 		</div>
 		<h3><fmt:message key="user.details.title"></fmt:message></h3>
@@ -26,13 +26,13 @@
 					</form>
 				</li>
 				<li>
-					<form action="<c:url value="/user/update-details.jsp"/>">
+					<form action="<c:url value="${Views.UPDATE_DETAILS_VIEW}"/>">
 						<input class="button-light" type="submit" value="<fmt:message key="update.details"/>">
 					</form>
 				</li>
 				<li>
 					<form action="<c:url value="/user/address-view.jsp"/>">
-						<input class="button-light" type="submit" value="<fmt:message key="view.address"/>">
+						<input class="button-light" type="submit" value="<fmt:message key="view.addresses"/>">
 					</form>
 				</li>
 				<li>

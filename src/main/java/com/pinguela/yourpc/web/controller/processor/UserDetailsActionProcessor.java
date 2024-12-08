@@ -80,6 +80,8 @@ public class UserDetailsActionProcessor extends AbstractActionProcessor {
 		request.setAttribute(Attributes.CUSTOMER_TICKETS, tickets);
 		request.setAttribute(Attributes.CUSTOMER_RMAS, rmas);
 		
+		request.getRequestDispatcher(String.format("/ImageServlet?image-type=%s&image-key=%s", "avatar", c.getId())).include(request, response);
+		
 		RouterUtils.setTargetView(request, Views.USER_DETAILS_VIEW);
 	}
 

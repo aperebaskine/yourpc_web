@@ -17,6 +17,8 @@ public final class Views {
 	
 	public static final String UPDATE_DETAILS_VIEW = "/user/update-details.jsp";
 	
-	public static final String EDIT_ADDRESS_VIEW = "/user/update-address.jsp";
+	public static final String ADDRESSES_VIEW = "/user/address-view.jsp";
+	public static final String NEW_ADDRESS_VIEW = "/user/new-address.jsp";
+	public static final String EDIT_ADDRESS_VIEW = "/user/edit-address.jsp";
 	
 }

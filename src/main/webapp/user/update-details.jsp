@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/common/empty_header.jsp" %>
+<%@ include file="/common/header.jsp" %>
 <%@ page import="com.pinguela.yourpc.web.constants.ErrorCodes" %>
-<div class="loginLogo">
-	<a href="<c:url value='/index.jsp'></c:url>">
-		<img class="logo" alt="Logo" src="<c:url value='/img/logo.png'></c:url>" />
-	</a>
-</div>
 <div class="registerForm">
     <%@ include file="/common/global_errors.jsp" %>
     <form action="<c:url value='/user/UserServlet'></c:url>" method="post">
@@ -108,4 +103,4 @@
         </div>
     </form>
 </div>
-<%@ include file="/common/empty_footer.jsp" %>
+<%@ include file="/common/footer.jsp" %>

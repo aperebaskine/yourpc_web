@@ -6,12 +6,19 @@ a {
 	color: inherit;
 }
 
-.user-menu li,
-.pagination-menu li,
-nav li {
+nav li,
+.pagination-menu li {
 	padding: 1px 1px;
 	border-radius: 4px;
 	display: inline;
+}
+
+.user-menu li {
+	padding: 1px 1px;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .user-menu li:hover,
@@ -155,6 +162,7 @@ nav {
 }
 
 .inlineFormElements {
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -262,7 +270,14 @@ label {
 	width: 160px;
 	height: 160px;
 	background-image: url("../img/default-avatar.jpg");
-	object-fit: fill;
+	border-radius: 8px;
+}
+
+.avatar img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	border-radius: 8px;
 }
 
 .user-actions ul {

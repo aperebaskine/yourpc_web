@@ -27,9 +27,8 @@ public final class Actions {
 	
 	public static final String UPDATE_DETAILS = "update-details";
 	
-	public static final String INSERT_ADDRESS = "insert-address";
 	public static final String EDIT_ADDRESS = "edit-address";
-	public static final String UPDATE_ADDRESS = "update-address";
+	public static final String UPSERT_ADDRESS = "upsert-address";
 	public static final String DELETE_ADDRESS = "delete-address";
 
 }

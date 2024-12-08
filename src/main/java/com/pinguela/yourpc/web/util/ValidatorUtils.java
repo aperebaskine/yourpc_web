@@ -194,7 +194,9 @@ public class ValidatorUtils {
 		return (min == null || num >= min) && (max == null || num <= max);
 	}
 
-
+	public static Boolean parseBoolean(HttpServletRequest request, String parameterName, String parameterValue) {
+		return Boolean.valueOf(parameterValue);
+	}
 
 	public static Date parseDate(HttpServletRequest request, String parameterName, String parameterValue) {
 		try {

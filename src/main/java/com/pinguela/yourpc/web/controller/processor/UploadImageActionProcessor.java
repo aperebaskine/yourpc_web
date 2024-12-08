@@ -2,6 +2,7 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -65,6 +66,9 @@ public class UploadImageActionProcessor extends AbstractActionProcessor {
 		ImageEntry entry = new ImageEntry(ImageIO.read(is), null);
 		
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+		
+		List<String> paths = fileService.getFilePaths(Attributes.AVATAR, c.getId());
+		entry.setPath(paths.get(0));
 		
 		fileService.update(Attributes.AVATAR, c.getId(), entry);
 
