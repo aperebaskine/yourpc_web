@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.fileupload2.jakarta.servlet5.JakartaServletDiskFileUpload;
-
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.model.CustomerOrder;
@@ -39,14 +37,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.USER_DETAILS, servlets = UserServlet.class)
 public class UserDetailsActionProcessor extends AbstractActionProcessor {
-	
-	private JakartaServletDiskFileUpload fileUpload = new JakartaServletDiskFileUpload();
-	
+
 	private ImageFileService imageFileService;
 	private CustomerOrderService customerOrderService;	
 	private TicketService ticketService;
 	private RMAService rmaService;
-		
+
 	public UserDetailsActionProcessor() {
 		imageFileService = new ImageFileServiceImpl();
 		customerOrderService = new CustomerOrderServiceImpl();
@@ -58,31 +54,32 @@ public class UserDetailsActionProcessor extends AbstractActionProcessor {
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
 
+		RouterUtils.setTargetView(request, Views.USER_DETAILS_VIEW);
+
 		Locale locale = LocaleUtils.getLocale(request);
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
-		
+
 		List<String> avatarList = imageFileService.getFilePaths(Attributes.AVATAR, c.getId());
 		if (!avatarList.isEmpty()) {
-			
+
 		}
-		
+
 		List<CustomerOrder> orders = customerOrderService.findByCustomer(c.getId(), locale);
-		
+
 		TicketCriteria criteria = new TicketCriteria();
 		criteria.setCustomerId(c.getId());
 		Results<Ticket> tickets = ticketService.findBy(criteria, locale, 1, 5);
-		
+
 		RMACriteria rmaCriteria = new RMACriteria();
 		rmaCriteria.setCustomerId(c.getId());
 		List<RMA> rmas = rmaService.findBy(rmaCriteria, locale);
-		
+
 		request.setAttribute(Attributes.CUSTOMER_ORDERS, orders);
 		request.setAttribute(Attributes.CUSTOMER_TICKETS, tickets);
 		request.setAttribute(Attributes.CUSTOMER_RMAS, rmas);
-		
-		request.getRequestDispatcher(String.format("/ImageServlet?image-type=%s&image-key=%s", "avatar", c.getId())).include(request, response);
-		
-		RouterUtils.setTargetView(request, Views.USER_DETAILS_VIEW);
+
+		request.getRequestDispatcher("/user/UserServlet?action=download-avatar").include(request, response);
+
 	}
 
 }

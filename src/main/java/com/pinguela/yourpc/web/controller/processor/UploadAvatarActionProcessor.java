@@ -29,8 +29,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ActionProcessor(action = Actions.UPLOAD_IMAGE, servlets = UserServlet.class)
-public class UploadImageActionProcessor extends AbstractActionProcessor {
+@ActionProcessor(action = Actions.UPLOAD_AVATAR, servlets = UserServlet.class)
+public class UploadAvatarActionProcessor extends AbstractActionProcessor {
 	
 	private JakartaServletDiskFileUpload fileUpload = new JakartaServletDiskFileUpload();
 	private ImageFileService fileService = new ImageFileServiceImpl();

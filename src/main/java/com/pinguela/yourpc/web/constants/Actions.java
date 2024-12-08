@@ -19,8 +19,8 @@ public final class Actions {
 	public static final String ADD_TICKET_MESSAGE = "add-ticket-message";
 	public static final String INSERT_TICKET = "insert-ticket";
 	
-	public static final String UPLOAD_IMAGE = "upload-image";
-	public static final String DOWNLOAD_IMAGE = "download-image";
+	public static final String UPLOAD_AVATAR = "upload-avatar";
+	public static final String DOWNLOAD_AVATAR = "download-avatar";
 	
 	public static final String FETCH_PROVINCES = "fetch-provinces";
 	public static final String FETCH_CITIES = "fetch-cities";

@@ -4,8 +4,8 @@
 <main>
 	<div class="user-details">
 		<div class="avatar">
-			<c:if test="${not empty images}">
-				<img src="data:image/png;base64, ${images.get(0)}" alt="Avatar"/>
+			<c:if test="${not empty avatar}">
+				<img src="data:image/png;base64, ${avatar}" alt="Avatar"/>
 			</c:if>
 		</div>
 		<h3><fmt:message key="user.details.title"></fmt:message></h3>
@@ -18,7 +18,7 @@
 		<div class="user-actions">
 			<ul>
 				<li>
-					<form class="upload-image-form" action="<c:url value="/user/UserServlet?action=upload-image"/>" method="post" enctype="multipart/form-data">
+					<form class="upload-image-form" action="<c:url value="/user/UserServlet?action=upload-avatar"/>" method="post" enctype="multipart/form-data">
 						<div class="formElement">
 							<label for="imageFile" class="button-light"><fmt:message key="avatar.upload"/></label>
 							<input id="imageFile" name="imageFile" type="file" style="visibility: hidden; width: 0px;" onchange="submit();"/> 
