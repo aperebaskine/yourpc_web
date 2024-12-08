@@ -21,13 +21,6 @@ nav li,
 	justify-content: center;
 }
 
-.user-menu li:hover,
-.pagination-menu li:hover,
-nav li:hover {
-	color: white;
-	background-color: #8531B7;
-}
-
 /* Header components */
 
 .user-menu {

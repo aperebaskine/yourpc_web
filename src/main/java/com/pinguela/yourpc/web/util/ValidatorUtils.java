@@ -257,8 +257,10 @@ public class ValidatorUtils {
 	}
 
 	public static void logFieldError(HttpServletRequest request, String parameterName, String errorCode) {
-		ErrorReport errors = (ErrorReport) request.getAttribute(Attributes.ERRORS);
-		errors.addFieldError(parameterName, errorCode);
+		if (parameterName != null) {
+			ErrorReport errors = (ErrorReport) request.getAttribute(Attributes.ERRORS);
+			errors.addFieldError(parameterName, errorCode);
+		}
 	}
 
 	public static void logGlobalError(HttpServletRequest request, String errorCode) {

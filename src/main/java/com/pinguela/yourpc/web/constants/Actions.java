@@ -31,4 +31,10 @@ public final class Actions {
 	public static final String UPSERT_ADDRESS = "upsert-address";
 	public static final String DELETE_ADDRESS = "delete-address";
 
+	public static final String VIEW_CART = "view-cart";
+	public static final String UPDATE_CART = "update-cart";
+	
+	public static final String REVIEW_ORDER = "review-order";
+	public static final String CONFIRM_ORDER = "confirm-order";
+	
 }

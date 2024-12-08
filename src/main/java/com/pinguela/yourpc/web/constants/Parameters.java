@@ -14,6 +14,8 @@ public final class Parameters {
 	public static final String LOGOUT = "logout";
 	
 	public static final String PRODUCT_ID = "productId";
+	public static final String QUANTITY = "qty";
+	public static final String MODIFY_QUANTITY = "modify-qty";
 	
 	public static final String TITLE = "title";
 	public static final String NAME = "name";
@@ -50,6 +52,9 @@ public final class Parameters {
 	public static final String PHONE_NUMBER_PREFIX = "phoneNumberPrefix";
 	
 	public static final String ADDRESS_ID = "addressId";
+	
+	public static final String SHIPPING_ADDRESS_ID = "shippingAddressId";
+	public static final String BILLING_ADDRESS_ID = "billingAddressId";
 	
 	public static final String STREET_NAME = "streetName";
 	public static final String STREET_NUMBER = "streetNumber";

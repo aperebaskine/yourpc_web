@@ -33,10 +33,15 @@ public final class Attributes {
 	public static final String AVATAR = "avatar";
 	
 	public static final String ADDRESS = "address";
+	public static final String SHIPPING_ADDRESS = "shippingAddress";
+	public static final String BILLING_ADDRESS = "billingAddress";
+	
 	public static final String CITIES = "cities";
 	public static final String PROVINCES = "provinces";
 	public static final String COUNTRIES = "countries";
 	
 	public static final String IMAGES = "images";
+	
+	public static final String CART = "cart";
 	
 }

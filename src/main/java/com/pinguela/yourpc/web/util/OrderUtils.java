@@ -1,0 +1,131 @@
+package com.pinguela.yourpc.web.util;
+
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.pinguela.ServiceException;
+import com.pinguela.YPCException;
+import com.pinguela.yourpc.model.Address;
+import com.pinguela.yourpc.model.Customer;
+import com.pinguela.yourpc.service.ProductService;
+import com.pinguela.yourpc.service.impl.ProductServiceImpl;
+import com.pinguela.yourpc.web.constants.Attributes;
+import com.pinguela.yourpc.web.constants.Cookies;
+import com.pinguela.yourpc.web.model.CartItem;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class OrderUtils {
+
+	private static ProductService productService = new ProductServiceImpl();
+	private static Gson gson = new GsonBuilder().create();
+
+	@SuppressWarnings("unchecked")
+	public static List<CartItem> getCart(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, YPCException {
+
+		List<CartItem> cartItems = (List<CartItem>) request.getAttribute(Attributes.CART);
+
+		if (cartItems != null) {
+			return cartItems;
+		}
+
+		Cookie cart = CookieManager.getCookie(request, Cookies.CART);
+		cartItems = gson.fromJson(cart == null ? "[]" : 
+			URLDecoder.decode(cart.getValue(), StandardCharsets.UTF_8), new TypeToken<List<CartItem>>(){}.getType());	
+		
+		for (CartItem cartItem : cartItems) {
+			try {
+				cartItem.setProductDto(productService.findByIdLocalized(cartItem.getProductId(), LocaleUtils.getLocale(request)));
+			} catch (ServiceException e) {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} 
+		}
+		
+		return cartItems;
+	}
+
+	public static void setCart(HttpServletResponse response, List<CartItem> cartItems) {
+		CookieManager.addCookie(response, Cookies.CART, URLEncoder.encode(gson.toJson(cartItems), StandardCharsets.UTF_8), 86400);
+	}
+
+	public static Address getShippingAddress(HttpServletRequest request) {
+		Address a = (Address) request.getAttribute(Attributes.SHIPPING_ADDRESS);
+		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+		
+		if (a == null) {
+			String idStr = CookieManager.getValue(request, Cookies.SHIPPING_ADDRESS);
+			Integer id = ValidatorUtils.parseInt(request, null, idStr);
+			
+			for (Address customerAddress : c.getAddresses()) {
+				
+				if (customerAddress.isDefault()) {
+					a = customerAddress;
+				}
+				
+				if (id != null && customerAddress.getId().equals(id)) {
+					a = customerAddress;
+					break;
+				}
+			}
+		}
+		
+		return a;
+	}
+
+	public static Address getBillingAddress(HttpServletRequest request) {
+		Address a = (Address) request.getAttribute(Attributes.BILLING_ADDRESS);
+		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+		
+		if (a == null) {
+			String idStr = CookieManager.getValue(request, Cookies.BILLING_ADDRESS);
+			Integer id = ValidatorUtils.parseInt(request, null, idStr);
+			
+			for (Address customerAddress : c.getAddresses()) {
+				
+				if (customerAddress.isBilling()) {
+					a = customerAddress;
+				}
+				
+				if (id != null && customerAddress.getId().equals(id)) {
+					a = customerAddress;
+					break;
+				}
+			}
+		}
+		
+		return a;
+	}
+	
+	public static void setShippingAddress(HttpServletRequest request, HttpServletResponse response, Integer addressId) {
+		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+
+		for (Address a : c.getAddresses()) {
+			if (a.getId().equals(addressId)) {
+				request.setAttribute(Attributes.SHIPPING_ADDRESS, a);
+				CookieManager.addCookie(response, Cookies.SHIPPING_ADDRESS, a.getId().toString(), 86400);
+			}
+		}
+	}
+
+	public static void setBillingAddress(HttpServletRequest request, HttpServletResponse response, Integer addressId) {
+		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
+
+		for (Address a : c.getAddresses()) {
+			if (a.getId().equals(addressId)) {
+				request.setAttribute(Attributes.BILLING_ADDRESS, a);
+				CookieManager.addCookie(response, Cookies.BILLING_ADDRESS, a.getId().toString(), 86400);
+			}
+		}
+	}
+	
+}

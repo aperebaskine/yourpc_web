@@ -47,5 +47,10 @@
 			</li>
 		</c:otherwise>
 	</c:choose>
-	<li><fmt:message key="cart"/></li>
+	<li>
+		<form id="cartform" action="<c:url value="/DefaultServlet"></c:url>">
+			<input type="hidden" name="${Parameters.ACTION}" value="${Actions.VIEW_CART}">
+			<input class="button-light" type="submit" value="<fmt:message key="cart"/>">
+		</form>
+	</li>
 </ul>

@@ -23,7 +23,8 @@ public class CookieManager {
 	}
 
 	public static String getValue(HttpServletRequest request, String name) {
-		return getCookie(request, name).getValue();
+		Cookie cookie = getCookie(request, name);
+		return cookie == null ? null : cookie.getValue();
 	}
 
 	public static void addCookie(HttpServletResponse response, String name, String value) {

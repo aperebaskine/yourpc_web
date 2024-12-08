@@ -21,4 +21,8 @@ public final class Views {
 	public static final String NEW_ADDRESS_VIEW = "/user/new-address.jsp";
 	public static final String EDIT_ADDRESS_VIEW = "/user/edit-address.jsp";
 	
+	public static final String CART_VIEW = "/cart.jsp";
+	
+	public static final String ORDER_VIEW = "/user/order-page.jsp";
+	
 }
