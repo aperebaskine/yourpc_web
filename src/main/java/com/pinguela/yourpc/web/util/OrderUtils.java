@@ -27,7 +27,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class OrderUtils {
 
 	private static ProductService productService = new ProductServiceImpl();
-	private static Gson gson = new GsonBuilder().create();
+	private static Gson gson = new GsonBuilder()
+			.registerTypeHierarchyAdapter(CartItem.class, CartItemSerializer.getInstance()).create();
 
 	@SuppressWarnings("unchecked")
 	public static List<CartItem> getCart(HttpServletRequest request, HttpServletResponse response)
@@ -35,14 +36,12 @@ public class OrderUtils {
 
 		List<CartItem> cartItems = (List<CartItem>) request.getAttribute(Attributes.CART);
 
-		if (cartItems != null) {
-			return cartItems;
+		if (cartItems == null) {
+			Cookie cart = CookieManager.getCookie(request, Cookies.CART);
+			cartItems = gson.fromJson(cart == null ? "[]" : 
+				URLDecoder.decode(cart.getValue(), StandardCharsets.UTF_8), new TypeToken<List<CartItem>>(){}.getType());
 		}
 
-		Cookie cart = CookieManager.getCookie(request, Cookies.CART);
-		cartItems = gson.fromJson(cart == null ? "[]" : 
-			URLDecoder.decode(cart.getValue(), StandardCharsets.UTF_8), new TypeToken<List<CartItem>>(){}.getType());	
-		
 		for (CartItem cartItem : cartItems) {
 			try {
 				cartItem.setProductDto(productService.findByIdLocalized(cartItem.getProductId(), LocaleUtils.getLocale(request)));
@@ -50,7 +49,7 @@ public class OrderUtils {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			} 
 		}
-		
+
 		return cartItems;
 	}
 
@@ -61,51 +60,51 @@ public class OrderUtils {
 	public static Address getShippingAddress(HttpServletRequest request) {
 		Address a = (Address) request.getAttribute(Attributes.SHIPPING_ADDRESS);
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
-		
+
 		if (a == null) {
 			String idStr = CookieManager.getValue(request, Cookies.SHIPPING_ADDRESS);
 			Integer id = ValidatorUtils.parseInt(request, null, idStr);
-			
+
 			for (Address customerAddress : c.getAddresses()) {
-				
+
 				if (customerAddress.isDefault()) {
 					a = customerAddress;
 				}
-				
+
 				if (id != null && customerAddress.getId().equals(id)) {
 					a = customerAddress;
 					break;
 				}
 			}
 		}
-		
+
 		return a;
 	}
 
 	public static Address getBillingAddress(HttpServletRequest request) {
 		Address a = (Address) request.getAttribute(Attributes.BILLING_ADDRESS);
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
-		
+
 		if (a == null) {
 			String idStr = CookieManager.getValue(request, Cookies.BILLING_ADDRESS);
 			Integer id = ValidatorUtils.parseInt(request, null, idStr);
-			
+
 			for (Address customerAddress : c.getAddresses()) {
-				
+
 				if (customerAddress.isBilling()) {
 					a = customerAddress;
 				}
-				
+
 				if (id != null && customerAddress.getId().equals(id)) {
 					a = customerAddress;
 					break;
 				}
 			}
 		}
-		
+
 		return a;
 	}
-	
+
 	public static void setShippingAddress(HttpServletRequest request, HttpServletResponse response, Integer addressId) {
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
 
@@ -127,5 +126,5 @@ public class OrderUtils {
 			}
 		}
 	}
-	
+
 }
