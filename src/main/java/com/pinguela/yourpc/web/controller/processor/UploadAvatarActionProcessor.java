@@ -68,7 +68,9 @@ public class UploadAvatarActionProcessor extends AbstractActionProcessor {
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
 		
 		List<String> paths = fileService.getFilePaths(Attributes.AVATAR, c.getId());
-		entry.setPath(paths.get(0));
+		if (!paths.isEmpty()) {
+			entry.setPath(paths.get(0));
+		}
 		
 		fileService.update(Attributes.AVATAR, c.getId(), entry);
 

@@ -41,7 +41,9 @@ public class UpsertAddressActionProcessor extends AbstractActionProcessor {
 		
 		Customer c = (Customer) SessionManager.getAttribute(request, Attributes.CUSTOMER);
 		a.setCustomerId(c.getId());
-		a.setCreationDate(old.getCreationDate());
+		if (old != null) {
+			a.setCreationDate(old.getCreationDate());
+		}
 
 		new ParameterProcessor(request)
 		.optional(Parameters.ADDRESS_ID, ValidatorUtils::parseInt, null, a::setId)
