@@ -26,7 +26,7 @@ final class ActionProcessorDispatcher {
 	}
 
 	private void initialize() {
-		Reflections reflections = new Reflections(AbstractActionProcessor.class.getPackageName());
+		Reflections reflections = new Reflections(AbstractActionProcessor.class.getPackage().getName());
 
 		for (Class<? extends AbstractActionProcessor> clazz : 
 			reflections.getSubTypesOf(AbstractActionProcessor.class)) {

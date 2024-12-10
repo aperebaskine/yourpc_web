@@ -24,7 +24,7 @@ public class ParameterUtils {
 
 		String parameterValue = request.getParameter(parameter);
 
-		if (parameterValue != null && !parameterValue.isBlank()) {
+		if (parameterValue != null && !ValidatorUtils.isBlank(parameterValue)) {
 			try {
 				valueConsumer.accept(parameterValue);
 			} catch (IllegalArgumentException e) {

@@ -1,9 +1,9 @@
 package com.pinguela.yourpc.web.util;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -25,6 +25,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class OrderUtils {
+	
+	public static final String CHARSET = "UTF-8";
 
 	private static ProductService productService = new ProductServiceImpl();
 	private static Gson gson = new GsonBuilder()
@@ -39,7 +41,7 @@ public class OrderUtils {
 		if (cartItems == null) {
 			Cookie cart = CookieManager.getCookie(request, Cookies.CART);
 			cartItems = gson.fromJson(cart == null ? "[]" : 
-				URLDecoder.decode(cart.getValue(), StandardCharsets.UTF_8), new TypeToken<List<CartItem>>(){}.getType());
+				URLDecoder.decode(cart.getValue(), CHARSET), new TypeToken<List<CartItem>>(){}.getType());
 		}
 
 		for (CartItem cartItem : cartItems) {
@@ -53,8 +55,12 @@ public class OrderUtils {
 		return cartItems;
 	}
 
-	public static void setCart(HttpServletResponse response, List<CartItem> cartItems) {
-		CookieManager.addCookie(response, Cookies.CART, URLEncoder.encode(gson.toJson(cartItems), StandardCharsets.UTF_8), 86400);
+	public static void setCart(HttpServletResponse response, List<CartItem> cartItems) throws IOException {
+		try {
+			CookieManager.addCookie(response, Cookies.CART, URLEncoder.encode(gson.toJson(cartItems), CHARSET), 86400);
+		} catch (UnsupportedEncodingException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	public static Address getShippingAddress(HttpServletRequest request) {

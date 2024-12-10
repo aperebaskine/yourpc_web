@@ -13,6 +13,7 @@ import com.pinguela.yourpc.web.util.CookieManager;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
+import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -54,7 +55,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		// Check for the presence of a locale cookie
 		if (locale == null) {
 			Cookie cookie = CookieManager.getCookie(httpReq, Attributes.LOCALE);
-			if (cookie != null && !cookie.getValue().isBlank()) {
+			if (cookie != null && !ValidatorUtils.isBlank(cookie.getValue())) {
 				locale = Locale.forLanguageTag(cookie.getValue());
 			} 
 		}

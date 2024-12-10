@@ -1,7 +1,9 @@
 package com.pinguela.yourpc.web.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,13 +26,15 @@ public class URLBuilder {
 	}
 
 	public static String appendParameter(String url, String name, String value) {
-		return appendParameters(new StringBuffer(url), Map.of(name, new String[]{value}));
+		Map<String, String[]> map = new HashMap<String, String[]>();
+		map.put(name, new String[] {value});
+		return appendParameters(new StringBuffer(url), map);
 	}
 	
 	private static StringBuffer appendParameters(StringBuffer sb, 
 			Map<String, String[]> parameterMap, String... ignoredParameters) {
 
-		List<String> ignoredParameterList = List.of(ignoredParameters);
+		List<String> ignoredParameterList = Arrays.asList(ignoredParameters);
 		String[] filteredKeys = parameterMap.keySet().stream()
 				.filter(p -> !ignoredParameterList.contains(p)).toArray(String[]::new);
 
@@ -47,10 +51,14 @@ public class URLBuilder {
 
 		for (String key : filteredKeys) {
 			for (String parameter : parameterMap.get(key)) {
-				sb.append(key)
-				.append('=')
-				.append(URLEncoder.encode(parameter, StandardCharsets.UTF_8))
-				.append("&");
+				try {
+					sb.append(key)
+					.append('=')
+					.append(URLEncoder.encode(parameter, "UTF-8"))
+					.append("&");
+				} catch (UnsupportedEncodingException e) {
+					// TODO: Fix
+				}
 			}
 		}
 

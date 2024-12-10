@@ -40,6 +40,10 @@ public class ValidatorUtils {
 	private static final int PASSWORD_MAX_LENGTH = 20;
 
 	private static final Pattern SPECIAL_CHARACTER_REGEX = Pattern.compile("[^\\w]");
+	
+	public static boolean isBlank(String string) {
+		return GenericValidator.isBlankOrNull(string);
+	}
 
 	public static String getParameter(HttpServletRequest request, String parameterName, boolean isRequired) {
 		String parameterValue = request.getParameter(parameterName);
