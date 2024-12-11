@@ -2,6 +2,8 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,8 +12,6 @@ import javax.imageio.stream.ImageInputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.pinguela.ServiceException;
 import com.pinguela.YPCException;
@@ -55,7 +55,7 @@ extends AbstractActionProcessor {
 			byte[] bytes = new byte[(int) is.length()];
 			is.read(bytes);
 
-			String base64 = Base64.encodeBase64String(bytes);
+			String base64 = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
 			request.setAttribute(Attributes.AVATAR, base64);
 		}
 	}
