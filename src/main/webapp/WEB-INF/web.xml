@@ -65,6 +65,10 @@
 		<filter-class>com.pinguela.yourpc.web.filter.AuthenticationFilter</filter-class>
 	</filter>
 	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>com.pinguela.yourpc.web.filter.EncodingFilter</filter-class>
+	</filter>
+	<filter>
 		<filter-name>CallbackFilter</filter-name>
 		<filter-class>com.pinguela.yourpc.web.filter.CallbackFilter</filter-class>
 	</filter>
@@ -79,6 +83,10 @@
 	<filter-mapping>
 		<filter-name>CustomerAuth</filter-name>
 		<url-pattern>/user/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>Locale</filter-name>
