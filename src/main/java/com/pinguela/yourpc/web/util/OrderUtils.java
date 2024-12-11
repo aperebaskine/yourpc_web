@@ -6,6 +6,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -18,11 +23,6 @@ import com.pinguela.yourpc.service.impl.ProductServiceImpl;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Cookies;
 import com.pinguela.yourpc.web.model.CartItem;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public class OrderUtils {
 	

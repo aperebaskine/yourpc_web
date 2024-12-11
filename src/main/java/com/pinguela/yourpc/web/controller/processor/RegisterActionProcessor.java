@@ -2,6 +2,10 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.service.CustomerService;
@@ -17,10 +21,6 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.REGISTER, servlets = DefaultServlet.class)
 public class RegisterActionProcessor extends AbstractActionProcessor {

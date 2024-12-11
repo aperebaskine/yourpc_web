@@ -2,11 +2,11 @@ package com.pinguela.yourpc.web.controller;
 
 import java.io.IOException;
 
-import com.pinguela.yourpc.web.model.ErrorReport;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.pinguela.yourpc.web.model.ErrorReport;
 
 @SuppressWarnings("serial")
 /**

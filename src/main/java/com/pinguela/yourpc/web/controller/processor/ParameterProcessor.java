@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.function.TriFunction;
 
 import com.pinguela.YPCException;
@@ -17,9 +20,6 @@ import com.pinguela.yourpc.web.functions.ParameterProcessorSupplier;
 import com.pinguela.yourpc.web.functions.TriPredicate;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
 
 public class ParameterProcessor {
 

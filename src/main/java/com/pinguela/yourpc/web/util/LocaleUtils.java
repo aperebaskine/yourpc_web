@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.pinguela.yourpc.config.ConfigManager;
 import com.pinguela.yourpc.web.constants.Attributes;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 public class LocaleUtils {
 	

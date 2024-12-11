@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.Customer;
 import com.pinguela.yourpc.model.CustomerOrder;
@@ -30,10 +34,6 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.USER_DETAILS, servlets = UserServlet.class)
 public class UserDetailsActionProcessor extends AbstractActionProcessor {

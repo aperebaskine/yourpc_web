@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -22,10 +25,6 @@ import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.SessionManager;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.DOWNLOAD_AVATAR, servlets = UserServlet.class)
 public class DownloadAvatarActionProcessor

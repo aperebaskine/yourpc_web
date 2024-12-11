@@ -2,6 +2,10 @@ package com.pinguela.yourpc.web.controller;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pinguela.DataException;
 import com.pinguela.ServiceException;
 import com.pinguela.YPCException;
@@ -17,10 +21,6 @@ import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.SessionManager;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 public class UserServlet extends YPCServlet {

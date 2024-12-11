@@ -2,6 +2,10 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.service.AddressService;
 import com.pinguela.yourpc.service.impl.AddressServiceImpl;
@@ -12,10 +16,6 @@ import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.RouterUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.EDIT_ADDRESS, servlets = UserServlet.class)
 public class EditAddressActionProcessor extends AbstractActionProcessor {

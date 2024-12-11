@@ -2,6 +2,10 @@ package com.pinguela.yourpc.web.controller.processor;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.dto.LocalizedProductDTO;
 import com.pinguela.yourpc.service.ProductService;
@@ -16,10 +20,6 @@ import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.PRODUCT_DETAILS)
 public class ProductDetailsActionProcessor extends AbstractActionProcessor {

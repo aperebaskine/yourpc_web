@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.model.ProductCriteria;
 import com.pinguela.yourpc.model.Results;
@@ -28,10 +32,6 @@ import com.pinguela.yourpc.web.util.PaginationUtils;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
 import com.pinguela.yourpc.web.util.validator.AttributeRangeValidator;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.PRODUCT_RESULTS)
 public class ProductResultsActionProcessor 

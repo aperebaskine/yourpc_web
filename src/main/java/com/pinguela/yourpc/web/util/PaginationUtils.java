@@ -4,13 +4,13 @@ package com.pinguela.yourpc.web.util;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.util.Strings;
 
 import com.pinguela.yourpc.model.Results;
 import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 public class PaginationUtils {
 	

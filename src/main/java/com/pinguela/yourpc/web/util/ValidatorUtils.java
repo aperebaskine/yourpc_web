@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.function.TriFunction;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.logging.log4j.LogManager;
@@ -23,8 +25,6 @@ import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.ErrorCodes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.model.ErrorReport;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * TODO: Separate validation and error logging (?), parse without catching exceptions

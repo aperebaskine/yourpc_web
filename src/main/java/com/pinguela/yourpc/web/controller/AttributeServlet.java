@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,11 +22,6 @@ import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.util.CookieManager;
 import com.pinguela.yourpc.web.util.LocaleUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 public class AttributeServlet extends HttpServlet {

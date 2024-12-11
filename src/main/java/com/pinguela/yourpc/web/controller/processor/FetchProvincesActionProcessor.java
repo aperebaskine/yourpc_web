@@ -3,6 +3,10 @@ package com.pinguela.yourpc.web.controller.processor;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pinguela.YPCException;
@@ -16,10 +20,6 @@ import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 @ActionProcessor(action = Actions.FETCH_PROVINCES, servlets = UserServlet.class)
 public class FetchProvincesActionProcessor
