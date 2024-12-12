@@ -32,6 +32,10 @@ public class AttributeRangeValidator {
 		}
 		AttributeDTO<?> dbData = service.findById(dto.getId(), Locale.forLanguageTag("en-GB"), false, categoryId);
 		
+		if (dbData == null) {
+			return false;
+		}
+		
 		Comparable min = (Comparable) dto.getValueAt(0);
 		Comparable max = (Comparable) dto.getValueAt(dto.valueCount() -1);
 		
