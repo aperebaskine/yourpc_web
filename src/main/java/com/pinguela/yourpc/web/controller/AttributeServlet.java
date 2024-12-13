@@ -57,7 +57,9 @@ public class AttributeServlet extends HttpServlet {
 		
 		logger.debug("Results of product attribute request: {}", json);
 
-		resp.getWriter().append(json);
+		resp.setContentType("application/json");
+		resp.getOutputStream().write(json.getBytes());
+		resp.getOutputStream().flush();
 	}
 	
 	@Override

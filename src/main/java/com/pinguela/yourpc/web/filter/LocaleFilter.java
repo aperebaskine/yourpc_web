@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.pinguela.yourpc.web.constants.Attributes;
+import com.pinguela.yourpc.web.constants.Cookies;
 import com.pinguela.yourpc.web.constants.Headers;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.util.CookieManager;
@@ -79,7 +80,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		}
 
 		// If the locale changed, store it in session and cookie
-		if (!locale.equals(SessionManager.getAttribute(httpReq, Attributes.LOCALE))) {
+		if (!locale.toLanguageTag().equals(CookieManager.getValue(httpReq, Cookies.LOCALE))) {
 			SessionManager.setAttribute(httpReq, Attributes.LOCALE, locale);
 			CookieManager.addCookie((HttpServletResponse) response, Attributes.LOCALE, locale.toLanguageTag());
 			logger.info("Setting locale {} for session ID {}", locale.toLanguageTag(), SessionManager.getId(httpReq));
