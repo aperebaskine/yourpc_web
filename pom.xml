@@ -26,7 +26,8 @@
 		<groupId>YourPC-Middleware</groupId>
 		<artifactId>YourPC-Middleware</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<scope>provided</scope>
+		<scope>system</scope>
+		<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/yourpc-middleware.jar</systemPath>
 	</dependency>
 	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
 	<dependency>

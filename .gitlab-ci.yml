@@ -15,22 +15,11 @@ cache:
         - .m2/repository
         - target
 
-build-middleware:
-    stage: build
-    script:
-      - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/aperebaskine/yourpc-middleware.git
-      - pushd yourpc-middleware
-      - mvn install
-      - popd
-      - rm -rf .yourpc-middleware/
-
 build_job:
     stage: build
     script:
         - echo "Maven compile started"
         - "mvn compile"
-    dependencies:
-        - build-middleware
 
 .test_job:
     stage: test
