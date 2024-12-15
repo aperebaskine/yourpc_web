@@ -14,8 +14,6 @@ cache:
     paths:
         - .m2/repository
         - target
-        - builds/
-
 
 build-middleware:
     stage: build
