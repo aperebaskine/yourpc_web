@@ -26,6 +26,7 @@
 		<groupId>YourPC-Middleware</groupId>
 		<artifactId>YourPC-Middleware</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<scope>provided</scope>
 	</dependency>
 	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
 	<dependency>
