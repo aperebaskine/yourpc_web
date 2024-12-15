@@ -1,6 +1,7 @@
 variables:
     MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
     APP_VERSION: $CI_PIPELINE_IID
+    ENVIRONMENT_HOSTNAME: $(echo "$CI_ENVIRONMENT_URL" | sed 's/^http:\/\///')
 
 image: maven:latest
 
@@ -60,7 +61,7 @@ deploy_production_job:
         - chmod 700 ~/.ssh
 
     script:
-        - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war admin@$CI_ENVIRONMENT_URL:$CI_PROJECT_NAME.war
-        - ssh -o StrictHostKeyChecking=no admin@$CI_ENVIRONMENT_URL "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
+        - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war admin@$ENVIRONMENT_HOSTNAME:$CI_PROJECT_NAME.war
+        - ssh -o StrictHostKeyChecking=no admin@$ENVIRONMENT_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
         - sleep 5
         - curl $CI_ENVIRONMENT_URL:8081/$CI_PROJECT_NAME/version.html | grep $APP_VERSION
