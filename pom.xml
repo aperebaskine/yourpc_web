@@ -29,6 +29,12 @@
 		<scope>system</scope>
 		<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/yourpc-middleware.jar</systemPath>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+	<dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>3.17.0</version>
+	</dependency>
 	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
 	<dependency>
 	    <groupId>org.apache.commons</groupId>
