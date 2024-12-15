@@ -8,7 +8,8 @@ stages:
     - build
     - test
     - package
-    - deploy
+    - deploy staging
+    - deploy production
 
 cache:
     paths:
@@ -37,8 +38,18 @@ package_job:
         paths:
             - target/*.war
 
-deploy_job:
-    stage: deploy
+deploy_staging_job:
+    stage: deploy staging
+    environment: Staging
+    extends: .deploy
+
+deploy_production_job:
+    stage: deploy production
+    environment: Production
+    extends: .deploy
+    when: manual
+
+.deploy_job:
     rules:
         - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
     before_script:
@@ -49,7 +60,7 @@ deploy_job:
         - chmod 700 ~/.ssh
 
     script:
-        - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war admin@$AWS_HOSTNAME:$CI_PROJECT_NAME.war
-        - ssh -o StrictHostKeyChecking=no admin@$AWS_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
+        - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war admin@$CI_ENVIRONMENT_URL:$CI_PROJECT_NAME.war
+        - ssh -o StrictHostKeyChecking=no admin@$CI_ENVIRONMENT_URL "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
         - sleep 5
-        - curl $AWS_URL:8081/$CI_PROJECT_NAME/version.html | grep $APP_VERSION
+        - curl $CI_ENVIRONMENT_URL:8081/$CI_PROJECT_NAME/version.html | grep $APP_VERSION
