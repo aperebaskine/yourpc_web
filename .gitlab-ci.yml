@@ -5,7 +5,6 @@ variables:
 image: maven:latest
 
 stages:
-    - setup
     - build
     - test
     - package
@@ -18,8 +17,8 @@ cache:
         - builds/
 
 
-setup_job:
-    stage: setup
+build-middleware:
+    stage: build
     script:
       - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/aperebaskine/yourpc-middleware.git
       - pushd yourpc-middleware
@@ -32,6 +31,8 @@ build_job:
     script:
         - echo "Maven compile started"
         - "mvn compile"
+    dependencies:
+        - build-middleware
 
 .test_job:
     stage: test
