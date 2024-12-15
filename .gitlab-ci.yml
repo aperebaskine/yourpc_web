@@ -15,6 +15,7 @@ cache:
     paths:
         - .m2/repository
         - target
+        - builds/
 
 
 setup_job:
@@ -25,12 +26,10 @@ setup_job:
       - mvn install
       - popd
       - rm -rf .yourpc-middleware/
-      - ls .m2/repository | grep yourpc-middleware
 
 build_job:
     stage: build
     script:
-        - ls .m2/repository | grep yourpc-middleware
         - echo "Maven compile started"
         - "mvn compile"
 
