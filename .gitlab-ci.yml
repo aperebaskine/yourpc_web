@@ -1,0 +1,66 @@
+variables:
+    MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+    APP_VERSION: $CI_PIPELINE_IID
+
+image: maven:latest
+
+stages:
+    - setup
+    - build
+    - test
+    - package
+    - deploy
+
+cache:
+    paths:
+        - .m2/repository
+        - target
+
+
+setup_job:
+    stage: setup
+    script:
+      - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/aperebaskine/yourpc-middleware.git
+      - pushd yourpc-middleware
+      - mvn install
+      - popd
+      - rm -rf .yourpc-middleware/
+
+build_job:
+    stage: build
+    script:
+        - echo "Maven compile started"
+        - "mvn compile"
+
+.test_job:
+    stage: test
+    script:
+        - echo "Maven test started"
+        - "mvn test"
+
+package_job:
+    stage: package
+    script:
+        - echo "Maven package started"
+        - echo $APP_VERSION > src/main/webapp/version.html
+        - "mvn package"
+    artifacts:
+        paths:
+            - target/*.war
+
+deploy_job:
+    stage: deploy
+    rules:
+        - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+    before_script:
+        - apt-get update -y && apt-get install openssh-client -y
+        - eval $(ssh-agent -s)
+        - echo "$AWS_SSH_KEY_BASE64" | base64 -d | tr -d '\r'  | ssh-add -
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+
+    script:
+        - scp -o StrictHostKeyChecking=no target/$CI_PROJECT_NAME.war admin@$AWS_HOSTNAME:$CI_PROJECT_NAME.war
+        - ssh -o StrictHostKeyChecking=no admin@$AWS_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
+        - sleep 5
+        - curl $AWS_URL:8081/$CI_PROJECT_NAME/version.html | grep $APP_VERSION
