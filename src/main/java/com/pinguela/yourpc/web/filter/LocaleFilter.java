@@ -46,7 +46,7 @@ public class LocaleFilter extends HttpFilter implements Filter {
 
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		Locale locale = null;
-
+		
 		// Check whether the user switched locales
 		String switchLocale = request.getParameter(Parameters.SWITCH_LOCALE);
 		if (switchLocale != null) {
@@ -64,13 +64,15 @@ public class LocaleFilter extends HttpFilter implements Filter {
 		// Find supported locales matching HTTP header
 		if (locale == null) {
 			String header = httpReq.getHeader(Headers.ACCEPT_LANGUAGE);
-			String[] languages = header.split(",");
-
-			for (int i = 0; i < languages.length && locale == null; i++) {
-				String tag = languages[i].split(";")[0].trim();
-				if (LocaleUtils.isSupported(tag)) {
-					locale = LocaleUtils.toLocale(tag);
-				}
+			
+			if (header != null) {
+				String[] languages = header.split(",");
+				for (int i = 0; i < languages.length && locale == null; i++) {
+					String tag = languages[i].split(";")[0].trim();
+					if (LocaleUtils.isSupported(tag)) {
+						locale = LocaleUtils.toLocale(tag);
+					}
+				} 
 			}
 		} 
 
