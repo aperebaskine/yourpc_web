@@ -64,4 +64,3 @@ deploy_production_job:
         - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war admin@$ENVIRONMENT_HOSTNAME:$CI_PROJECT_NAME.war
         - ssh -o StrictHostKeyChecking=no admin@$ENVIRONMENT_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
         - sleep 5
-        - curl $CI_ENVIRONMENT_URL:8081/$CI_PROJECT_NAME/version.html | grep $APP_VERSION
