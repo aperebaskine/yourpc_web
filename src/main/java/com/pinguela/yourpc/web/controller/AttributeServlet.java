@@ -18,9 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.pinguela.yourpc.model.dto.AttributeDTO;
 import com.pinguela.yourpc.service.AttributeService;
 import com.pinguela.yourpc.service.impl.AttributeServiceImpl;
-import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
-import com.pinguela.yourpc.web.util.CookieManager;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 
 @SuppressWarnings("serial")
@@ -41,7 +39,7 @@ public class AttributeServlet extends HttpServlet {
 		Short categoryId = Short.valueOf(req.getParameter(Parameters.CATEGORY_ID.toLowerCase()));
 		Boolean returnUnassigned = Boolean.valueOf(req.getParameter(Parameters.RETURN_UNASSIGNED_ATTRIBUTES));
 		
-		Locale locale = LocaleUtils.toLocale(CookieManager.getValue(req, Attributes.LOCALE));
+		Locale locale = LocaleUtils.getLocale(req);
 		
 		Map<String, AttributeDTO<?>> attributes;
 		

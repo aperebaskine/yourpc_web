@@ -45,8 +45,7 @@ public class LocaleUtils {
 	public static final Locale getLocale(HttpServletRequest request) {
 		String tag = Optional.ofNullable(CookieManager.getValue(request, Attributes.LOCALE))
 				.orElse((String) request.getAttribute(Attributes.LOCALE));
-		return tag == null ? DEFAULT_LOCALE : 
-			toLocale(CookieManager.getValue(request, Attributes.LOCALE));
+		return tag == null ? DEFAULT_LOCALE : SUPPORTED_LOCALES.getOrDefault(tag, DEFAULT_LOCALE);
 	}
 
 	public static final Locale toLocale(String localeStr) {
