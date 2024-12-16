@@ -43,6 +43,8 @@ public class LocaleFilter extends HttpFilter implements Filter {
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		
+		logger.info(Locale.getDefault().toLanguageTag());
 
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		Locale locale = null;
