@@ -36,7 +36,7 @@ public class AttributeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		Short categoryId = Short.valueOf(req.getParameter(Parameters.CATEGORY_ID.toLowerCase()));
+		Short categoryId = Short.valueOf(req.getParameter(Parameters.CATEGORY_ID));
 		Boolean returnUnassigned = Boolean.valueOf(req.getParameter(Parameters.RETURN_UNASSIGNED_ATTRIBUTES));
 		
 		Locale locale = LocaleUtils.getLocale(req);

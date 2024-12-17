@@ -14,40 +14,32 @@ const boolean = "BOO";
 
 // Attribute fieldset element
 const fieldset = document.getElementById("attributes");
+	
+$(document).ready(function () {
+	$("#categorySelector").change(function (e) {
+		fieldset.innerHTML = "";
+		requestData(e);
+	});
+});
 
-window.onload = function () {
-	let categorySelector = document.getElementById("categorySelector");
-	categorySelector.addEventListener("change", resetFieldset);
-	categorySelector.addEventListener("change", requestData);
-}
+function requestData(e) {
+	let categoryId = e.target.value;
 
-function resetFieldset() {
-	fieldset.innerHTML = "";
-}
-
-function requestData(event) {
-	let value = event.target.value;
-
-	if (value) {
-		let request = new XMLHttpRequest();
-		let url = new URL(location.origin + contextPath + "/AttributeServlet");
-		url.searchParams.set("categoryid", document.getElementById("categorySelector").value);
-		url.searchParams.set("unassigned", false);
-
-		request.onreadystatechange = function () {
-			if (this.readyState == 4 && this.status == 200) {
-				populateFieldset(request.responseText);
-			}
-		};
-
-		request.open("get", url);
-		request.send();
+	if (categoryId) {
+		$.ajax({
+			type: "GET",
+			url: contextPath + "/AttributeServlet",
+			data: {
+				"categoryId": categoryId,
+				"unassigned": false
+			},
+			dataType: "json",
+			success: populateFieldset
+		});
 	}
 }
 
-function populateFieldset(json) {
-	const attributes = JSON.parse(json);
-
+function populateFieldset(attributes) {
 	for (let i = 0; i < attributes.length; i++) {
 		createAttributeInput(attributes[i]);
 	}
