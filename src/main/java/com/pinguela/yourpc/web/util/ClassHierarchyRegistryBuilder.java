@@ -91,44 +91,59 @@ public class ClassHierarchyRegistryBuilder {
 
 	private static List<MultiKey<?>> computeKeysFromAnnotation(Annotation annotation) {
 		List<MultiKey<?>> keys = new ArrayList<MultiKey<?>>();
-		
+
 		Method[] annotationMethods = annotation.annotationType().getDeclaredMethods();
 		Arrays.sort(annotationMethods, Comparator.comparing(Method::getName));
 		computeKeysFromAnnotation(annotation, annotationMethods, 0, keys, new ArrayList<Object>());
-		
+
 		return keys;
 	}
 
 	private static void computeKeysFromAnnotation(Annotation annotation, Method[] annotationMethods,
 			int index, List<MultiKey<?>> keys, List<Object> components) {
-		
+
 		if (index >= annotationMethods.length) {
 			MultiKey<?> key = new MultiKey<>(components.toArray());
 			keys.add(key);
 			return;
 		}
-		
+
 		Method method = annotationMethods[index++];
 		Object value;
-		
+
 		try {
 			value = method.invoke(annotation);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			logger.error("Unexpected error while calling {} on annotation {}", method.getName(), annotation.getClass().getName());
+			logger.error("Unexpected error while calling {} from annotation {}", 
+					method.getName(), annotation.getClass().getName());
 			throw new IllegalStateException(e);
 		}
-		
+
 		if (value.getClass().isArray()) {
-			Object[] valueArray = (Object[]) value;
-			for (Object valueArrayValue : valueArray) {
-				List<Object> updatedComponents = new ArrayList<Object>(components);
-				updatedComponents.add(valueArrayValue);
-				computeKeysFromAnnotation(annotation, annotationMethods, index, keys, updatedComponents);
-			}
+			computeKeysFromAnnotationHandleArray(annotation, annotationMethods, index, (Object[]) value, keys, components);
 		} else {
 			components.add(value);
 			computeKeysFromAnnotation(annotation, annotationMethods, index, keys, components);
 		}
+	}
+	
+	private static void computeKeysFromAnnotationHandleArray(Annotation annotation, Method[] annotationMethods,
+			int index, Object[] values, List<MultiKey<?>> keys, List<Object> components) {
+		
+		if (values.length == 0) {
+			computeKeysFromAnnotation(annotation, annotationMethods, index, keys, components);
+			return;
+		}
+		 
+		for (int i = 1; i < values.length; i++) {
+			List<Object> componentsForArrayValue = new ArrayList<Object>(components);
+			componentsForArrayValue.add(values[i]);
+			computeKeysFromAnnotation(annotation, annotationMethods, index, keys, componentsForArrayValue);
+		}
+		
+		// Prevent list duplication for single value by handling it here
+		components.add(values[0]);
+		computeKeysFromAnnotation(annotation, annotationMethods, index, keys, components);
 	}
 
 }
