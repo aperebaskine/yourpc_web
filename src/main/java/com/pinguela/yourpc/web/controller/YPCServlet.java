@@ -97,7 +97,7 @@ public abstract class YPCServlet extends HttpServlet {
 	}
 
 	private final AbstractActionProcessor getActionProcessor(String action) {
-		return ACTION_PROCESSOR_DISPATCHER.dispatch(this, action);
+		return ACTION_PROCESSOR_DISPATCHER.dispatch(action, this);
 	}
 
 	protected abstract void preProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
