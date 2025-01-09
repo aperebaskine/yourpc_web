@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.function.TriFunction;
 
 import com.pinguela.YPCException;
 import com.pinguela.yourpc.web.constants.Attributes;
@@ -35,7 +34,7 @@ public class ParameterProcessor {
 		return processSingleValue(parameter, false, ValidatorUtils.nopParser(), validator, consumer);
 	}
 
-	public <T> ParameterProcessor optional(String parameter, TriFunction<HttpServletRequest, String, String, T> parser, 
+	public <T> ParameterProcessor optional(String parameter, BiFunction<HttpServletRequest, String, T> parser, 
 			TriPredicate<HttpServletRequest, String, T> validator, Consumer<T> consumer) {
 		return processSingleValue(parameter, false, parser, validator, consumer);
 	}
@@ -45,7 +44,7 @@ public class ParameterProcessor {
 		return processSingleValue(parameter, true, ValidatorUtils.nopParser(), validator, consumer);
 	}
 
-	public <T> ParameterProcessor required(String parameter, TriFunction<HttpServletRequest, String, String, T> parser, 
+	public <T> ParameterProcessor required(String parameter, BiFunction<HttpServletRequest, String, T> parser, 
 			TriPredicate<HttpServletRequest, String, T> validator, Consumer<T> consumer) {
 		return processSingleValue(parameter, true, parser, validator, consumer);
 	}
@@ -55,7 +54,7 @@ public class ParameterProcessor {
 		return processMultipleValues(parameter, null, null, ValidatorUtils.nopParser(), validator, consumer, discardStrategy);
 	}
 
-	public <T> ParameterProcessor multiOptional(String parameter, TriFunction<HttpServletRequest, String, String, T> parser, 
+	public <T> ParameterProcessor multiOptional(String parameter, BiFunction<HttpServletRequest, String, T> parser, 
 			TriPredicate<HttpServletRequest, String, T> validator, Consumer<T> consumer, DiscardStrategy discardStrategy) {
 		return processMultipleValues(parameter, null, null, parser, validator, consumer, discardStrategy);
 	}
@@ -66,35 +65,35 @@ public class ParameterProcessor {
 	}
 
 	public <T> ParameterProcessor multiRequired(String parameter, int minValueCount, int maxValueCount, 
-			TriFunction<HttpServletRequest, String, String, T> parser, TriPredicate<HttpServletRequest, String, T> validator,
+			BiFunction<HttpServletRequest, String, T> parser, TriPredicate<HttpServletRequest, String, T> validator,
 			Consumer<T> consumer, DiscardStrategy discardStrategy) {
 		return processMultipleValues(parameter, minValueCount, maxValueCount, parser, validator, consumer, discardStrategy);
 	}
 
 	private <T> ParameterProcessor processSingleValue(String parameter, boolean isRequired, 
-			TriFunction<HttpServletRequest, String, String, T> parser, TriPredicate<HttpServletRequest, String, T> validator, Consumer<T> consumer) {
+			BiFunction<HttpServletRequest, String, T> parser, TriPredicate<HttpServletRequest, String, T> validator, Consumer<T> consumer) {
 
 		String parameterValue = ValidatorUtils.getParameter(request, parameter, isRequired);
 
 		if (parameterValue != null) {
-			T parsedValue = getParsedValue(parser, parameter, parameterValue);
+			T parsedValue = getParsedValue(parser, parameter);
 
 			if (parsedValue != null && validateValue(validator, parameter, parsedValue)) {
 				consumer.accept(parsedValue);
 			}
 		}
-
+		
 		return this;
 	}
 
 	private <T> ParameterProcessor processMultipleValues(String parameter, Integer minValueCount, Integer maxValueCount, 
-			TriFunction<HttpServletRequest, String, String, T> parser, TriPredicate<HttpServletRequest, String, T> validator,
+			BiFunction<HttpServletRequest, String, T> parser, TriPredicate<HttpServletRequest, String, T> validator,
 			Consumer<T> consumer, DiscardStrategy discardStrategy) {
 
 		String[] parameterValues = ValidatorUtils.getParameterValues(request, parameter, minValueCount, maxValueCount);
 
 		if (parameterValues.length == 0) {
-			List<T> parsedValues = getParsedValues(parser, parameter, parameterValues, discardStrategy);
+			List<T> parsedValues = getParsedValues(request, parser, parameter, discardStrategy);
 
 			if (validateValues(validator, parameter, parsedValues, discardStrategy)) {
 				for (T parsedValue : parsedValues) {
@@ -106,16 +105,16 @@ public class ParameterProcessor {
 		return this;
 	}
 
-	private <T> T getParsedValue(TriFunction<HttpServletRequest, String, String, T> parser, String parameterName, String value) {
-		return parser.apply(request, parameterName, value);
+	private <T> T getParsedValue(BiFunction<HttpServletRequest, String, T> parser, String parameterName) {
+		return parser.apply(request, parameterName);
 	}
 
-	private <T> List<T> getParsedValues(TriFunction<HttpServletRequest, String, String, T> parser, String parameterName, String[] values,
-			DiscardStrategy discardStrategy) {
+	private <T> List<T> getParsedValues(HttpServletRequest request, BiFunction<HttpServletRequest, String, T> parser,
+			String parameterName, DiscardStrategy discardStrategy) {
 		List<T> parsedValues = new ArrayList<T>();
 
-		for (String value : values) {
-			T parsedValue = getParsedValue(parser, parameterName, value);
+		for (String value : request.getParameterValues(parameterName)) {
+			T parsedValue = parser.apply(request, value);
 			if (parsedValue != null) {
 				parsedValues.add(parsedValue);
 			} else if (discardStrategy == DiscardStrategy.ALL) {
@@ -180,5 +179,7 @@ public class ParameterProcessor {
 	private boolean hasErrors() {
 		return ((ErrorReport) request.getAttribute(Attributes.ERRORS)).hasErrors();
 	}
+	
+	
 
 }

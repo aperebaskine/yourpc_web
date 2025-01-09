@@ -18,8 +18,8 @@ import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.RouterUtils;
-import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 @ActionProcessor(action = Actions.PRODUCT_DETAILS)
 public class ProductDetailsActionProcessor extends AbstractActionProcessor {
@@ -34,7 +34,7 @@ public class ProductDetailsActionProcessor extends AbstractActionProcessor {
 	public void processAction(HttpServletRequest request, HttpServletResponse response, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
 
-		Long productId = ValidatorUtils.parseLong(request, Parameters.PRODUCT_ID, request.getParameter(Parameters.PRODUCT_ID));
+		Long productId = ParameterParser.parseLong(request, Parameters.PRODUCT_ID);
 
 		LocalizedProductDTO p;
 

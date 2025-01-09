@@ -16,7 +16,7 @@ import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
-import com.pinguela.yourpc.web.util.ValidatorUtils;
+import com.pinguela.yourpc.web.util.ParameterParser;
 
 @ActionProcessor(action = Actions.DELETE_ADDRESS, servlets = UserServlet.class)
 public class DeleteAddressActionProcessor
@@ -29,7 +29,7 @@ extends AbstractActionProcessor {
 			throws ServletException, IOException, YPCException, InputValidationException {
 		
 		Integer addressId = 
-				ValidatorUtils.parseInt(request, Parameters.ADDRESS_ID, request.getParameter(Parameters.ADDRESS_ID));
+				ParameterParser.parseInt(request, Parameters.ADDRESS_ID);
 		
 		if (service.delete(addressId)) {
 			request.setAttribute(Attributes.UPDATED, true);

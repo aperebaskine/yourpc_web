@@ -19,6 +19,7 @@ import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 @ActionProcessor(action = Actions.FETCH_CITIES, servlets = UserServlet.class)
@@ -41,7 +42,7 @@ extends AbstractActionProcessor {
 			return;
 		}
 		
-		Integer provinceId = ValidatorUtils.parseInt(request, Parameters.PROVINCE, provinceIdStr);
+		Integer provinceId = ParameterParser.parseInt(request, Parameters.PROVINCE);
 		List<City> cities = service.findByProvince(provinceId);
 		
 		Gson gson = new GsonBuilder().create();

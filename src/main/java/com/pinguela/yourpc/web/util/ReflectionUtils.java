@@ -1,6 +1,8 @@
 package com.pinguela.yourpc.web.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -29,6 +31,27 @@ public class ReflectionUtils {
 		}
 		
 		return classes;
+	}
+	
+	public static Class<?> getClass(Type type) {
+		Class<?> clazz = null;
+		try {
+			clazz = Class.forName(getRawTypeName(type));
+		} catch (ClassNotFoundException e) {
+			// This exception should never be thrown as the Type object already represents a class
+		}
+		return clazz;
+	}
+	
+	public static String getRawTypeName(Type type) {
+		return type instanceof ParameterizedType ?
+				((ParameterizedType) type).getRawType().getTypeName() :
+					type.getTypeName();
+	}
+
+	public static Type getSingleTypeParameter(Class<?> clazz) {
+		Type[] types = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
+		return types.length == 0 ? null : types[0];
 	}
 
 }

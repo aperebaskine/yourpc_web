@@ -1,15 +1,11 @@
 package com.pinguela.yourpc.web.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.function.TriFunction;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -198,68 +194,6 @@ public class ValidatorUtils {
 		return (min == null || num >= min) && (max == null || num <= max);
 	}
 
-	public static Boolean parseBoolean(HttpServletRequest request, String parameterName, String parameterValue) {
-		return Boolean.valueOf(parameterValue);
-	}
-
-	public static Date parseDate(HttpServletRequest request, String parameterName, String parameterValue) {
-		try {
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", LocaleUtils.getLocale(request));
-			return format.parse(parameterValue);
-		} catch (ParseException e) {
-			logFieldError(request, parameterName, ErrorCodes.NOT_A_DATE);
-			return null;
-		}
-	}
-
-	public static Short parseShort(HttpServletRequest request, String parameterName, String parameterValue) {
-		try {
-			return Short.valueOf(parameterValue);
-		} catch (NumberFormatException e) {
-			logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
-			return null;
-		}
-	}
-
-	public static Integer parseInt(HttpServletRequest request, String parameterName, String parameterValue) {
-		try {
-			return Integer.valueOf(parameterValue);
-		} catch (NumberFormatException e) {
-			logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
-			return null;
-		}
-	}
-
-	public static Double parseDouble(HttpServletRequest request, String parameterName, String parameterValue) {
-		try {
-			return Double.valueOf(parameterValue);
-		} catch (NumberFormatException e) {
-			logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
-			return null;
-		}
-	}
-
-	public static Long parseLong(HttpServletRequest request, String parameterName, String parameterValue) {
-		return parseLong(request, parameterName, parameterValue, true);
-	}
-
-	public static Long parseLong(HttpServletRequest request, String parameterName, boolean isRequired) {
-
-		String parameterValue = request.getParameter(parameterName);
-		return parseLong(request, parameterName, parameterValue, isRequired);
-	}
-
-	public static Long parseLong(HttpServletRequest request, String parameterName, String parameterValue, boolean isRequired) {
-		try {
-			return Long.valueOf(parameterValue);
-		} catch (NumberFormatException e) {
-			if (isRequired) {
-				logFieldError(request, parameterName, ErrorCodes.NOT_A_NUMBER);
-			}
-			return null;
-		}
-	}
-
 	public static void logFieldError(HttpServletRequest request, String parameterName, String errorCode) {
 		if (parameterName != null) {
 			ErrorReport errors = (ErrorReport) request.getAttribute(Attributes.ERRORS);
@@ -272,8 +206,8 @@ public class ValidatorUtils {
 		errors.addGlobalError(errorCode);
 	}
 
-	public static <T> TriFunction<HttpServletRequest, String, String, String> nopParser() {
-		return (r, p, v) -> v;
+	public static <T> BiFunction<HttpServletRequest, String, String> nopParser() {
+		return (req, string) -> string;
 	}
 
 }

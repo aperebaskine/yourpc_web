@@ -19,8 +19,8 @@ import com.pinguela.yourpc.web.constants.Attributes;
 import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.SessionManager;
-import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 @SuppressWarnings("serial")
 public class UserServlet extends YPCServlet {
@@ -43,7 +43,7 @@ public class UserServlet extends YPCServlet {
 		String addressIdStr = req.getParameter(Parameters.ADDRESS_ID);
 		if (addressIdStr != null) {
 			try {
-				Integer addressId = ValidatorUtils.parseInt(req, Parameters.ADDRESS_ID, addressIdStr);
+				Integer addressId = ParameterParser.parseInt(req, Parameters.ADDRESS_ID);
 				Address a = addressService.findById(addressId);
 				Customer c = (Customer) SessionManager.getAttribute(req, Attributes.CUSTOMER);
 				

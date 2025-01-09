@@ -16,8 +16,8 @@ import com.pinguela.yourpc.web.constants.Parameters;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.SessionManager;
-import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 @SuppressWarnings("serial")
 public class TicketServlet extends YPCServlet {
@@ -32,7 +32,7 @@ public class TicketServlet extends YPCServlet {
 	protected void preProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
 		
-		Long ticketId = ValidatorUtils.parseLong(req, Parameters.TICKET_ID, false);
+		Long ticketId = ParameterParser.parseLong(req, Parameters.TICKET_ID, false);
 		
 		if (ticketId != null) {
 			Ticket t = ticketService.findById(ticketId, LocaleUtils.getLocale(req));

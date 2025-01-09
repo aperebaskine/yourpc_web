@@ -29,6 +29,7 @@ import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.LocaleUtils;
 import com.pinguela.yourpc.web.util.PaginationUtils;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.ValidatorUtils;
 import com.pinguela.yourpc.web.util.validator.AttributeRangeValidator;
@@ -64,13 +65,13 @@ extends AbstractActionProcessor {
 
 		new ParameterProcessor(request)
 		.optional(Parameters.NAME, null, criteria::setName)
-		.optional(Parameters.CATEGORY_ID, ValidatorUtils::parseShort, ValidatorUtils::isValidCategory, criteria::setCategoryId)
-		.optional(Parameters.PRICE_FROM, ValidatorUtils::parseDouble, null, criteria::setPriceMin)
-		.optional(Parameters.PRICE_TO, ValidatorUtils::parseDouble, null, criteria::setPriceMax)
-		.optional(Parameters.STOCK_FROM, ValidatorUtils::parseInt, null, criteria::setStockMin)
-		.optional(Parameters.STOCK_TO, ValidatorUtils::parseInt, null, criteria::setStockMax)
-		.optional(Parameters.LAUNCH_DATE_FROM, ValidatorUtils::parseDate, null, criteria::setLaunchDateMin)
-		.optional(Parameters.LAUNCH_DATE_TO, ValidatorUtils::parseDate, null, criteria::setLaunchDateMax);
+		.optional(Parameters.CATEGORY_ID, ParameterParser::parseShort, ValidatorUtils::isValidCategory, criteria::setCategoryId)
+		.optional(Parameters.PRICE_FROM, ParameterParser::parseDouble, null, criteria::setPriceMin)
+		.optional(Parameters.PRICE_TO, ParameterParser::parseDouble, null, criteria::setPriceMax)
+		.optional(Parameters.STOCK_FROM, ParameterParser::parseInt, null, criteria::setStockMin)
+		.optional(Parameters.STOCK_TO, ParameterParser::parseInt, null, criteria::setStockMax)
+		.optional(Parameters.LAUNCH_DATE_FROM, ParameterParser::parseDate, null, criteria::setLaunchDateMin)
+		.optional(Parameters.LAUNCH_DATE_TO, ParameterParser::parseDate, null, criteria::setLaunchDateMax);
 
 		if (criteria.getCategoryId() != null) {
 			criteria.setAttributes(buildAttributeCriteria(request, criteria.getCategoryId()));

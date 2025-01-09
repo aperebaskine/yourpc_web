@@ -19,9 +19,9 @@ import com.pinguela.yourpc.web.constants.Views;
 import com.pinguela.yourpc.web.controller.UserServlet;
 import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.ErrorReport;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.RouterUtils;
 import com.pinguela.yourpc.web.util.SessionManager;
-import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 @ActionProcessor(action = Actions.UPSERT_ADDRESS, servlets = UserServlet.class)
 public class UpsertAddressActionProcessor extends AbstractActionProcessor {
@@ -46,15 +46,15 @@ public class UpsertAddressActionProcessor extends AbstractActionProcessor {
 		}
 
 		new ParameterProcessor(request)
-		.optional(Parameters.ADDRESS_ID, ValidatorUtils::parseInt, null, a::setId)
+		.optional(Parameters.ADDRESS_ID, ParameterParser::parseInt, null, a::setId)
 		.required(Parameters.STREET_NAME, null, a::setStreetName)
-		.optional(Parameters.STREET_NUMBER, ValidatorUtils::parseShort, null, a::setStreetNumber)
-		.optional(Parameters.FLOOR, ValidatorUtils::parseShort, null, a::setFloor)
+		.optional(Parameters.STREET_NUMBER, ParameterParser::parseShort, null, a::setStreetNumber)
+		.optional(Parameters.FLOOR, ParameterParser::parseShort, null, a::setFloor)
 		.optional(Parameters.DOOR, null, a::setDoor)
 		.required(Parameters.ZIP_CODE, null, a::setZipCode)
-		.required(Parameters.CITY, ValidatorUtils::parseInt, null, a::setCityId)
-		.optional(Parameters.IS_DEFAULT, ValidatorUtils::parseBoolean, null, a::setIsDefault)
-		.optional(Parameters.IS_BILLING, ValidatorUtils::parseBoolean, null, a::setIsBilling)
+		.required(Parameters.CITY, ParameterParser::parseInt, null, a::setCityId)
+		.optional(Parameters.IS_DEFAULT, ParameterParser::parseBoolean, null, a::setIsDefault)
+		.optional(Parameters.IS_BILLING, ParameterParser::parseBoolean, null, a::setIsBilling)
 		.onValidationFailed(() -> RouterUtils.setTargetView(request, a.getId() == null ? Views.NEW_ADDRESS_VIEW : Views.EDIT_ADDRESS_VIEW))
 		.onValidationSuccessful(() -> {
 

@@ -17,8 +17,8 @@ import com.pinguela.yourpc.web.exception.InputValidationException;
 import com.pinguela.yourpc.web.model.CartItem;
 import com.pinguela.yourpc.web.model.ErrorReport;
 import com.pinguela.yourpc.web.util.OrderUtils;
+import com.pinguela.yourpc.web.util.ParameterParser;
 import com.pinguela.yourpc.web.util.RouterUtils;
-import com.pinguela.yourpc.web.util.ValidatorUtils;
 
 @ActionProcessor(action = Actions.UPDATE_CART)
 public class UpdateCartActionProcessor 
@@ -30,8 +30,8 @@ extends AbstractActionProcessor {
 		
 		RouterUtils.setTargetView(request, "/DefaultServlet?action=view-cart");
 		
-		Long productId = ValidatorUtils.parseLong(request, Parameters.PRODUCT_ID, request.getParameter(Parameters.PRODUCT_ID));
-		Integer quantity = ValidatorUtils.parseInt(request, Parameters.QUANTITY, request.getParameter(Parameters.QUANTITY));
+		Long productId = ParameterParser.parseLong(request, Parameters.PRODUCT_ID);
+		Integer quantity = ParameterParser.parseInt(request, Parameters.QUANTITY);
 		
 		if (productId == null || quantity == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -46,8 +46,8 @@ extends AbstractActionProcessor {
 				found = true;
 				if (quantity < 1) {
 					forRemoval.add(cartItem);
-				} else if (Boolean.TRUE.equals(ValidatorUtils.parseBoolean(
-						request, Parameters.MODIFY_QUANTITY, request.getParameter(Parameters.MODIFY_QUANTITY)))) {
+				} else if (Boolean.TRUE.equals(ParameterParser.parseBoolean(
+						request, Parameters.MODIFY_QUANTITY))) {
 					cartItem.setQuantity(quantity);
 				} else {
 					cartItem.setQuantity(cartItem.getQuantity() + quantity);
