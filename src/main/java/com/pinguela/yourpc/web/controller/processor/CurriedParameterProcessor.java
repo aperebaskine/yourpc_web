@@ -3,39 +3,44 @@ package com.pinguela.yourpc.web.controller.processor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.pinguela.yourpc.web.util.ParameterParser;
 
-public class CurriedParameterProcessor {
+public class CurriedParameterProcessor<P, R> {
 
 	private HttpServletRequest request;
-	private Function function;
 	private List<Object> parsedParameters;
 	
-	public CurriedParameterProcessor(HttpServletRequest request, Function<?, ?> function) {
+	private CurriedParameterProcessor(HttpServletRequest request, Class<R> returnType) {
 		this.request = request;
-		this.function = function;
 		this.parsedParameters = new ArrayList<Object>();
 	}
 	
-	public CurriedParameterProcessor addParameter(String parameterName, Class<?> targetClass) {
+	public static <R> CurriedParameterProcessor<?, R> getInstance(HttpServletRequest request, Class<R> returnType) {
+		return new CurriedParameterProcessor<Object, R>(request, returnType);
+	}
+	
+	public <T> CurriedParameterProcessor<T, R> initialParameter(String parameterName,
+			Class<T> targetClass, Predicate<T>... validators) {
 		parsedParameters.add(ParameterParser.parse(request, parameterName, targetClass));
-		return this;
+		return (CurriedParameterProcessor<T, R>) this;
 	}
 	
-	public CurriedParameterProcessor addAttribute(Object attribute) {
-		parsedParameters.add(attribute);
-		return this;
+	public <T> CurriedParameterProcessor<T, Function<P, R>> addParameter(String parameterName, 
+			Class<T> targetClass, Predicate<T>... validators) {
+		parsedParameters.add(ParameterParser.parse(request, parameterName, targetClass));
+		return (CurriedParameterProcessor<T, Function<P, R>>) this;
 	}
 	
-	public <R> R get() {
+	public R executeFunction(Function<P, R> function) {
 		int i = 0;
 		Object link;
 		
 		while (true) {
-			link = function.apply(parsedParameters.get(i));
+			link = function.apply((P) parsedParameters.get(i));
 			
 			if (link instanceof Function) {
 				function = (Function) link;
