@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +24,27 @@ public class ParameterParser {
 	private static Logger logger = LogManager.getLogger(ParameterParser.class);
 
 	private static final Map<Class<?>, BiFunction<HttpServletRequest, String, ?>> PARSERS = new ConcurrentHashMap<>();
+	
+	private static <T> T parse(HttpServletRequest request, String parameterName, Function<String, T> parser, boolean isRequired) {
+		
+		String value = ValidatorUtils.getParameter(request, parameterName, isRequired);
+
+		if (value == null) {
+			return null;
+		}
+
+		BiFunction<HttpServletRequest, String, T> parser = getParser(targetClass);
+
+		T parsed = null;
+
+		try {
+			parsed = parser.apply(request, value);
+		} catch (Exception e) {
+			ValidatorUtils.logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
+		}
+
+		return parsed;
+	}
 
 	public static <T> T parse(HttpServletRequest request, String parameterName, Class<T> targetClass) {
 		return parse(request, parameterName, targetClass, false);

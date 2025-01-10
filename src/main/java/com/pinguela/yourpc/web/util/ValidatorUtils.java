@@ -56,8 +56,9 @@ public class ValidatorUtils {
 		return parameterValue;
 	}
 
-	public static String[] getParameterValues(HttpServletRequest request, String parameterName, Integer minCount, Integer maxCount) {
+	public static String[] getParameterValues(HttpServletRequest request, String parameterName, Integer minCount, Integer maxCount) throws Exception {
 		String[] parameterValues = request.getParameterValues(parameterName);
+
 		if (!isInRange(maxCount, minCount, maxCount)) {
 			logFieldError(request, parameterName, parameterName);
 			return EMPTY_ARRAY;
@@ -207,7 +208,7 @@ public class ValidatorUtils {
 	}
 
 	public static <T> BiFunction<HttpServletRequest, String, String> nopParser() {
-		return (req, string) -> string;
+		return (req, value) -> value;
 	}
 
 }
