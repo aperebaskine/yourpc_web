@@ -56,5 +56,5 @@ deploy_production_job:
     script:
         - ENVIRONMENT_HOSTNAME=$(echo "$CI_ENVIRONMENT_URL" | sed 's/^http:\/\///')
         - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war $ANW_USERNAME@$ENVIRONMENT_HOSTNAME:$CI_PROJECT_NAME.war
-        - ssh -o StrictHostKeyChecking=no admin@$ENVIRONMENT_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /usr/libexec/tomcat9/webapps/$CI_PROJECT_NAME.war"
+        - ssh -o StrictHostKeyChecking=no $ANW_USERNAME@$ENVIRONMENT_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /usr/libexec/tomcat9/webapps/$CI_PROJECT_NAME.war"
         - sleep 5
