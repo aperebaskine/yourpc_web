@@ -8,7 +8,6 @@ stages:
     - build
     - test
     - package
-    - deploy staging
     - deploy production
 
 cache:
@@ -38,11 +37,6 @@ package_job:
         paths:
             - target/*.war
 
-deploy_staging_job:
-    stage: deploy staging
-    environment: Staging
-    extends: .deploy
-
 deploy_production_job:
     stage: deploy production
     environment: Production
@@ -55,12 +49,12 @@ deploy_production_job:
     before_script:
         - apt-get update -y && apt-get install openssh-client -y
         - eval $(ssh-agent -s)
-        - echo "$AWS_SSH_KEY_BASE64" | base64 -d | tr -d '\r'  | ssh-add -
+        - echo "$ANW_SSH_KEY_BASE64" | base64 -d | tr -d '\r' | ssh-add -
         - mkdir -p ~/.ssh
         - chmod 700 ~/.ssh
 
     script:
         - ENVIRONMENT_HOSTNAME=$(echo "$CI_ENVIRONMENT_URL" | sed 's/^http:\/\///')
-        - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war admin@$ENVIRONMENT_HOSTNAME:$CI_PROJECT_NAME.war
-        - ssh -o StrictHostKeyChecking=no admin@$ENVIRONMENT_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /opt/wildfly/standalone/deployments/$CI_PROJECT_NAME.war"
+        - scp -o StrictHostKeyChecking=no target/YourPCWeb-0.0.1-SNAPSHOT.war $ANW_USERNAME@$ENVIRONMENT_HOSTNAME:$CI_PROJECT_NAME.war
+        - ssh -o StrictHostKeyChecking=no admin@$ENVIRONMENT_HOSTNAME "sudo cp $CI_PROJECT_NAME.war /usr/libexec/tomcat9/webapps/$CI_PROJECT_NAME.war"
         - sleep 5
