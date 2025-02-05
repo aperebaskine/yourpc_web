@@ -32,7 +32,7 @@ public class TicketServlet extends YPCServlet {
 	protected void preProcess(HttpServletRequest req, HttpServletResponse resp, ErrorReport errors)
 			throws ServletException, IOException, YPCException, InputValidationException {
 		
-		Long ticketId = ParameterParser.parseLong(req, Parameters.TICKET_ID, false);
+		Long ticketId = ParameterParser.parseLong(req, Parameters.TICKET_ID);
 		
 		if (ticketId != null) {
 			Ticket t = ticketService.findById(ticketId, LocaleUtils.getLocale(req));

@@ -19,7 +19,7 @@
 		</c:forEach>
 		<p>Total: ${total} €</p>
 		<form action="<c:url value="/user/UserServlet"/>">
-			<input type="hidden" name="${Parameters.ACTION}" value="${Actions.REVIEW_ORDER }">
+			<input type="hidden" name="${Parameters.ACTION}" value="${Actions.REVIEW_ORDER}">
 			<input type="submit" value="<fmt:message key="review.order"/>">
 		</form>
 	</c:when>

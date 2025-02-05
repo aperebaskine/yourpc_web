@@ -14,6 +14,7 @@ import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.validator.GenericValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,20 +26,47 @@ public class ParameterParser {
 
 	private static final Map<Class<?>, BiFunction<HttpServletRequest, String, ?>> PARSERS = new ConcurrentHashMap<>();
 	
-	private static <T> T parse(HttpServletRequest request, String parameterName, Function<String, T> parser, boolean isRequired) {
-		
-		String value = ValidatorUtils.getParameter(request, parameterName, isRequired);
+	public static Short parseShort(HttpServletRequest request, String value) {
+		return parse(request, null, value, Short::valueOf, false);
+	}
+	
+	public static Integer parseInt(HttpServletRequest request, String value) {
+		return parse(request, null, value, Integer::valueOf, false);
+	}
+	
+	public static Long parseLong(HttpServletRequest request, String value) {
+		return parse(request, null, value, Long::valueOf, false);
+	}
+	
+	public static Double parseDouble(HttpServletRequest request, String value) {
+		return parse(request, null, value, Double::valueOf, false);
+	}
+	
+	public static Boolean parseBoolean(HttpServletRequest request, String value) {
+		return parse(request, null, value, Boolean::valueOf, false);
+	}
+	
+	public static Date parseDate(HttpServletRequest request, String value) {
+		return parse(request, null, value, s -> {
+			try {
+				return DateFormat.getDateTimeInstance().parse(s);
+			} catch (ParseException e) {
+				throw new IllegalArgumentException(e);
+			}
+		}
+		, false);
+	}
+	
+	private static <T> T parse(HttpServletRequest request, String parameterName, String value, Function<String, T> parser, boolean isRequired) {
 
-		if (value == null) {
+		if (GenericValidator.isBlankOrNull(value)) {			
 			return null;
 		}
-
-		BiFunction<HttpServletRequest, String, T> parser = getParser(targetClass);
-
+		
 		T parsed = null;
 
 		try {
-			parsed = parser.apply(request, value);
+			parsed = parser.apply(value);
 		} catch (Exception e) {
 			ValidatorUtils.logFieldError(request, parameterName, ErrorCodes.INVALID_FORMAT);
 		}

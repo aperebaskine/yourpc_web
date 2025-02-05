@@ -56,7 +56,7 @@ public class ValidatorUtils {
 		return parameterValue;
 	}
 
-	public static String[] getParameterValues(HttpServletRequest request, String parameterName, Integer minCount, Integer maxCount) throws Exception {
+	public static String[] getParameterValues(HttpServletRequest request, String parameterName, Integer minCount, Integer maxCount) {
 		String[] parameterValues = request.getParameterValues(parameterName);
 
 		if (!isInRange(maxCount, minCount, maxCount)) {
