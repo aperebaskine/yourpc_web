@@ -26,28 +26,28 @@ public class ParameterParser {
 
 	private static final Map<Class<?>, BiFunction<HttpServletRequest, String, ?>> PARSERS = new ConcurrentHashMap<>();
 	
-	public static Short parseShort(HttpServletRequest request, String value) {
-		return parse(request, null, value, Short::valueOf, false);
+	public static Short parseShort(HttpServletRequest request, String parameterName) {
+		return parse(request, parameterName, Short::valueOf, false);
 	}
 	
-	public static Integer parseInt(HttpServletRequest request, String value) {
-		return parse(request, null, value, Integer::valueOf, false);
+	public static Integer parseInt(HttpServletRequest request, String parameterName) {
+		return parse(request, parameterName, Integer::valueOf, false);
 	}
 	
-	public static Long parseLong(HttpServletRequest request, String value) {
-		return parse(request, null, value, Long::valueOf, false);
+	public static Long parseLong(HttpServletRequest request, String parameterName) {
+		return parse(request, parameterName, Long::valueOf, false);
 	}
 	
-	public static Double parseDouble(HttpServletRequest request, String value) {
-		return parse(request, null, value, Double::valueOf, false);
+	public static Double parseDouble(HttpServletRequest request, String parameterName) {
+		return parse(request, parameterName, Double::valueOf, false);
 	}
 	
-	public static Boolean parseBoolean(HttpServletRequest request, String value) {
-		return parse(request, null, value, Boolean::valueOf, false);
+	public static Boolean parseBoolean(HttpServletRequest request, String parameterName) {
+		return parse(request, parameterName, Boolean::valueOf, false);
 	}
 	
-	public static Date parseDate(HttpServletRequest request, String value) {
-		return parse(request, null, value, s -> {
+	public static Date parseDate(HttpServletRequest request, String parameterName) {
+		return parse(request, parameterName, s -> {
 			try {
 				return DateFormat.getDateTimeInstance().parse(s);
 			} catch (ParseException e) {
@@ -57,8 +57,10 @@ public class ParameterParser {
 		, false);
 	}
 	
-	private static <T> T parse(HttpServletRequest request, String parameterName, String value, Function<String, T> parser, boolean isRequired) {
+	private static <T> T parse(HttpServletRequest request, String parameterName, Function<String, T> parser, boolean isRequired) {
 
+		String value = ValidatorUtils.getParameter(request, parameterName, isRequired);
+		
 		if (GenericValidator.isBlankOrNull(value)) {			
 			return null;
 		}
