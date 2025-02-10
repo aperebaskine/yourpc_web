@@ -69,7 +69,7 @@ public class OrderUtils {
 
 		if (a == null) {
 			String idStr = CookieManager.getValue(request, Cookies.SHIPPING_ADDRESS);
-			Integer id = ParameterParser.parseInt(request, null);
+			Integer id = Integer.valueOf(idStr);
 
 			for (Address customerAddress : c.getAddresses()) {
 
@@ -93,7 +93,7 @@ public class OrderUtils {
 
 		if (a == null) {
 			String idStr = CookieManager.getValue(request, Cookies.BILLING_ADDRESS);
-			Integer id = ParameterParser.parseInt(request, null);
+			Integer id = Integer.valueOf(idStr);
 
 			for (Address customerAddress : c.getAddresses()) {
 
