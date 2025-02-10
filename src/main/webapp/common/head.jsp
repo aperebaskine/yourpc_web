@@ -14,6 +14,14 @@
 %>
 <html>
 	<head>
+	<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ7C0C0DD4"></script> 
+		<script> 
+			window.dataLayer = window.dataLayer || []; 
+			function gtag(){dataLayer.push(arguments);} 
+			gtag('js', new Date()); 
+			gtag('config', 'G-QZ7C0C0DD4'); 
+		</script>
 		<meta charset="UTF-8">
 		<title>YourPC 
 			<c:if test="${not empty titleKey}">
